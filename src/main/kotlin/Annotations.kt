@@ -1,8 +1,4 @@
-import java.sql.Connection
 import kotlin.reflect.KClass
-
-
-internal const val SQL_TYPE_NONE = Int.MIN_VALUE
 
 
 @MustBeDocumented

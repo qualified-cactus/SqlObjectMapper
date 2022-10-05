@@ -18,7 +18,7 @@ abstract class NpStatement(
 
     fun setParamsFromDto(dto: Any) {
         val valueMap = SqlObjectMapper.getClassMapping(dto.javaClass)
-            .getColumnNameValueMap(dto)
+            .getColumnNameValueMap(JdbcObjectCreator(statement.connection), dto)
         for ((paramName, value) in valueMap) {
             setParam(paramName, value)
         }
