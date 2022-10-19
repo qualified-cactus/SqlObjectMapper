@@ -1,0 +1,171 @@
+package kotlinImpl
+
+import annotationProcessing.*
+import sqlObjectMapper.*
+import kotlin.reflect.KClass
+import kotlin.reflect.KParameter
+import kotlin.reflect.KProperty1
+import kotlin.reflect.full.*
+
+internal class KotlinAccessor(
+    val constructorParam: KParameter,
+    getter: PGetter
+) : Accessor(getter)
+
+internal class KotlinProperty(
+    override val accessor: KotlinAccessor,
+    valueConverter: ValueConverter
+) : PropertyInfo(accessor, valueConverter)
+
+internal class KotlinLeftJoinedToManyProperty(
+    override val accessor: KotlinAccessor,
+    valueConverter: ValueConverter,
+    elemClassMapping: ClassMapping<*>
+) : OneToManyProperty(accessor, valueConverter, elemClassMapping)
+
+@Suppress("UNCHECKED_CAST")
+internal class LocalKotlinClassInfo<T : Any>(
+    override val clazz: Class<T>,
+    private val nameConverter: NameConverter
+) : LocalClassInfo<T> {
+
+    val kClazz = clazz.kotlin
+    val constructor = kClazz.primaryConstructor
+        ?: throw SqlObjectMapperException("${kClazz} doesn't have primary constructor")
+
+    override val idColumnNames = HashSet<String>()
+    override val nonNestedProperties = HashMap<String, KotlinProperty>()
+    override val nestedProperties = ArrayList<Pair<KotlinAccessor, LocalClassInfo<*>>>()
+    override val oneToOneProperties = ArrayList<Pair<KotlinAccessor, GlobalClassInfo<*>>>()
+    override val oneToManyProperties = ArrayList<KotlinLeftJoinedToManyProperty>()
+    private val propertiesNameMap = HashMap<String, KProperty1<T, *>>()
+
+    init {
+        for (property in kClazz.memberProperties) {
+            propertiesNameMap[property.name] = property
+        }
+
+        for (param in constructor.parameters) {
+            when (val annotation = findParamAnnotation(param)) {
+                is Column -> handleColumnParam(annotation, param)
+                is LeftJoinedMany -> handleOneToManyParam(annotation, param)
+                is Nested -> handleNestedParam(annotation, param)
+                is LeftJoinedOne -> handleOneToOneParam(annotation, param)
+            }
+        }
+
+    }
+
+    private fun findParamAnnotation(param: KParameter): Annotation? {
+        val ignore = param.findAnnotation<IgnoreProperty>()
+        val column = param.findAnnotation<Column>()
+        val oneToMany = param.findAnnotation<LeftJoinedMany>()
+        val nested = param.findAnnotation<Nested>()
+        val oneToOne = param.findAnnotation<LeftJoinedOne>()
+
+        if (ignore != null) return null
+        else if (column != null) return column
+        else if (oneToMany != null) return oneToMany
+        else if (nested != null) return nested
+        else if (oneToOne != null) return oneToOne
+        else return Column()
+    }
+
+    private fun findAccessor(param: KParameter): KotlinAccessor {
+        val property = propertiesNameMap[param.name!!]
+            ?: throw SqlObjectMapperException("Can't find property \"${param.name}\" in ${kClazz}")
+        return KotlinAccessor(param, { o -> property.getter(o as T) })
+    }
+
+    private fun handleColumnParam(annotation: Column, param: KParameter) {
+        val columnName = if (annotation.name == "")
+            nameConverter(param.name!!)
+        else annotation.name
+
+        if (nonNestedProperties.containsKey(columnName)) {
+            throw SqlObjectMapperException("Duplicate column name \"${columnName}\" found in ${clazz}")
+        }
+        if (annotation.isId) {
+            idColumnNames.add(columnName)
+        }
+
+        nonNestedProperties[columnName] = KotlinProperty(
+            findAccessor(param),
+            annotation.valueConverter.createInstance()
+        )
+    }
+
+    private fun handleOneToManyParam(annotation: LeftJoinedMany, param: KParameter) {
+        val paramType = param.type.classifier as KClass<*>
+        if (!(paramType.isSuperclassOf(List::class) || paramType.isSuperclassOf(Set::class))) {
+            throw SqlObjectMapperException("Only super class of type List<T> or Set<T> is supported for the one to many property ${param.name} in ${clazz}")
+        }
+        oneToManyProperties.add(
+            KotlinLeftJoinedToManyProperty(
+                findAccessor(param),
+                annotation.elemConverter.createInstance(),
+                GlobalClassInfo(
+                    LocalKotlinClassInfo(
+                        (param.type.arguments[0].type!!.classifier as KClass<*>).java,
+                        nameConverter
+                    )
+                )
+            )
+        )
+    }
+
+    private fun handleNestedParam(annotation: Nested, param: KParameter) {
+        nestedProperties.add(
+            Pair(
+                findAccessor(param),
+                LocalKotlinClassInfo((param.type.classifier as KClass<*>).java, nameConverter)
+            )
+        )
+    }
+
+    private fun handleOneToOneParam(annotation: LeftJoinedOne, param: KParameter) {
+        oneToOneProperties.add(
+            Pair(
+                findAccessor(param),
+                GlobalClassInfo(LocalKotlinClassInfo((param.type.classifier as KClass<*>).java, nameConverter))
+            )
+        )
+    }
+
+
+    override fun createObject(colNameToValue: ValueProvider): T {
+        val paramValueMap = HashMap<KParameter, Any?>()
+
+        for ((colName, kotlinProperty) in nonNestedProperties) {
+            val value = kotlinProperty.valueConverter.fromDb(colNameToValue(colName))
+            paramValueMap[kotlinProperty.accessor.constructorParam] = value
+        }
+
+        for (oneToManyProperty in oneToManyProperties) {
+            val collectionType = oneToManyProperty.accessor.constructorParam.type.classifier as KClass<*>
+
+            val collection: Collection<Any?> = if (collectionType.isSuperclassOf(List::class)) {
+                ArrayList()
+            }
+            else if (collectionType.isSuperclassOf(Set::class)) {
+                HashSet()
+            }
+            else throw Error("Unreached error")
+
+            paramValueMap[oneToManyProperty.accessor.constructorParam] = collection
+        }
+
+        for ((accessor, nestedLocalInfo) in nestedProperties) {
+            paramValueMap[accessor.constructorParam] = nestedLocalInfo.createObject(colNameToValue)
+        }
+
+        for ((accessor, oneToOneInfo) in oneToOneProperties) {
+            paramValueMap[accessor.constructorParam] =
+                if (oneToOneInfo.idMapping.getValue(colNameToValue) != null)
+                    oneToOneInfo.createObject(colNameToValue)
+                else null
+        }
+
+        return constructor.callBy(paramValueMap)
+    }
+}

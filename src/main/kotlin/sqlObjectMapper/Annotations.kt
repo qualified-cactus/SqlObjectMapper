@@ -1,8 +1,11 @@
+package sqlObjectMapper
+
+import annotationProcessing.JdbcObjectCreator
 import kotlin.reflect.KClass
 
 
 @MustBeDocumented
-@Target(AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.PROPERTY, AnnotationTarget.FIELD)
+@Target(AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.PROPERTY, AnnotationTarget.FIELD, AnnotationTarget.TYPE)
 @Retention(AnnotationRetention.RUNTIME)
 annotation class Column(
     val name: String = "",
@@ -14,18 +17,23 @@ annotation class Column(
 @MustBeDocumented
 @Target(AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.PROPERTY, AnnotationTarget.FIELD)
 @Retention(AnnotationRetention.RUNTIME)
-annotation class OneToMany(
-    val elemType: KClass<*> = Any::class,
+annotation class LeftJoinedMany(
     val elemConverter: KClass<out ValueConverter> = ValueConverter::class
 )
+
+@MustBeDocumented
+@Target(AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.PROPERTY, AnnotationTarget.FIELD)
+@Retention(AnnotationRetention.RUNTIME)
+annotation class LeftJoinedOne
 
 
 @MustBeDocumented
 @Target(AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.PROPERTY, AnnotationTarget.FIELD)
 @Retention(AnnotationRetention.RUNTIME)
 annotation class Nested
-@MustBeDocumented
 
+
+@MustBeDocumented
 @Target(AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.PROPERTY, AnnotationTarget.FIELD)
 @Retention(AnnotationRetention.RUNTIME)
 annotation class IgnoreProperty

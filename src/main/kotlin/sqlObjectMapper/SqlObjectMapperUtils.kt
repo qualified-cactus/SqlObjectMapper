@@ -1,12 +1,9 @@
+package sqlObjectMapper
+
 import java.util.concurrent.atomic.AtomicInteger
 
-internal class NameConverter{
+internal class SqlObjectMapperUtils{
     companion object {
-
-        @JvmStatic
-        fun convertName(input: String): String {
-            return SqlObjectMapper.defaultNameConverter(input);
-        }
 
         @JvmStatic
         fun camelCaseToSnakeCase(input: String): String {

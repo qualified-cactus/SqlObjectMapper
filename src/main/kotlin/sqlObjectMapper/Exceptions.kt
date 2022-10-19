@@ -1,3 +1,6 @@
+package sqlObjectMapper
+
+
 
 class SqlObjectMapperException : RuntimeException {
     constructor() : super()

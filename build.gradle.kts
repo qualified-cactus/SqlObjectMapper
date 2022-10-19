@@ -27,3 +27,6 @@ tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "17"
 }
 
+//sourceSets {
+//    main.kotlin.srcDirs = []
+//}

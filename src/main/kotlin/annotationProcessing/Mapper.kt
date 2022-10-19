@@ -1,17 +1,18 @@
+package annotationProcessing
+
+
 import java.sql.*
 
-typealias PropertyAccessor = (o: Any) -> Any?
-typealias PropertySetter = (o: Any, value: Any?)-> Unit
-typealias ValueProvider = (colName: String) -> Any?;
-
+typealias ValueProvider = (colName: String) -> Any?
 
 interface OneToManyMapping {
     val elemClassMapping: ClassMapping<*>
     fun addToCollection(parent: Any, obj: Any?)
 }
 
-interface ClassMapping<T : Any> {
-    val idColumn: String
+interface ClassMapping<T> {
+    val clazz: Class<T>
+    val idMapping: IdMapping
     val oneToManyMappings: List<OneToManyMapping>
 
     fun createObject(colNameToValue: ValueProvider): T
@@ -42,4 +43,3 @@ class JdbcObjectCreator(private val conn: Connection) {
         return conn.createStruct(typeName, attributes)
     }
 }
-

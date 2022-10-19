@@ -1,6 +1,6 @@
 package javaImpl
 
-import SqlObjectMapperException
+import sqlObjectMapper.SqlObjectMapperException
 import java.lang.reflect.Field
 import java.lang.reflect.Method
 
