@@ -1,11 +1,13 @@
+import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
+    id("org.jetbrains.dokka") version "1.7.20"
     kotlin("jvm") version "1.7.10"
 }
 
-group = "org.example"
-version = "1.0-SNAPSHOT"
+group = "com.qualifiedcactus"
+version = "1.0.0"
 
 repositories {
     mavenCentral()
@@ -27,6 +29,10 @@ tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "17"
 }
 
-//sourceSets {
-//    main.kotlin.srcDirs = []
-//}
+tasks.withType<DokkaTask>().configureEach {
+    dokkaSourceSets {
+        configureEach {
+            includes.from("Module.md")
+        }
+    }
+}

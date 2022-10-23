@@ -1,3 +1,27 @@
+/*
+ MIT License
+
+ Copyright (c) 2022 qualified-cactus
+
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+ */
+
 package kotlinImpl
 
 import annotationProcessing.*
@@ -57,7 +81,7 @@ internal class LocalKotlinClassInfo<T : Any>(
     }
 
     private fun findParamAnnotation(param: KParameter): Annotation? {
-        val ignore = param.findAnnotation<IgnoreProperty>()
+        val ignore = param.findAnnotation<IgnoredProperty>()
         val column = param.findAnnotation<Column>()
         val oneToMany = param.findAnnotation<LeftJoinedMany>()
         val nested = param.findAnnotation<Nested>()
@@ -106,7 +130,10 @@ internal class LocalKotlinClassInfo<T : Any>(
                 annotation.elemConverter.createInstance(),
                 GlobalClassInfo(
                     LocalKotlinClassInfo(
-                        (param.type.arguments[0].type!!.classifier as KClass<*>).java,
+                        if (annotation.childEntityType == Any::class)
+                            (param.type.arguments[0].type!!.classifier as KClass<*>).java
+                        else
+                            annotation.childEntityType.java,
                         nameConverter
                     )
                 )
@@ -114,6 +141,7 @@ internal class LocalKotlinClassInfo<T : Any>(
         )
     }
 
+    @Suppress("UNUSED_PARAMETER")
     private fun handleNestedParam(annotation: Nested, param: KParameter) {
         nestedProperties.add(
             Pair(
@@ -123,6 +151,7 @@ internal class LocalKotlinClassInfo<T : Any>(
         )
     }
 
+    @Suppress("UNUSED_PARAMETER")
     private fun handleOneToOneParam(annotation: LeftJoinedOne, param: KParameter) {
         oneToOneProperties.add(
             Pair(

@@ -22,39 +22,17 @@
  SOFTWARE.
  */
 
-package sqlObjectMapper
+package example
 
-import annotationProcessing.ClassMapping
-import java.util.concurrent.ConcurrentHashMap
-import javaImpl.BeanMappingProvider
-import kotlinImpl.DataClassMappingProvider
-typealias NameConverter = (s: String) -> String
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
+
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+class KotlinExample {
 
 
-/**
- * A base class that all class provider implementations must inherit.
- * @see DataClassMappingProvider
- * @see BeanMappingProvider
- */
-@Suppress("UNCHECKED_CAST")
-abstract class ClassMappingProvider {
-    private val classMappingCache = ConcurrentHashMap<Class<out Any>, Any>()
-
-    abstract fun <T:Any> getClassMappingNonCached(clazz: Class<T>): ClassMapping<T>
-
-    fun <T:Any> getClassMapping(clazz: Class<T>, useCache: Boolean = true): ClassMapping<T> {
-        if (useCache) {
-            val cache = classMappingCache[clazz];
-            if (cache != null) return cache as ClassMapping<T>;
-        }
-        val classMapping = getClassMappingNonCached(clazz)
-        if (useCache) {
-            classMappingCache[clazz] = classMapping
-        }
-        return classMapping
+    @Test
+    fun example1() {
+        //TODO: write
     }
 }
-
-
-
-
