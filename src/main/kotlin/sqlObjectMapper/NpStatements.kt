@@ -55,10 +55,6 @@ abstract class NpStatement(
             setParameter(colName, colValue)
         }
     }
-
-    fun getMappedResultSet(classMappingProvider: ClassMappingProvider): MappedResultSet {
-        return MappedResultSet(statement.resultSet, classMappingProvider)
-    }
 }
 
 /**

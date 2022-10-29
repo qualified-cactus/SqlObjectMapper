@@ -37,7 +37,7 @@ import java.sql.ResultSet
 class QueryExecutor(
     val mappingProvider: ClassMappingProvider
 ) {
-
+    
     /**
      * Execute a prepared statement using a sql string with named parameters.
      * The statement is closed after this method returns.
@@ -81,7 +81,7 @@ class QueryExecutor(
         resultType: Class<T>
     ): T? {
         return executeQuery(connection, sql, parametersDto) { stmt, mp ->
-            stmt.getMappedResultSet(mp).toObject(resultType)
+            MappedResultSet(stmt.resultSet, mp).toObject(resultType)
         }
     }
 
@@ -102,7 +102,7 @@ class QueryExecutor(
         elementType: Class<T>
     ): List<T> {
         return executeQuery(connection, sql, parametersDto) { stmt, mp ->
-            stmt.getMappedResultSet(mp).toList(elementType)
+            MappedResultSet(stmt.resultSet, mp).toList(elementType)
         }
     }
 
@@ -121,7 +121,7 @@ class QueryExecutor(
         parametersDto: Any?
     ): T? {
         return executeQuery(connection, sql, parametersDto) { stmt, mp ->
-            stmt.getMappedResultSet(mp).getScalar<T>()
+            MappedResultSet(stmt.resultSet, mp).getScalar()
         }
     }
 }

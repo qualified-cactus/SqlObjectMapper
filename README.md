@@ -7,7 +7,6 @@ Two kinds of data object is currently supported:
 * Java's Bean
 * Kotlin's data class (all parameters of primary constructors must also be properties)
 
-
 ## Documentations
 
 * [Extension to PreparedStatement and CallableStatement](documentations/NpStatement.md)

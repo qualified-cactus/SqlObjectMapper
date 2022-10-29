@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>ClassMapping</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/jetbrains-mono.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
+</head>
+<body>
+<div class="navigation-wrapper" id="navigation-wrapper">
+    <div id="leftToggler"><span class="icon-toggler"></span></div>
+    <div class="library-name">
+            <a href="../../../index.html">
+                    <span>SqlObjectMapper</span>
+            </a>
+    </div>
+    <div>
+    </div>
+    <div class="pull-right d-flex">
+        <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+    </div>
+</div>
+<div id="container">
+    <div id="leftColumn">
+        <div id="sideMenu"></div>
+    </div>
+    <div id="main">
+<div class="main-content" id="content" pageIds="SqlObjectMapper::sqlObjectMapper.annotationProcessing/ClassMapping///PointingToDeclaration//-131012016">
+  <div class="breadcrumbs"><a href="../../../index.html">SqlObjectMapper</a><span class="delimiter">/</span><a href="../index.html">sqlObjectMapper.annotationProcessing</a><span class="delimiter">/</span><span class="current">ClassMapping</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Class</span><wbr></wbr><span><span>Mapping</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="SqlObjectMapper/JVM"><div class="symbol monospace"><span class="token keyword">interface </span><a href="index.html">ClassMapping</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">T</a><span class="token operator">&gt;</span></div><p class="paragraph">A class mapping of a class contains the following information:</p><ul><li><p class="paragraph">how an object of that class can be created.</p></li><li><p class="paragraph">how to get its properties and its related relational information.</p></li></ul></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Functions">Functions</button><button class="section-tab" data-togglable="Properties">Properties</button></div>
+    <div class="tabs-section-body">
+      <h2 class="">Functions</h2>
+      <div class="table" data-togglable="Functions"><a data-name="-1248802894%2FFunctions%2F-131012016" anchor-label="createObject" id="-1248802894%2FFunctions%2F-131012016" data-filterable-set="SqlObjectMapper/JVM"></a>
+        <div class="table-row" data-filterable-current="SqlObjectMapper/JVM" data-filterable-set="SqlObjectMapper/JVM">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="create-object.html"><span>create</span><wbr></wbr><span><span>Object</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1248802894%2FFunctions%2F-131012016"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="SqlObjectMapper/JVM"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="create-object.html"><span class="token function">createObject</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">colNameToValue<span class="token operator">: </span><a href="../index.html#1397852796%2FClasslikes%2F-131012016">ValueProvider</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">T</a></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="2129273024%2FFunctions%2F-131012016" anchor-label="getColumnNameValueMap" id="2129273024%2FFunctions%2F-131012016" data-filterable-set="SqlObjectMapper/JVM"></a>
+        <div class="table-row" data-filterable-current="SqlObjectMapper/JVM" data-filterable-set="SqlObjectMapper/JVM">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="get-column-name-value-map.html"><span>get</span><wbr></wbr><span>Column</span><wbr></wbr><span>Name</span><wbr></wbr><span>Value</span><wbr></wbr><span><span>Map</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2129273024%2FFunctions%2F-131012016"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="SqlObjectMapper/JVM"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="get-column-name-value-map.html"><span class="token function">getColumnNameValueMap</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">jdbcObjectCreator<span class="token operator">: </span><a href="../-jdbc-object-creator/index.html">JdbcObjectCreator</a><span class="token punctuation">, </span></span><span class="parameter ">o<span class="token operator">: </span><a href="index.html">T</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span><span class="token operator">&gt;</span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Properties</h2>
+      <div class="table" data-togglable="Properties"><a data-name="336310513%2FProperties%2F-131012016" anchor-label="clazz" id="336310513%2FProperties%2F-131012016" data-filterable-set="SqlObjectMapper/JVM"></a>
+        <div class="table-row" data-filterable-current="SqlObjectMapper/JVM" data-filterable-set="SqlObjectMapper/JVM">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="clazz.html"><span><span>clazz</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="336310513%2FProperties%2F-131012016"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-dependent-content" data-active="" data-togglable="SqlObjectMapper/JVM"><a data-name="336310513%2FProperties%2F-131012016" anchor-label="clazz" id="336310513%2FProperties%2F-131012016" data-filterable-set="SqlObjectMapper/JVM"></a><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">val </span><a href="clazz.html">clazz</a><span class="token operator">: </span><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html">Class</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">T</a><span class="token operator">&gt;</span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1764683146%2FProperties%2F-131012016" anchor-label="idMapping" id="-1764683146%2FProperties%2F-131012016" data-filterable-set="SqlObjectMapper/JVM"></a>
+        <div class="table-row" data-filterable-current="SqlObjectMapper/JVM" data-filterable-set="SqlObjectMapper/JVM">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="id-mapping.html"><span>id</span><wbr></wbr><span><span>Mapping</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1764683146%2FProperties%2F-131012016"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-dependent-content" data-active="" data-togglable="SqlObjectMapper/JVM"><a data-name="-1764683146%2FProperties%2F-131012016" anchor-label="idMapping" id="-1764683146%2FProperties%2F-131012016" data-filterable-set="SqlObjectMapper/JVM"></a><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">val </span><a href="id-mapping.html">idMapping</a><span class="token operator">: </span><a href="../-id-mapping/index.html">IdMapping</a></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1984289052%2FProperties%2F-131012016" anchor-label="oneToManyMappings" id="-1984289052%2FProperties%2F-131012016" data-filterable-set="SqlObjectMapper/JVM"></a>
+        <div class="table-row" data-filterable-current="SqlObjectMapper/JVM" data-filterable-set="SqlObjectMapper/JVM">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="one-to-many-mappings.html"><span>one</span><wbr></wbr><span>To</span><wbr></wbr><span>Many</span><wbr></wbr><span><span>Mappings</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1984289052%2FProperties%2F-131012016"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-dependent-content" data-active="" data-togglable="SqlObjectMapper/JVM"><a data-name="-1984289052%2FProperties%2F-131012016" anchor-label="oneToManyMappings" id="-1984289052%2FProperties%2F-131012016" data-filterable-set="SqlObjectMapper/JVM"></a><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">val </span><a href="one-to-many-mappings.html">oneToManyMappings</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../-one-to-many-mapping/index.html">OneToManyMapping</a><span class="token operator">&gt;</span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2022 Copyright</span><span
+                class="pull-right"><span>Generated by </span><a
+                href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+    </div>
+</div>
+</body>
+</html>

@@ -15,9 +15,9 @@ Those function has identical parameter `java.sql.Connection`'s `prepareStatement
 
 Example:
 
-```
-connection.prepareNpStatements("SELECT * FROM table_1 WHERE col_1 = :param_1");
-connection.prepareNpCall("{call procedure_1(:param_1, :param_2)}");
+```kotlin
+connection.prepareNpStatements("SELECT * FROM table_1 WHERE col_1 = :param_1")
+connection.prepareNpCall("{call procedure_1(:param_1, :param_2)}")
 ```
 
 
@@ -40,12 +40,16 @@ npPreparedStatement.setParamsFromMap(map)
 ### By a data object
 
 ```kotlin
+// a singleton instance of data class mapping provider
+val cmProvider = DataClassMappingProvider()
+
+
 data class Input(
     val param1: String,
     val param2: String
 )
 
-npPreparedStatement.setParameters(Input("abc", "def"))
+npPreparedStatement.setParameters(Input("abc", "def"), cmProvider)
 ```
 
 #### Specify column name
