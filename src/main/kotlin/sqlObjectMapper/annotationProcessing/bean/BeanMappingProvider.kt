@@ -22,10 +22,10 @@
  SOFTWARE.
  */
 
-package javaImpl
+package sqlObjectMapper.annotationProcessing.bean
 
-import annotationProcessing.ClassMapping
-import annotationProcessing.GlobalClassInfo
+import sqlObjectMapper.annotationProcessing.ClassMapping
+import sqlObjectMapper.annotationProcessing.GlobalClassInfo
 import sqlObjectMapper.ClassMappingProvider
 import sqlObjectMapper.NameConverter
 import sqlObjectMapper.SqlObjectMapperUtils

@@ -32,35 +32,11 @@ import java.sql.ResultSet
 /**
  * A convenient wrapper to simply the interactions
  * among [ClassMappingProvider] [NpPreparedStatement],
- * [NpCallableStatement] and [MappedResultSet]
+ * [NpCallableStatement] and [MappedResultSet].
  */
-class SqlObjectMapper(
+class QueryExecutor(
     val mappingProvider: ClassMappingProvider
 ) {
-
-    /**
-     * Execute a callable statement using a sql string with named parameters.
-     * It is nearly identical to the method [executeQuery].
-     * @param connection a Jdbc Connection
-     * @param sql a sql string with named parameters
-     * @param parametersDto a data object to set the parameters, or null if the statement doesn't have any parameters
-     * @param processCall a function that consume an already executed statement
-     * and a class mapping provider to return a value
-     * @return value returned by param [processCall]
-     */
-    fun <T> callFunction(
-        connection: Connection,
-        sql: String,
-        parametersDto: Any?,
-        processCall: (callable: NpCallableStatement, mappingProvider: ClassMappingProvider) -> T
-    ) {
-        return connection.prepareNpCall(sql).use { stmt ->
-            if (parametersDto != null) {
-                stmt.setParameters(parametersDto, mappingProvider)
-            }
-            processCall(stmt, mappingProvider)
-        }
-    }
 
     /**
      * Execute a prepared statement using a sql string with named parameters.
@@ -72,7 +48,7 @@ class SqlObjectMapper(
      * and a class mapping provider to return a value
      * @return value returned by param [processStatement]
      */
-    fun <T> executeQuery(
+    private fun <T> executeQuery(
         connection: Connection,
         sql: String,
         parametersDto: Any?,
@@ -105,7 +81,7 @@ class SqlObjectMapper(
         resultType: Class<T>
     ): T? {
         return executeQuery(connection, sql, parametersDto) { stmt, mp ->
-            MappedResultSet(stmt.resultSet, mp).getFirst(resultType)
+            stmt.getMappedResultSet(mp).toObject(resultType)
         }
     }
 
@@ -126,7 +102,7 @@ class SqlObjectMapper(
         elementType: Class<T>
     ): List<T> {
         return executeQuery(connection, sql, parametersDto) { stmt, mp ->
-            MappedResultSet(stmt.resultSet, mp).toList(elementType)
+            stmt.getMappedResultSet(mp).toList(elementType)
         }
     }
 
@@ -145,7 +121,7 @@ class SqlObjectMapper(
         parametersDto: Any?
     ): T? {
         return executeQuery(connection, sql, parametersDto) { stmt, mp ->
-            MappedResultSet(stmt.resultSet, mp).getScalar()
+            stmt.getMappedResultSet(mp).getScalar<T>()
         }
     }
 }

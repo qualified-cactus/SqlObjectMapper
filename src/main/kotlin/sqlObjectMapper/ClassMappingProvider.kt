@@ -24,10 +24,10 @@
 
 package sqlObjectMapper
 
-import annotationProcessing.ClassMapping
+import sqlObjectMapper.annotationProcessing.ClassMapping
 import java.util.concurrent.ConcurrentHashMap
-import javaImpl.BeanMappingProvider
-import kotlinImpl.DataClassMappingProvider
+import sqlObjectMapper.annotationProcessing.bean.BeanMappingProvider
+import sqlObjectMapper.annotationProcessing.dataClass.DataClassMappingProvider
 typealias NameConverter = (s: String) -> String
 
 
@@ -44,8 +44,8 @@ abstract class ClassMappingProvider {
 
     fun <T:Any> getClassMapping(clazz: Class<T>, useCache: Boolean = true): ClassMapping<T> {
         if (useCache) {
-            val cache = classMappingCache[clazz];
-            if (cache != null) return cache as ClassMapping<T>;
+            val cache = classMappingCache[clazz]
+            if (cache != null) return cache as ClassMapping<T>
         }
         val classMapping = getClassMappingNonCached(clazz)
         if (useCache) {

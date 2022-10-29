@@ -24,8 +24,8 @@
 
 package mappedResultSetTest
 
-import javaImpl.BeanMappingProvider
-import kotlinImpl.DataClassMappingProvider
+import sqlObjectMapper.annotationProcessing.bean.BeanMappingProvider
+import sqlObjectMapper.annotationProcessing.dataClass.DataClassMappingProvider
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll

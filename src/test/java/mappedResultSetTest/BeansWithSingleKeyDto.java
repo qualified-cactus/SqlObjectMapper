@@ -25,17 +25,17 @@
 package mappedResultSetTest;
 
 import org.jetbrains.annotations.Nullable;
-import sqlObjectMapper.Column;
-import sqlObjectMapper.LeftJoinedMany;
+import sqlObjectMapper.annotations.MappedProperty;
+import sqlObjectMapper.annotations.JoinMany;
 
 import java.util.List;
 
 public class BeansWithSingleKeyDto {
 
     public static class Entity4 implements IEntity4 {
-        @Column(isId = true)
+        @MappedProperty(isId = true)
         private Integer col41;
-        @LeftJoinedMany
+        @JoinMany
         private List<Entity5> e5List;
 
         @Nullable
@@ -60,11 +60,11 @@ public class BeansWithSingleKeyDto {
     }
 
     public static class Entity5 implements IEntity5 {
-        @Column(isId = true)
+        @MappedProperty(isId = true)
         private Integer col51;
-        @LeftJoinedMany
+        @JoinMany
         private List<Entity6> e6List;
-        @LeftJoinedMany
+        @JoinMany
         private List<Entity7> e7List;
 
         @Nullable
@@ -99,7 +99,7 @@ public class BeansWithSingleKeyDto {
     }
 
     public static class Entity6 implements IEntity6 {
-        @Column(isId = true)
+        @MappedProperty(isId = true)
         private Integer col61;
 
         @Nullable
@@ -114,7 +114,7 @@ public class BeansWithSingleKeyDto {
     }
 
     public static class Entity7 implements IEntity7 {
-        @Column(isId = true)
+        @MappedProperty(isId = true)
         private Integer col71;
 
         @Nullable

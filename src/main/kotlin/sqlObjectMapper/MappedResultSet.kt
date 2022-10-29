@@ -24,66 +24,72 @@
 
 package sqlObjectMapper
 
-import annotationProcessing.ClassMapping
-import annotationProcessing.IdValue
-import annotationProcessing.OneToManyMapping
+import sqlObjectMapper.annotationProcessing.ClassMapping
+import sqlObjectMapper.annotationProcessing.IdValue
+import sqlObjectMapper.annotationProcessing.OneToManyMapping
 import java.sql.ResultSet
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
-import kotlin.reflect.KClass
 
+
+/**
+ * A wrapper class for [ResultSet]
+ * @param rs an open [ResultSet]
+ * @param classMappingProvider class mapping provider used to parse rows of [ResultSet]
+ */
 @Suppress("UNCHECKED_CAST")
 class MappedResultSet(
     rs: ResultSet,
     val classMappingProvider: ClassMappingProvider
 ) : ResultSet by rs {
 
+    init {
+        if (rs.isClosed) throw SqlObjectMapperException("ResultSet is closed")
+    }
+
     /**
-     * Return the first column value of the first row, or null of no row is found
+     * Return the first column value or null of no row is found
      */
     fun <T> getScalar(): T? {
-        if (this.next()) {
-            return this.getObject(1) as T;
-        }
-        else {
-            return null
+        return if (this.next()) {
+            this.getObject(1) as T
+        } else {
+            null
         }
     }
 
     /**
-     * Parse values of the first row into an object of the specified class and return that object.
+     * Parse values of the next row into an object of the specified class and return that object.
      * Return null if there is no row.
      */
-    fun <T : Any> getFirst(clazz: Class<T>): T? {
-        if (this.next()) {
-            return classMappingProvider.getClassMapping(clazz).createObject(this::getObject)
-        }
-        else {
-            return null;
+    fun <T : Any> toObject(clazz: Class<T>): T? {
+        return if (this.next()) {
+            classMappingProvider.getClassMapping(clazz).createObject(this::getObject)
+        } else {
+            null
         }
     }
 
     /**
-     * Parse rows of ResultSet into a collection whose element type is the specified class.
+     * Parse rows into a collection whose element type is the specified class.
      */
     fun <T : Any> toList(clazz: Class<T>): List<T>  {
-        val classMapping = classMappingProvider.getClassMapping(clazz);
+        val classMapping = classMappingProvider.getClassMapping(clazz)
 
-        if (classMapping.oneToManyMappings.isEmpty()) {
-            return toListFlat(this, classMapping);
-        }
-        else {
-            return toListOneToMany(this, classMapping);
+        return if (classMapping.oneToManyMappings.isEmpty()) {
+            toListFlat(this, classMapping)
+        } else {
+            toListOneToMany(this, classMapping)
         }
     }
 
     private fun <T: Any> toListFlat(resultSet: ResultSet, clazzMapping: ClassMapping<T>): List<T>  {
-        val output = ArrayList<T>();
+        val output = ArrayList<T>()
         while (resultSet.next()) {
-            output.add(clazzMapping.createObject(resultSet::getObject));
+            output.add(clazzMapping.createObject(resultSet::getObject))
         }
-        return output;
+        return output
     }
 
     private class ParentObj(
@@ -93,8 +99,8 @@ class MappedResultSet(
     )
 
     private fun <T: Any> toListOneToMany(resultSet: ResultSet, classMapping: ClassMapping<T>): List<T> {
-        val idMap = initIdMap(classMapping);
-        val output = ArrayList<T>();
+        val idMap = initIdMap(classMapping)
+        val output = ArrayList<T>()
 
         fun extractObj(
             parentObj: ParentObj?,
@@ -107,11 +113,7 @@ class MappedResultSet(
                 return
             }
 
-
-            val parentIdColumns = if (parentObj == null)
-                ""
-            else
-                parentObj.clazzMapping.idMapping.combinedNames
+            val parentIdColumns = parentObj?.clazzMapping?.idMapping?.combinedNames ?: ""
 
             val curObjectIdToValueMap = idMap[parentIdColumns]!![curClassMapping.idMapping.combinedNames]!!
 
@@ -136,11 +138,11 @@ class MappedResultSet(
 
 
         while (resultSet.next()) {
-            extractObj(null, classMapping);
+            extractObj(null, classMapping)
         }
 
 
-        return output;
+        return output
     }
 
     // { parentIdColumnName: {idNames: { idValue: obj }} }

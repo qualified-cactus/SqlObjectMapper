@@ -22,17 +22,22 @@
  SOFTWARE.
  */
 
-package example
+package sqlObjectMapper.annotationProcessing.dataClass
 
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
+import sqlObjectMapper.annotationProcessing.ClassMapping
+import sqlObjectMapper.annotationProcessing.GlobalClassInfo
+import sqlObjectMapper.ClassMappingProvider
+import sqlObjectMapper.NameConverter
+import sqlObjectMapper.SqlObjectMapperUtils
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class KotlinExample {
+/**
+ * Class Mapping provider for Kotlin classes that declare all their properties in their primary constructors
+ */
+class DataClassMappingProvider(
+    val nameConverter: NameConverter = SqlObjectMapperUtils.Companion::camelCaseToSnakeCase
+): ClassMappingProvider() {
 
-
-    @Test
-    fun example1() {
-        //TODO: write
+    override fun <T : Any> getClassMappingNonCached(clazz: Class<T>): ClassMapping<T> {
+        return GlobalClassInfo(LocalKotlinClassInfo(clazz, nameConverter))
     }
 }

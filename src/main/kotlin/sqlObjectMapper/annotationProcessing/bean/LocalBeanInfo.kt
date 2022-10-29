@@ -22,13 +22,21 @@
  SOFTWARE.
  */
 
-package javaImpl
+package sqlObjectMapper.annotationProcessing.bean
 
 import sqlObjectMapper.SqlObjectMapperException
-import annotationProcessing.*
-import javaImpl.BeanUtil.Companion.findGetter
-import javaImpl.BeanUtil.Companion.findSetter
+import sqlObjectMapper.annotationProcessing.bean.BeanUtil.Companion.findGetter
+import sqlObjectMapper.annotationProcessing.bean.BeanUtil.Companion.findSetter
 import sqlObjectMapper.*
+import sqlObjectMapper.annotationProcessing.*
+import sqlObjectMapper.annotationProcessing.Accessor
+import sqlObjectMapper.annotationProcessing.GlobalClassInfo
+import sqlObjectMapper.annotationProcessing.LocalClassInfo
+import sqlObjectMapper.annotationProcessing.OneToManyProperty
+import sqlObjectMapper.annotationProcessing.PGetter
+import sqlObjectMapper.annotationProcessing.PSetter
+import sqlObjectMapper.annotationProcessing.PropertyInfo
+import sqlObjectMapper.annotations.*
 import java.lang.reflect.Field
 import java.lang.reflect.ParameterizedType
 
@@ -53,10 +61,10 @@ internal class LocalBeanInfo<T:Any>(
     private val nameConverter: NameConverter,
     override val clazz: Class<T>
 ) : LocalClassInfo<T> {
-
+    private val constructor = clazz.getConstructor()
 
     override val idColumnNames = HashSet<String>()
-    override val nonNestedProperties = HashMap<String, BeanPropertyInfo>()
+    override val nonNestedProperties = LinkedHashMap<String, BeanPropertyInfo>()
     override val nestedProperties = ArrayList<Pair<BeanAccessor, LocalClassInfo<*>>>()
     override val oneToOneProperties = ArrayList<Pair<BeanAccessor, GlobalClassInfo<*>>>()
     override val oneToManyProperties = ArrayList<BeanOneToManyProperty>()
@@ -66,10 +74,10 @@ internal class LocalBeanInfo<T:Any>(
         while (curClazz != java.lang.Object::class.java) {
             for (field in curClazz.declaredFields) {
                 when (val annotation = findFieldAnnotation(field)) {
-                    is Column -> handleColumnField(annotation, field)
-                    is LeftJoinedMany -> handleOneToManyField(annotation, field)
+                    is MappedProperty -> handleColumnField(annotation, field)
+                    is JoinMany -> handleOneToManyField(annotation, field)
                     is Nested -> handleNestedField(annotation, field)
-                    is LeftJoinedOne -> handleOneToOneField(annotation, field)
+                    is JoinOne -> handleOneToOneField(annotation, field)
                 }
             }
             curClazz = curClazz.superclass
@@ -78,17 +86,17 @@ internal class LocalBeanInfo<T:Any>(
 
     private fun findFieldAnnotation(field: Field): Annotation? {
         val ignore = field.getAnnotation(IgnoredProperty::class.java)
-        val column = field.getAnnotation(Column::class.java)
-        val oneToMany = field.getAnnotation(LeftJoinedMany::class.java)
+        val mappedProperty = field.getAnnotation(MappedProperty::class.java)
+        val oneToMany = field.getAnnotation(JoinMany::class.java)
         val nested = field.getAnnotation(Nested::class.java)
-        val oneToOne = field.getAnnotation(LeftJoinedOne::class.java)
+        val oneToOne = field.getAnnotation(JoinOne::class.java)
 
         if (ignore != null) return null
-        else if (column != null) return column
+        else if (mappedProperty != null) return mappedProperty
         else if (oneToMany != null) return oneToMany
         else if (nested != null) return nested
         else if (oneToOne != null) return oneToOne
-        else return Column()
+        else return MappedProperty()
     }
 
     private fun findBeanProperty(field: Field): BeanAccessor {
@@ -100,24 +108,24 @@ internal class LocalBeanInfo<T:Any>(
         )
     }
 
-    private fun handleColumnField(column: Column, field: Field) {
-        val columnName = if (column.name == "")
+    private fun handleColumnField(mappedProperty: MappedProperty, field: Field) {
+        val columnName = if (mappedProperty.name == "")
             nameConverter(field.name)
-        else column.name
+        else mappedProperty.name
 
         if (nonNestedProperties.containsKey(columnName)) {
             throw SqlObjectMapperException("Duplicate column name \"${columnName}\" found in ${clazz}")
         }
-        if (column.isId) {
+        if (mappedProperty.isId) {
             idColumnNames.add(columnName)
         }
         nonNestedProperties[columnName] = BeanPropertyInfo(
             findBeanProperty(field),
-            column.valueConverter.java.getConstructor().newInstance()
+            mappedProperty.valueConverter.java.getConstructor().newInstance()
         )
     }
 
-    private fun handleOneToManyField(oneToMany: LeftJoinedMany, field: Field) {
+    private fun handleOneToManyField(oneToMany: JoinMany, field: Field) {
         if (!(field.type.isAssignableFrom(List::class.java) || field.type.isAssignableFrom(Set::class.java))) {
             throw SqlObjectMapperException("Only super class of type List<T> or Set<T> is supported for the one to many property ${field.name} in ${clazz}")
         }
@@ -152,7 +160,7 @@ internal class LocalBeanInfo<T:Any>(
     }
 
     @Suppress("UNUSED_PARAMETER")
-    private fun handleOneToOneField(oneToOne: LeftJoinedOne, field: Field) {
+    private fun handleOneToOneField(oneToOne: JoinOne, field: Field) {
         oneToOneProperties.add(
             Pair(
                 findBeanProperty(field),
@@ -163,7 +171,7 @@ internal class LocalBeanInfo<T:Any>(
 
     override fun createObject(colNameToValue: ValueProvider): T {
 
-        val output = clazz.getConstructor().newInstance()
+        val output = constructor.newInstance()
 
         for ((colName, beanProperty) in nonNestedProperties) {
             beanProperty.accessor.setter(output,

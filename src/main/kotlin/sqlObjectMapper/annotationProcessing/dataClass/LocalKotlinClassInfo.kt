@@ -22,10 +22,17 @@
  SOFTWARE.
  */
 
-package kotlinImpl
+package sqlObjectMapper.annotationProcessing.dataClass
 
-import annotationProcessing.*
 import sqlObjectMapper.*
+import sqlObjectMapper.annotationProcessing.*
+import sqlObjectMapper.annotationProcessing.Accessor
+import sqlObjectMapper.annotationProcessing.GlobalClassInfo
+import sqlObjectMapper.annotationProcessing.LocalClassInfo
+import sqlObjectMapper.annotationProcessing.OneToManyProperty
+import sqlObjectMapper.annotationProcessing.PGetter
+import sqlObjectMapper.annotationProcessing.PropertyInfo
+import sqlObjectMapper.annotations.*
 import kotlin.reflect.KClass
 import kotlin.reflect.KParameter
 import kotlin.reflect.KProperty1
@@ -58,7 +65,7 @@ internal class LocalKotlinClassInfo<T : Any>(
         ?: throw SqlObjectMapperException("${kClazz} doesn't have primary constructor")
 
     override val idColumnNames = HashSet<String>()
-    override val nonNestedProperties = HashMap<String, KotlinProperty>()
+    override val nonNestedProperties = LinkedHashMap<String, KotlinProperty>()
     override val nestedProperties = ArrayList<Pair<KotlinAccessor, LocalClassInfo<*>>>()
     override val oneToOneProperties = ArrayList<Pair<KotlinAccessor, GlobalClassInfo<*>>>()
     override val oneToManyProperties = ArrayList<KotlinLeftJoinedToManyProperty>()
@@ -71,10 +78,10 @@ internal class LocalKotlinClassInfo<T : Any>(
 
         for (param in constructor.parameters) {
             when (val annotation = findParamAnnotation(param)) {
-                is Column -> handleColumnParam(annotation, param)
-                is LeftJoinedMany -> handleOneToManyParam(annotation, param)
+                is MappedProperty -> handleColumnParam(annotation, param)
+                is JoinMany -> handleOneToManyParam(annotation, param)
                 is Nested -> handleNestedParam(annotation, param)
-                is LeftJoinedOne -> handleOneToOneParam(annotation, param)
+                is JoinOne -> handleOneToOneParam(annotation, param)
             }
         }
 
@@ -82,17 +89,17 @@ internal class LocalKotlinClassInfo<T : Any>(
 
     private fun findParamAnnotation(param: KParameter): Annotation? {
         val ignore = param.findAnnotation<IgnoredProperty>()
-        val column = param.findAnnotation<Column>()
-        val oneToMany = param.findAnnotation<LeftJoinedMany>()
+        val mappedProperty = param.findAnnotation<MappedProperty>()
+        val oneToMany = param.findAnnotation<JoinMany>()
         val nested = param.findAnnotation<Nested>()
-        val oneToOne = param.findAnnotation<LeftJoinedOne>()
+        val oneToOne = param.findAnnotation<JoinOne>()
 
         if (ignore != null) return null
-        else if (column != null) return column
+        else if (mappedProperty != null) return mappedProperty
         else if (oneToMany != null) return oneToMany
         else if (nested != null) return nested
         else if (oneToOne != null) return oneToOne
-        else return Column()
+        else return MappedProperty()
     }
 
     private fun findAccessor(param: KParameter): KotlinAccessor {
@@ -101,7 +108,7 @@ internal class LocalKotlinClassInfo<T : Any>(
         return KotlinAccessor(param, { o -> property.getter(o as T) })
     }
 
-    private fun handleColumnParam(annotation: Column, param: KParameter) {
+    private fun handleColumnParam(annotation: MappedProperty, param: KParameter) {
         val columnName = if (annotation.name == "")
             nameConverter(param.name!!)
         else annotation.name
@@ -119,7 +126,7 @@ internal class LocalKotlinClassInfo<T : Any>(
         )
     }
 
-    private fun handleOneToManyParam(annotation: LeftJoinedMany, param: KParameter) {
+    private fun handleOneToManyParam(annotation: JoinMany, param: KParameter) {
         val paramType = param.type.classifier as KClass<*>
         if (!(paramType.isSuperclassOf(List::class) || paramType.isSuperclassOf(Set::class))) {
             throw SqlObjectMapperException("Only super class of type List<T> or Set<T> is supported for the one to many property ${param.name} in ${clazz}")
@@ -152,7 +159,7 @@ internal class LocalKotlinClassInfo<T : Any>(
     }
 
     @Suppress("UNUSED_PARAMETER")
-    private fun handleOneToOneParam(annotation: LeftJoinedOne, param: KParameter) {
+    private fun handleOneToOneParam(annotation: JoinOne, param: KParameter) {
         oneToOneProperties.add(
             Pair(
                 findAccessor(param),

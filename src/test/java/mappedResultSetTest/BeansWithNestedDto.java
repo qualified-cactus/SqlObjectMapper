@@ -25,13 +25,13 @@
 package mappedResultSetTest;
 
 import org.jetbrains.annotations.Nullable;
-import sqlObjectMapper.Column;
-import sqlObjectMapper.Nested;
+import sqlObjectMapper.annotations.MappedProperty;
+import sqlObjectMapper.annotations.Nested;
 
 public class BeansWithNestedDto {
 
     public static class Entity8 implements IEntity8 {
-        @Column(valueConverter = IntToStringValueConverter.class)
+        @MappedProperty(valueConverter = IntToStringValueConverter.class)
         private String col81;
         @Nested
         private Entity8Nested1 nested;

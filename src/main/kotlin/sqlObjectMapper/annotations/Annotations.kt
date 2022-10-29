@@ -24,9 +24,9 @@
 
 
 
-package sqlObjectMapper
+package sqlObjectMapper.annotations
 
-import annotationProcessing.JdbcObjectCreator
+import sqlObjectMapper.annotationProcessing.JdbcObjectCreator
 import kotlin.reflect.KClass
 import java.sql.ResultSet
 import java.sql.PreparedStatement
@@ -34,14 +34,14 @@ import java.sql.PreparedStatement
  * Indicate that a property is a column value or a parameter value.
  * @property name specify the name of the column
  * @property isId specify if this column is an identifying column,
- * used only when [LeftJoinedMany] annotation is present.
+ * used only when [JoinMany] annotation is present.
  * You can annotate multiple properties as identifying columns in the case when composite key is need.
  * @property valueConverter used to convert value when setting a parameter and getting value from [ResultSet]
  */
 @MustBeDocumented
 @Target(AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.PROPERTY, AnnotationTarget.FIELD, AnnotationTarget.TYPE)
 @Retention(AnnotationRetention.RUNTIME)
-annotation class Column(
+annotation class MappedProperty(
     val name: String = "",
     val isId: Boolean = false,
     val valueConverter: KClass<out ValueConverter> = ValueConverter::class,
@@ -55,12 +55,12 @@ annotation class Column(
  * @property elemConverter use [ValueConverter.fromDb] to convert an object before adding it into the collection
  * @property childEntityType specify the entity to be used to parse [ResultSet]'s row
  *
- * @see Column
+ * @see MappedProperty
  */
 @MustBeDocumented
 @Target(AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.PROPERTY, AnnotationTarget.FIELD)
 @Retention(AnnotationRetention.RUNTIME)
-annotation class LeftJoinedMany(
+annotation class JoinMany(
     val elemConverter: KClass<out ValueConverter> = ValueConverter::class,
     val childEntityType: KClass<*> = Any::class
 )
@@ -73,10 +73,10 @@ annotation class LeftJoinedMany(
 @MustBeDocumented
 @Target(AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.PROPERTY, AnnotationTarget.FIELD)
 @Retention(AnnotationRetention.RUNTIME)
-annotation class LeftJoinedOne
+annotation class JoinOne
 
 /**
- * Indicate that there are [Column] and other mapping-annotations-annotated properties
+ * Indicate that there are [MappedProperty] and other mapping-annotations-annotated properties
  * nested within this object.
  */
 @MustBeDocumented
@@ -94,7 +94,7 @@ annotation class IgnoredProperty
 
 
 /**
- * Used by [Column] annotation and [LeftJoinedMany] annotation to indicate
+ * Used by [MappedProperty] annotation and [JoinMany] annotation to indicate
  * a value should be converted when getting value from [ResultSet]
  * and setting a parameter in [PreparedStatement].
  *

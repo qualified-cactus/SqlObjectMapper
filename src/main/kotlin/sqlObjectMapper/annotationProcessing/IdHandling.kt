@@ -22,9 +22,11 @@
  SOFTWARE.
  */
 
-package annotationProcessing
+package sqlObjectMapper.annotationProcessing
 
-
+/**
+ * This class is used to represent how to get id value(s) of an entity.
+ */
 class IdMapping(val idColumnNames: Collection<String>) {
     val combinedNames: String
     init {
@@ -46,6 +48,9 @@ class IdMapping(val idColumnNames: Collection<String>) {
     }
 }
 
+/**
+ * This class is used to represent id value(s) of an entity.
+ */
 class IdValue
 private constructor(
     val values: List<Any?>,
@@ -56,7 +61,7 @@ private constructor(
         fun build(idColumns: Collection<String>, valueProvider: ValueProvider): IdValue? {
             var hashCode = 1
             val PRIME = 59
-            val values = ArrayList<Any?>()
+            val values = ArrayList<Any?>(idColumns.size)
 
             var allNull = true
             for (col in idColumns) {
@@ -64,6 +69,9 @@ private constructor(
                 if (colValue != null) {
                     allNull = false
                     hashCode = hashCode * PRIME + colValue.hashCode()
+                }
+                else {
+                    hashCode = hashCode * PRIME
                 }
                 values.add(colValue)
             }

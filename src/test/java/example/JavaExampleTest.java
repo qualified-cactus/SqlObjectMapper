@@ -24,12 +24,15 @@
 
 package example;
 
-import javaImpl.BeanMappingProvider;
+import sqlObjectMapper.annotationProcessing.bean.BeanMappingProvider;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import sqlObjectMapper.*;
+import sqlObjectMapper.annotations.IgnoredProperty;
+import sqlObjectMapper.annotations.JoinMany;
+import sqlObjectMapper.annotations.MappedProperty;
 import utils.TestUtils;
 
 import java.sql.Connection;
@@ -39,14 +42,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class JavaExample {
+public class JavaExampleTest {
 
     private static Connection connection;
-    private static SqlObjectMapper sqlObjectMapper;
+    private static QueryExecutor sqlObjectMapper;
 
     @BeforeAll
     public static void initConn() throws SQLException {
-        sqlObjectMapper = new SqlObjectMapper(new BeanMappingProvider());
+        sqlObjectMapper = new QueryExecutor(new BeanMappingProvider());
         connection = TestUtils.createConn();
 
         try (var statement = connection.createStatement()) {
@@ -111,11 +114,11 @@ public class JavaExample {
     }
 
     public static class Entity1 {
-        @Column(isId = true)
+        @MappedProperty(isId = true)
         private Integer column1;
         private Integer column2;
         private Integer column3;
-        @LeftJoinedMany
+        @JoinMany
         private List<Entity2> entity2List;
         @IgnoredProperty
         private String ignoredProperty = "foo";
@@ -162,9 +165,9 @@ public class JavaExample {
     }
 
     public static class Entity2 {
-        @Column(isId = true, name = "c1")
+        @MappedProperty(isId = true, name = "c1")
         private Integer column1;
-        @Column(name = "c2")
+        @MappedProperty(name = "c2")
         private Integer column2;
 
         public Integer getColumn1() {

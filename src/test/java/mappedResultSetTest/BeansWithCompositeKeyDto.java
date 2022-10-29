@@ -24,10 +24,10 @@
 
 package mappedResultSetTest;
 
-import sqlObjectMapper.Column;
-import sqlObjectMapper.IgnoredProperty;
-import sqlObjectMapper.LeftJoinedMany;
-import sqlObjectMapper.LeftJoinedOne;
+import sqlObjectMapper.annotations.MappedProperty;
+import sqlObjectMapper.annotations.IgnoredProperty;
+import sqlObjectMapper.annotations.JoinMany;
+import sqlObjectMapper.annotations.JoinOne;
 
 import java.util.List;
 
@@ -36,12 +36,12 @@ public class BeansWithCompositeKeyDto {
     public static class Entity1 implements IEntity1{
         @IgnoredProperty
         private Integer ignored;
-        @Column(isId = true)
+        @MappedProperty(isId = true)
         private Integer col11;
-        @Column(isId = true)
+        @MappedProperty(isId = true)
         private Integer col12;
         private String col13;
-        @LeftJoinedOne
+        @JoinOne
         private Entity2 entity2;
 
         public Integer getIgnored() {
@@ -86,12 +86,12 @@ public class BeansWithCompositeKeyDto {
     }
 
     public static class Entity2 implements IEntity2 {
-        @Column(isId = true)
+        @MappedProperty(isId = true)
         private Integer col21;
-        @Column(isId = true)
+        @MappedProperty(isId = true)
         private Integer col22;
         private String col23;
-        @LeftJoinedMany
+        @JoinMany
         private List<Entity3> entity3List;
 
         public Integer getCol21() {
@@ -128,9 +128,9 @@ public class BeansWithCompositeKeyDto {
     }
 
     public static class Entity3 implements IEntity3 {
-        @Column(isId = true)
+        @MappedProperty(isId = true)
         private Integer col31;
-        @Column(isId = true)
+        @MappedProperty(isId = true)
         private Integer col32;
         private String col33;
 

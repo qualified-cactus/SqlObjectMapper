@@ -24,16 +24,16 @@
 
 package mappedResultSetTest
 
-import annotationProcessing.JdbcObjectCreator
-import javaImpl.BeanMappingProvider
-import kotlinImpl.DataClassMappingProvider
+import sqlObjectMapper.annotationProcessing.JdbcObjectCreator
+import sqlObjectMapper.annotationProcessing.bean.BeanMappingProvider
+import sqlObjectMapper.annotationProcessing.dataClass.DataClassMappingProvider
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.TestInstance
 import sqlObjectMapper.MappedResultSet
-import sqlObjectMapper.ValueConverter
+import sqlObjectMapper.annotations.ValueConverter
 import utils.TestUtils
 import java.sql.Connection
 

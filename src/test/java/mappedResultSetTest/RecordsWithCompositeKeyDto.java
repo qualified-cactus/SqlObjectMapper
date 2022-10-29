@@ -26,10 +26,10 @@ package mappedResultSetTest;
 
 
 import org.jetbrains.annotations.Nullable;
-import sqlObjectMapper.Column;
-import sqlObjectMapper.IgnoredProperty;
-import sqlObjectMapper.LeftJoinedMany;
-import sqlObjectMapper.LeftJoinedOne;
+import sqlObjectMapper.annotations.MappedProperty;
+import sqlObjectMapper.annotations.IgnoredProperty;
+import sqlObjectMapper.annotations.JoinMany;
+import sqlObjectMapper.annotations.JoinOne;
 
 import java.util.List;
 
@@ -39,12 +39,12 @@ public class RecordsWithCompositeKeyDto {
     public record Entity1(
         @IgnoredProperty
         Integer ignored,
-        @Column(isId = true)
+        @MappedProperty(isId = true)
         Integer col11,
-        @Column(isId = true)
+        @MappedProperty(isId = true)
         Integer col12,
         String col13,
-        @LeftJoinedOne
+        @JoinOne
         Entity2 entity2
     ) implements IEntity1 {
         @Nullable
@@ -79,12 +79,12 @@ public class RecordsWithCompositeKeyDto {
     }
 
     public record Entity2(
-        @Column(isId = true)
+        @MappedProperty(isId = true)
         Integer col21,
-        @Column(isId = true)
+        @MappedProperty(isId = true)
         Integer col22,
         String col23,
-        @LeftJoinedMany
+        @JoinMany
         List<Entity3> entity3List
     ) implements IEntity2 {
         @Nullable
@@ -113,9 +113,9 @@ public class RecordsWithCompositeKeyDto {
     }
 
     public record Entity3(
-        @Column(isId = true)
+        @MappedProperty(isId = true)
         Integer col31,
-        @Column(isId = true)
+        @MappedProperty(isId = true)
         Integer col32,
         String col33
     ) implements IEntity3 {

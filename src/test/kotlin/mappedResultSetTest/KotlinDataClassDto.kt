@@ -24,36 +24,36 @@
 
 package mappedResultSetTest
 
-import sqlObjectMapper.*
+import sqlObjectMapper.annotations.*
 
 
 class KotlinDataClassDtoCompositeKey {
     data class Entity1(
         @IgnoredProperty
         override val ignored: Int? = null,
-        @Column(isId = true)
+        @MappedProperty(isId = true)
         override val col11: Int,
-        @Column(isId = true)
+        @MappedProperty(isId = true)
         override val col12: Int,
         override val col13: String,
-        @LeftJoinedOne
+        @JoinOne
         override val entity2: Entity2?
     ) : IEntity1
 
     data class Entity2(
-        @Column(isId = true)
+        @MappedProperty(isId = true)
         override val col21: Int,
-        @Column(isId = true)
+        @MappedProperty(isId = true)
         override val col22: Int,
         override val col23: String,
-        @LeftJoinedMany
+        @JoinMany
         override val entity3List: MutableList<Entity3>
     ) : IEntity2
 
     data class Entity3(
-        @Column(isId = true)
+        @MappedProperty(isId = true)
         override val col31: Int,
-        @Column(isId = true)
+        @MappedProperty(isId = true)
         override val col32: Int,
         override val col33: String
     ) : IEntity3
@@ -62,28 +62,28 @@ class KotlinDataClassDtoCompositeKey {
 class KotlinDataClassDtoSingleKey {
 
     data class Entity4(
-        @Column(isId = true)
+        @MappedProperty(isId = true)
         override val col41: Int,
-        @LeftJoinedMany
+        @JoinMany
         override val e5List: MutableList<Entity5>?
     ) : IEntity4
 
     data class Entity5(
-        @Column(isId = true)
+        @MappedProperty(isId = true)
         override val col51: Int,
-        @LeftJoinedMany
+        @JoinMany
         override val e6List: MutableList<Entity6>?,
-        @LeftJoinedMany
+        @JoinMany
         override val e7List: MutableList<Entity7>?
     ) : IEntity5
 
     data class Entity6(
-        @Column(isId = true)
+        @MappedProperty(isId = true)
         override val col61: Int,
     ) : IEntity6
 
     data class Entity7(
-        @Column(isId = true)
+        @MappedProperty(isId = true)
         override val col71: Int,
     ) : IEntity7
 }
@@ -92,7 +92,7 @@ class KotlinDataClassDtoSingleKey {
 class KotlinDataClassWithNested {
 
     data class Entity8(
-        @Column(valueConverter = IntToStringValueConverter::class)
+        @MappedProperty(valueConverter = IntToStringValueConverter::class)
         override val col81: String?,
         @Nested
         override val nested: Entity8Nested1?

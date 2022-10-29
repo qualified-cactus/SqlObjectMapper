@@ -24,21 +24,20 @@
 
 package npStatementTest
 
-import javaImpl.BeanMappingProvider
-import kotlinImpl.DataClassMappingProvider
+import sqlObjectMapper.annotationProcessing.bean.BeanMappingProvider
+import sqlObjectMapper.annotationProcessing.dataClass.DataClassMappingProvider
 import mappedResultSetTest.BeansWithNestedDto
 import mappedResultSetTest.KotlinDataClassWithNested
 import mappedResultSetTest.schemaForNestedTest
 import mappedResultSetTest.schemaForNestedTestSeedData
 import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.TestInstance
 import sqlObjectMapper.NpPreparedStatement.Companion.prepareNpStatement
 import utils.TestUtils
 import java.sql.Connection
 import org.junit.jupiter.api.RepeatedTest
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class NpStatementTest {

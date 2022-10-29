@@ -22,10 +22,10 @@
  SOFTWARE.
  */
 
-package annotationProcessing
+package sqlObjectMapper.annotationProcessing
 
 import sqlObjectMapper.SqlObjectMapperException
-import sqlObjectMapper.ValueConverter
+import sqlObjectMapper.annotations.ValueConverter
 
 
 internal typealias PGetter = (o: Any) -> Any?
@@ -113,11 +113,13 @@ internal class GlobalClassInfo<T : Any>(
         }
         for ((accessor, oneToOneLocalClassInfo) in localClassInfo.oneToOneProperties) {
             for (oneToManyProperty in oneToOneLocalClassInfo._oneToManyMappings) {
-                _oneToManyMappings.add(OneToManyProperty(
+                _oneToManyMappings.add(
+                    OneToManyProperty(
                     Accessor { o -> oneToManyProperty.accessor.getter(accessor.getter(curGetter(o)!!)!!) },
                     oneToManyProperty.valueConverter,
                     oneToManyProperty.elemClassMapping
-                ))
+                )
+                )
             }
         }
     }

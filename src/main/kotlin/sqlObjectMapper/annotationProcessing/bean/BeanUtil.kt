@@ -22,7 +22,7 @@
  SOFTWARE.
  */
 
-package javaImpl
+package sqlObjectMapper.annotationProcessing.bean
 
 import sqlObjectMapper.SqlObjectMapperException
 import java.lang.reflect.Field

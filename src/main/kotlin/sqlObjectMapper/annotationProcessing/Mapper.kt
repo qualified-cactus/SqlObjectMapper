@@ -22,7 +22,7 @@
  SOFTWARE.
  */
 
-package annotationProcessing
+package sqlObjectMapper.annotationProcessing
 
 
 import java.sql.*
@@ -34,6 +34,11 @@ interface OneToManyMapping {
     fun addToCollection(parent: Any, obj: Any?)
 }
 
+/**
+ * A class mapping of a class contains the following information:
+ * - how an object of that class can be created.
+ * - how to get its properties and its related relational information.
+ */
 interface ClassMapping<T> {
     val clazz: Class<T>
     val idMapping: IdMapping

@@ -39,7 +39,7 @@ class NamedParameterQuery(npSqlQuery: String) {
     val parameterIndexes: Map<String, List<Int>>
 
     init {
-        val translatedQueryBuilder = StringBuilder()
+        val translatedQueryBuilder = StringBuilder(npSqlQuery.length)
 
         val paramIndexes = HashMap<String, MutableList<Int>>()
         val i = AtomicInteger(0)
