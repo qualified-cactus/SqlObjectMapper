@@ -4,9 +4,37 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+
+    <!-- #####################################################################   -->
     <groupId>groupId</groupId>
     <artifactId>SqlObjectMapper</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
+
+    <name>${project.groupId}:${project.artifactId}</name>
+    <description>A JDBC extensions library that makes working with data object less tedious.</description>
+    <url>https://github.com/qualified-cactus/SqlObjectMapper</url>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://github.com/qualified-cactus/SqlObjectMapper/blob/master/LICENSE.md</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Qualified Cactus</name>
+            <email>lemanhhieu.work@gmail.com</email>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/qualified-cactus/SqlObjectMapper.git</connection>
+        <developerConnection>https://example.com</developerConnection>
+        <url>https://github.com/qualified-cactus/SqlObjectMapper/tree/master</url>
+    </scm>
+    <!-- #####################################################################   -->
+
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -28,13 +56,7 @@
             <artifactId>kotlin-reflect</artifactId>
             <version>${kotlin.version}</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.jetbrains.kotlin</groupId>-->
-<!--            <artifactId>kotlin-test</artifactId>-->
-<!--            <version>${kotlin.version}</version>-->
-<!--            <scope>test</scope>-->
-<!--        </dependency>-->
-        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
+
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
@@ -52,8 +74,6 @@
     </dependencies>
 
     <build>
-<!--        <sourceDirectory>src/main</sourceDirectory>-->
-<!--        <testSourceDirectory>src/test</testSourceDirectory>-->
         <!-- https://kotlinlang.org/docs/maven.html#compile-kotlin-and-java-sources -->
         <plugins>
 

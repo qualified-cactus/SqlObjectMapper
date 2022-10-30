@@ -12,7 +12,7 @@ Two kinds of data object is currently supported:
 * [Extension to PreparedStatement and CallableStatement](documentations/NpStatement.md)
 * [Extension to ResultSet](documentations/MappedResultSet.md)
 * [Convenient wrappers](documentations/Wrappers.md)
-* [Dokka API doc]()
+* [Dokka API doc](https://qualified-cactus.github.io/SqlObjectMapper/)
 
 
 ## Quick start
