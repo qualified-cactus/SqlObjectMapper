@@ -135,13 +135,9 @@ class MappedResultSet(
             }
         }
 
-
-
         while (resultSet.next()) {
             extractObj(null, classMapping)
         }
-
-
         return output
     }
 
@@ -153,6 +149,10 @@ class MappedResultSet(
         val idMap = HashMap<String, Map<String, MutableMap<IdValue, Any>>>()
 
         fun f1(parentClazzMapping: ClassMapping<*>) {
+            if (parentClazzMapping.idMapping.idColumnNames.isEmpty()) {
+                throw NoIdSpecifiedError("No ID columns found in ${parentClazzMapping.clazz} (required when using JoinMany)")
+            }
+
             if (parentClazzMapping.oneToManyMappings.size == 1) {
                 val elem = parentClazzMapping.oneToManyMappings[0]
                 idMap[parentClazzMapping.idMapping.combinedNames] = Collections.singletonMap(

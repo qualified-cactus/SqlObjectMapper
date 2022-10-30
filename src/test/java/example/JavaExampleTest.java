@@ -228,25 +228,8 @@ public class JavaExampleTest {
             """.stripIndent();
         final Long count = sqlObjectMapper.queryForScalar(connection, sql, null);
         assertEquals(3, count);
+
+
     }
-
-    /*
-
-    Test db does not support multi query in 1 statement
-
-    @Test
-    public void multiQueryExample() {
-        final String sql = """
-            SELECT COUNT(*) FROM entity_1;
-            SELECT COUNT(*) FROM entity_2
-            """.stripIndent();
-        sqlObjectMapper.executeQuery(connection, sql, null, (stmt, mp)->{
-            assertEquals(3L, stmt.getMappedResultSet(mp).<Long>getScalar());
-            assertTrue(stmt.getMoreResults());
-            assertEquals(3L, stmt.getMappedResultSet(mp).<Long>getScalar());
-            return null;
-        });
-    }
-     */
 
 }

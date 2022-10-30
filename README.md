@@ -11,7 +11,7 @@ Two kinds of data object is currently supported:
 
 * [Extension to PreparedStatement and CallableStatement](documentations/NpStatement.md)
 * [Extension to ResultSet](documentations/MappedResultSet.md)
-* [Convenient wrapper](documentations/QueryExecutor.md)
+* [Convenient wrappers](documentations/Wrappers.md)
 * [Dokka API doc]()
 
 

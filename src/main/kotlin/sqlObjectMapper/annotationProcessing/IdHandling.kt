@@ -24,6 +24,8 @@
 
 package sqlObjectMapper.annotationProcessing
 
+import sqlObjectMapper.SqlObjectMapperException
+
 /**
  * This class is used to represent how to get id value(s) of an entity.
  */
@@ -44,6 +46,7 @@ class IdMapping(val idColumnNames: Collection<String>) {
     }
 
     fun getValue(valueProvider: ValueProvider): IdValue? {
+        if (idColumnNames.isEmpty()) throw SqlObjectMapperException("No id column specified")
         return IdValue.build(idColumnNames, valueProvider)
     }
 }

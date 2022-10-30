@@ -24,15 +24,100 @@
 
 package example
 
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import sqlObjectMapper.ClassMappingProvider
+import sqlObjectMapper.MappedResultSet
+import sqlObjectMapper.NpPreparedStatement.Companion.prepareNpStatement
+import sqlObjectMapper.QueryExecutor
+import sqlObjectMapper.TransactionManager
+import sqlObjectMapper.annotationProcessing.dataClass.DataClassMappingProvider
+import utils.TestUtils
+import java.sql.Connection
+
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class KotlinExampleTest {
 
+    companion object {
 
+        lateinit var connection: Connection
+        lateinit var cmProvider: ClassMappingProvider
+
+        @BeforeAll
+        @JvmStatic
+        fun initDb() {
+            cmProvider = DataClassMappingProvider()
+            connection = TestUtils.createConn()
+            connection.createStatement().use {stmt->
+                stmt.execute("""
+                CREATE TABLE entity_1 (
+                    column_1 INTEGER PRIMARY KEY,
+                    column_2 INTEGER,
+                    column_3 INTEGER
+                );
+                """
+                )
+                stmt.execute("""
+                INSERT INTO entity_1 VALUES (1,2,3);
+                INSERT INTO entity_1 VALUES (2,3,4);
+                INSERT INTO entity_1 VALUES (3,4,5);
+                """
+                )
+            }
+        }
+
+        @AfterAll
+        @JvmStatic
+        fun closeDb() {
+            connection.close()
+        }
+    }
+
+    data class Entity1(
+        val column1: Int,
+        val column2: Int,
+        val column3: Int
+    )
+    data class QueryInput(
+        val param1: Int
+    )
     @Test
     fun example1() {
-        //TODO: write
+        val queriedEntity: Entity1? = connection
+            .prepareNpStatement("SELECT * FROM entity_1 WHERE column_2 = :param_1")
+            .use { stmt ->
+                stmt.setParameters(QueryInput(3), cmProvider)
+                stmt.execute()
+                MappedResultSet(stmt.resultSet, cmProvider).toObject(Entity1::class.java)
+            }
+        Assertions.assertEquals(2, queriedEntity?.column1)
+    }
+
+    @Test
+    fun example2() {
+        val queriedEntity: Entity1? = QueryExecutor(cmProvider)
+            .queryForObject(connection,
+                "SELECT * FROM entity_1 WHERE column_2 = :param_1",
+                QueryInput(3),
+                Entity1::class.java
+            )
+        Assertions.assertEquals(2, queriedEntity?.column1)
+    }
+
+    @Test
+    fun example3() {
+        TransactionManager.executeTransaction(connection) { conn ->
+            val queriedEntity: Entity1? = QueryExecutor(cmProvider)
+                .queryForObject(conn,
+                    "SELECT * FROM entity_1 WHERE column_2 = :param_1",
+                    QueryInput(3),
+                    Entity1::class.java
+                )
+            Assertions.assertEquals(2, queriedEntity?.column1)
+        }
     }
 }

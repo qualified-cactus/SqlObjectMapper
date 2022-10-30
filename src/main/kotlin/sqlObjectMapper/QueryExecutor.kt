@@ -24,7 +24,6 @@
 
 package sqlObjectMapper
 
-import sqlObjectMapper.NpCallableStatement.Companion.prepareNpCall
 import sqlObjectMapper.NpPreparedStatement.Companion.prepareNpStatement
 import java.sql.Connection
 import java.sql.ResultSet
@@ -52,14 +51,19 @@ class QueryExecutor(
         connection: Connection,
         sql: String,
         parametersDto: Any?,
-        processStatement: (statement: NpPreparedStatement, mappingProvider: ClassMappingProvider) -> T
+        processStatement: (mappedRs: MappedResultSet) -> T
     ): T {
-        return connection.prepareNpStatement(sql).use { stmt ->
-            if (parametersDto != null) {
-                stmt.setParameters(parametersDto, mappingProvider)
+        if (parametersDto == null) {
+            return connection.createStatement().use { stmt ->
+                processStatement(MappedResultSet(stmt.executeQuery(sql), mappingProvider))
             }
-            stmt.execute()
-            processStatement(stmt, mappingProvider)
+        }
+        else {
+            return connection.prepareNpStatement(sql).use { stmt ->
+                stmt.setParameters(parametersDto, mappingProvider)
+                stmt.execute()
+                processStatement(MappedResultSet(stmt.resultSet, mappingProvider))
+            }
         }
     }
 
@@ -80,8 +84,8 @@ class QueryExecutor(
         parametersDto: Any?,
         resultType: Class<T>
     ): T? {
-        return executeQuery(connection, sql, parametersDto) { stmt, mp ->
-            MappedResultSet(stmt.resultSet, mp).toObject(resultType)
+        return executeQuery(connection, sql, parametersDto) { rs ->
+            rs.toObject(resultType)
         }
     }
 
@@ -101,8 +105,8 @@ class QueryExecutor(
         parametersDto: Any?,
         elementType: Class<T>
     ): List<T> {
-        return executeQuery(connection, sql, parametersDto) { stmt, mp ->
-            MappedResultSet(stmt.resultSet, mp).toList(elementType)
+        return executeQuery(connection, sql, parametersDto) { rs ->
+            rs.toList(elementType)
         }
     }
 
@@ -120,8 +124,26 @@ class QueryExecutor(
         sql: String,
         parametersDto: Any?
     ): T? {
-        return executeQuery(connection, sql, parametersDto) { stmt, mp ->
-            MappedResultSet(stmt.resultSet, mp).getScalar()
+        return executeQuery(connection, sql, parametersDto) { rs ->
+            rs.getScalar()
+        }
+    }
+
+    fun execute(
+        connection: Connection,
+        sql: String,
+        parametersDto: Any?
+    ) {
+        if (parametersDto == null) {
+            return connection.createStatement().use { stmt ->
+                stmt.execute(sql)
+            }
+        }
+        else {
+            return connection.prepareNpStatement(sql).use { stmt ->
+                stmt.setParameters(parametersDto, mappingProvider)
+                stmt.execute()
+            }
         }
     }
 }

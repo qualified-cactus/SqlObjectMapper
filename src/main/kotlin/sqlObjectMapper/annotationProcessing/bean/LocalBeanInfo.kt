@@ -57,7 +57,7 @@ internal class BeanOneToManyProperty(
     elemClassMapping: ClassMapping<*>
 ) : OneToManyProperty(accessor, valueConverter, elemClassMapping)
 
-internal class LocalBeanInfo<T:Any>(
+internal class LocalBeanInfo<T : Any>(
     private val nameConverter: NameConverter,
     override val clazz: Class<T>
 ) : LocalClassInfo<T> {
@@ -129,21 +129,21 @@ internal class LocalBeanInfo<T:Any>(
         if (!(field.type.isAssignableFrom(List::class.java) || field.type.isAssignableFrom(Set::class.java))) {
             throw SqlObjectMapperException("Only super class of type List<T> or Set<T> is supported for the one to many property ${field.name} in ${clazz}")
         }
-
+        val elemClassMapping = GlobalClassInfo(
+            LocalBeanInfo(
+                nameConverter,
+                if (oneToMany.childEntityType == Any::class)
+                    (field.genericType as ParameterizedType).actualTypeArguments[0] as Class<*>
+                else
+                    oneToMany.childEntityType.java
+            )
+        )
         oneToManyProperties.add(
             BeanOneToManyProperty(
                 field.type,
                 findBeanProperty(field),
                 oneToMany.elemConverter.java.getConstructor().newInstance(),
-                GlobalClassInfo(
-                    LocalBeanInfo(
-                        nameConverter,
-                        if (oneToMany.childEntityType == Any::class)
-                            (field.genericType as ParameterizedType).actualTypeArguments[0] as Class<*>
-                        else
-                            oneToMany.childEntityType.java
-                    )
-                )
+                elemClassMapping
             )
         )
     }
@@ -161,12 +161,11 @@ internal class LocalBeanInfo<T:Any>(
 
     @Suppress("UNUSED_PARAMETER")
     private fun handleOneToOneField(oneToOne: JoinOne, field: Field) {
-        oneToOneProperties.add(
-            Pair(
-                findBeanProperty(field),
-                GlobalClassInfo(LocalBeanInfo(nameConverter, field.type))
-            )
-        )
+        val joinOneMapping = GlobalClassInfo(LocalBeanInfo(nameConverter, field.type))
+        if (joinOneMapping.idMapping.idColumnNames.isEmpty()) {
+            throw SqlObjectMapperException("${field.type} must have at least 1 id column because JoinOne is used on it")
+        }
+        oneToOneProperties.add(Pair(findBeanProperty(field), joinOneMapping))
     }
 
     override fun createObject(colNameToValue: ValueProvider): T {
@@ -174,7 +173,8 @@ internal class LocalBeanInfo<T:Any>(
         val output = constructor.newInstance()
 
         for ((colName, beanProperty) in nonNestedProperties) {
-            beanProperty.accessor.setter(output,
+            beanProperty.accessor.setter(
+                output,
                 beanProperty.valueConverter.fromDb(colNameToValue(colName))
             )
         }

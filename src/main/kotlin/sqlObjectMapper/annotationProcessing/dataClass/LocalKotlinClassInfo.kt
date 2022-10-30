@@ -131,19 +131,20 @@ internal class LocalKotlinClassInfo<T : Any>(
         if (!(paramType.isSuperclassOf(List::class) || paramType.isSuperclassOf(Set::class))) {
             throw SqlObjectMapperException("Only super class of type List<T> or Set<T> is supported for the one to many property ${param.name} in ${clazz}")
         }
+        val elemClassMapping = GlobalClassInfo(
+            LocalKotlinClassInfo(
+                if (annotation.childEntityType == Any::class)
+                    (param.type.arguments[0].type!!.classifier as KClass<*>).java
+                else
+                    annotation.childEntityType.java,
+                nameConverter
+            )
+        )
         oneToManyProperties.add(
             KotlinLeftJoinedToManyProperty(
                 findAccessor(param),
                 annotation.elemConverter.createInstance(),
-                GlobalClassInfo(
-                    LocalKotlinClassInfo(
-                        if (annotation.childEntityType == Any::class)
-                            (param.type.arguments[0].type!!.classifier as KClass<*>).java
-                        else
-                            annotation.childEntityType.java,
-                        nameConverter
-                    )
-                )
+                elemClassMapping
             )
         )
     }
@@ -160,12 +161,13 @@ internal class LocalKotlinClassInfo<T : Any>(
 
     @Suppress("UNUSED_PARAMETER")
     private fun handleOneToOneParam(annotation: JoinOne, param: KParameter) {
-        oneToOneProperties.add(
-            Pair(
-                findAccessor(param),
-                GlobalClassInfo(LocalKotlinClassInfo((param.type.classifier as KClass<*>).java, nameConverter))
-            )
-        )
+        val joinedClazz = param.type.classifier as KClass<*>
+        val nestedMapping = GlobalClassInfo(LocalKotlinClassInfo(joinedClazz.java, nameConverter))
+        if (nestedMapping.idMapping.idColumnNames.isEmpty()) {
+            throw SqlObjectMapperException("${joinedClazz} must have at least 1 id column because JoinOne is used on it")
+        }
+
+        oneToOneProperties.add(Pair(findAccessor(param),nestedMapping))
     }
 
 
