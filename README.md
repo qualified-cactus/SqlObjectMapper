@@ -31,8 +31,6 @@ Download the package from maven central:
 
 #### 2. Set default class mapping provider
 
-
-
 If you use Java, pick `sqlObjectMapper.annotationProcessing.bean.BeanMappingProvider`.
 ```
 ClassMappingProvider.setDefaultClassMappingProvider(new BeanMappingProvider())
@@ -42,6 +40,9 @@ If you use Kotlin, pick `sqlObjectMapper.annotationProcessing.dataClass.DataClas
 ```kotlin
 ClassMappingProvider.defaultClassMappingProvider = DataClassMappingProvider()
 ```
+
+_Note: There should be only 1 instance of each type of `ClassMappingProvider`
+(2 mentioned above) because the cache is stored in each instance._
 
 #### 3. Define your data object
 
