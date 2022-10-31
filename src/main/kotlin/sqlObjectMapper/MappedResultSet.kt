@@ -39,10 +39,13 @@ import kotlin.collections.HashMap
  * @param classMappingProvider class mapping provider used to parse rows of [ResultSet]
  */
 @Suppress("UNCHECKED_CAST")
-class MappedResultSet(
+class MappedResultSet
+@JvmOverloads
+constructor(
     rs: ResultSet,
-    val classMappingProvider: ClassMappingProvider
+    val classMappingProvider: ClassMappingProvider = ClassMappingProvider.defaultClassMappingProvider
 ) : ResultSet by rs {
+
 
     init {
         if (rs.isClosed) throw SqlObjectMapperException("ResultSet is closed")

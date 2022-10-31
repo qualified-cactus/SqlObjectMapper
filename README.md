@@ -12,7 +12,7 @@ Two kinds of data object is currently supported:
 * [Extension to PreparedStatement and CallableStatement](documentations/NpStatement.md)
 * [Extension to ResultSet](documentations/MappedResultSet.md)
 * [Convenient wrappers](documentations/Wrappers.md)
-* [Dokka API doc](https://qualified-cactus.github.io/SqlObjectMapper/)
+* [API doc](https://qualified-cactus.github.io/SqlObjectMapper/)
 
 
 ## Quick start
@@ -23,16 +23,25 @@ Download the package from maven central:
 <dependency>
   <groupId>com.qualifiedcactus</groupId>
   <artifactId>sqlObjectMapper</artifactId>
-  <version>1.0.0</version>
+  <version>1.1.0</version>
 </dependency>
 ```
 
 #### 1. Pick a class mapping provider
 
 If you use Kotlin, pick `sqlObjectMapper.annotationProcessing.dataClass.DataClassMappingProvider`.
-If you use Java, pick `sqlObjectMapper.annotationProcessing.bean.BeanMappingProvider`.
 
+
+
+If you use Java, pick `sqlObjectMapper.annotationProcessing.bean.BeanMappingProvider`.
+```
+ClassMappingProvider.setDefaultClassMappingProvider(new BeanMappingProvider())
+```
 There should be only 1 instance of each class provider because the result of `getClassMapping` is cached.
+
+```kotlin
+ClassMappingProvider.defaultClassMappingProvider(DataClassMappingProvider())
+```
 
 #### 2. Define your data object
 
@@ -77,8 +86,7 @@ In kotlin:
 
 ```kotlin
 
-val cmProvider = DataClassMappingProvider()
-val entityList: List<Entity1> = QueryExecutor(cmProvider).queryForList(
+val entityList: List<Entity1> = QueryExecutor().queryForList(
     connection, 
     """
     SELECT column_1, column_2, column_3 
@@ -95,8 +103,7 @@ In Java:
 ```java
 public class Main {
     public static void main(String[] args) {
-        ClassMappingProvider cmProvider = new BeanMappingProvider();
-        List<Entity1> entityList = new QueryExecutor(cmProvider).queryForList(
+        List<Entity1> entityList = new QueryExecutor().queryForList(
             connection,
             """
             SELECT column_1, column_2, column_3

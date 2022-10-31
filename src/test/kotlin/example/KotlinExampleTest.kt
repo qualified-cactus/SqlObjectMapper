@@ -45,12 +45,11 @@ class KotlinExampleTest {
     companion object {
 
         lateinit var connection: Connection
-        lateinit var cmProvider: ClassMappingProvider
 
         @BeforeAll
         @JvmStatic
         fun initDb() {
-            cmProvider = DataClassMappingProvider()
+            ClassMappingProvider.defaultClassMappingProvider = DataClassMappingProvider()
             connection = TestUtils.createConn()
             connection.createStatement().use {stmt->
                 stmt.execute("""
@@ -90,16 +89,16 @@ class KotlinExampleTest {
         val queriedEntity: Entity1? = connection
             .prepareNpStatement("SELECT * FROM entity_1 WHERE column_2 = :param_1")
             .use { stmt ->
-                stmt.setParameters(QueryInput(3), cmProvider)
+                stmt.setParameters(QueryInput(3))
                 stmt.execute()
-                MappedResultSet(stmt.resultSet, cmProvider).toObject(Entity1::class.java)
+                MappedResultSet(stmt.resultSet).toObject(Entity1::class.java)
             }
         Assertions.assertEquals(2, queriedEntity?.column1)
     }
 
     @Test
     fun example2() {
-        val queriedEntity: Entity1? = QueryExecutor(cmProvider)
+        val queriedEntity: Entity1? = QueryExecutor()
             .queryForObject(connection,
                 "SELECT * FROM entity_1 WHERE column_2 = :param_1",
                 QueryInput(3),
@@ -111,7 +110,7 @@ class KotlinExampleTest {
     @Test
     fun example3() {
         TransactionManager.executeTransaction(connection) { conn ->
-            val queriedEntity: Entity1? = QueryExecutor(cmProvider)
+            val queriedEntity: Entity1? = QueryExecutor()
                 .queryForObject(conn,
                     "SELECT * FROM entity_1 WHERE column_2 = :param_1",
                     QueryInput(3),

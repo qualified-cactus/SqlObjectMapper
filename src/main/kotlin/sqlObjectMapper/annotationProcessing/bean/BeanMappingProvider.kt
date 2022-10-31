@@ -30,7 +30,9 @@ import sqlObjectMapper.ClassMappingProvider
 import sqlObjectMapper.NameConverter
 import sqlObjectMapper.SqlObjectMapperUtils
 
-class BeanMappingProvider(
+class BeanMappingProvider
+@JvmOverloads
+constructor(
     val nameConverter: NameConverter = SqlObjectMapperUtils.Companion::camelCaseToSnakeCase
 ) : ClassMappingProvider() {
 

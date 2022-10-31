@@ -36,7 +36,9 @@ import java.sql.ResultSet
 class QueryExecutor(
     val mappingProvider: ClassMappingProvider
 ) {
-    
+    constructor() : this(ClassMappingProvider.defaultClassMappingProvider)
+
+
     /**
      * Execute a prepared statement using a sql string with named parameters.
      * The statement is closed after this method returns.

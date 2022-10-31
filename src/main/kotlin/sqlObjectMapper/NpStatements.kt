@@ -42,7 +42,8 @@ abstract class NpStatement(
         }
     }
 
-    fun setParameters(dto: Any, classMappingProvider: ClassMappingProvider) {
+    @JvmOverloads
+    fun setParameters(dto: Any, classMappingProvider: ClassMappingProvider = ClassMappingProvider.defaultClassMappingProvider) {
         val valueMap = classMappingProvider.getClassMapping(dto.javaClass)
             .getColumnNameValueMap(JdbcObjectCreator(statement.connection), dto)
         for ((paramName, value) in valueMap) {
