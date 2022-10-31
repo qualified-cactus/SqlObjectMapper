@@ -17,6 +17,16 @@ Two kinds of data object is currently supported:
 
 ## Quick start
 
+Download the package from maven central:
+
+```xml
+<dependency>
+  <groupId>com.qualifiedcactus</groupId>
+  <artifactId>sqlObjectMapper</artifactId>
+  <version>1.0.0</version>
+</dependency>
+```
+
 #### 1. Pick a class mapping provider
 
 If you use Kotlin, pick `sqlObjectMapper.annotationProcessing.dataClass.DataClassMappingProvider`.
