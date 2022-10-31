@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>sqlObjectMapper</title>
+    <link href="../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../";</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../styles/style.css" rel="Stylesheet">
+<link href="../../styles/jetbrains-mono.css" rel="Stylesheet">
+<link href="../../styles/main.css" rel="Stylesheet">
+<link href="../../styles/prism.css" rel="Stylesheet">
+<link href="../../styles/logo-styles.css" rel="Stylesheet">
+<script type="text/javascript" src="../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
+</head>
+<body>
+<div class="navigation-wrapper" id="navigation-wrapper">
+    <div id="leftToggler"><span class="icon-toggler"></span></div>
+    <div class="library-name">
+            <a href="../../index.html">
+                    <span>sqlObjectMapper</span>
+            </a>
+    </div>
+    <div>
+    </div>
+    <div class="pull-right d-flex">
+        <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+    </div>
+</div>
+<div id="container">
+    <div id="leftColumn">
+        <div id="sideMenu"></div>
+    </div>
+    <div id="main">
+<div class="main-content" id="content" pageIds="sqlObjectMapper::sqlObjectMapper////PointingToDeclaration//656580144">
+  <div class="breadcrumbs"><a href="../../index.html">sqlObjectMapper</a><span class="delimiter">/</span><span class="current">sqlObjectMapper</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Types">Types</button></div>
+    <div class="tabs-section-body">
+      <h2 class="">Types</h2>
+      <div class="table" data-togglable="Types"><a data-name="1609541289%2FClasslikes%2F656580144" anchor-label="ClassMappingProvider" id="1609541289%2FClasslikes%2F656580144" data-filterable-set="sqlObjectMapper/JVM"></a>
+        <div class="table-row" data-filterable-current="sqlObjectMapper/JVM" data-filterable-set="sqlObjectMapper/JVM">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-class-mapping-provider/index.html"><span>Class</span><wbr></wbr><span>Mapping</span><wbr></wbr><span><span>Provider</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1609541289%2FClasslikes%2F656580144"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="sqlObjectMapper/JVM"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">class </span><a href="-class-mapping-provider/index.html">ClassMappingProvider</a></div><div class="brief "><p class="paragraph">A base class that all class provider implementations must inherit.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1627258336%2FClasslikes%2F656580144" anchor-label="MappedResultSet" id="-1627258336%2FClasslikes%2F656580144" data-filterable-set="sqlObjectMapper/JVM"></a>
+        <div class="table-row" data-filterable-current="sqlObjectMapper/JVM" data-filterable-set="sqlObjectMapper/JVM">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-mapped-result-set/index.html"><span>Mapped</span><wbr></wbr><span>Result</span><wbr></wbr><span><span>Set</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1627258336%2FClasslikes%2F656580144"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="sqlObjectMapper/JVM"><div class="symbol monospace"><span class="token keyword">class </span><a href="-mapped-result-set/index.html">MappedResultSet</a> <span><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-overloads/index.html"><span class="token annotation builtin">JvmOverloads</span></a> </span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">rs<span class="token operator">: </span><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/ResultSet.html">ResultSet</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>classMappingProvider<span class="token operator">: </span><a href="-class-mapping-provider/index.html">ClassMappingProvider</a><span class="token operator"> = </span>ClassMappingProvider.defaultClassMappingProvider</span></span><span class="token punctuation">)</span> : <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/ResultSet.html">ResultSet</a></div><div class="brief "><p class="paragraph">A wrapper class for <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/ResultSet.html">ResultSet</a></p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="982342269%2FClasslikes%2F656580144" anchor-label="NameConverter" id="982342269%2FClasslikes%2F656580144" data-filterable-set="sqlObjectMapper/JVM"></a>
+        <div class="table-row" data-filterable-current="sqlObjectMapper/JVM" data-filterable-set="sqlObjectMapper/JVM">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="index.html#982342269%2FClasslikes%2F656580144"><span>Name</span><wbr></wbr><span><span>Converter</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="982342269%2FClasslikes%2F656580144"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="sqlObjectMapper/JVM"><div class="symbol monospace"><span class="token keyword">typealias </span><a href="index.html#982342269%2FClasslikes%2F656580144">NameConverter</a><span class="token operator"> = </span><span class="token punctuation">(</span><span class="token keyword"></span>s<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1028324294%2FClasslikes%2F656580144" anchor-label="NamedParameterQuery" id="-1028324294%2FClasslikes%2F656580144" data-filterable-set="sqlObjectMapper/JVM"></a>
+        <div class="table-row" data-filterable-current="sqlObjectMapper/JVM" data-filterable-set="sqlObjectMapper/JVM">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-named-parameter-query/index.html"><span>Named</span><wbr></wbr><span>Parameter</span><wbr></wbr><span><span>Query</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1028324294%2FClasslikes%2F656580144"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="sqlObjectMapper/JVM"><div class="symbol monospace"><span class="token keyword">class </span><a href="-named-parameter-query/index.html">NamedParameterQuery</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">npSqlQuery<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Used to parse sql string with named parameter. Parameter start with the character ':'.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="82827068%2FClasslikes%2F656580144" anchor-label="NoIdSpecifiedError" id="82827068%2FClasslikes%2F656580144" data-filterable-set="sqlObjectMapper/JVM"></a>
+        <div class="table-row" data-filterable-current="sqlObjectMapper/JVM" data-filterable-set="sqlObjectMapper/JVM">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-no-id-specified-error/index.html"><span>No</span><wbr></wbr><span>Id</span><wbr></wbr><span>Specified</span><wbr></wbr><span><span>Error</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="82827068%2FClasslikes%2F656580144"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="sqlObjectMapper/JVM"><div class="symbol monospace"><span class="token keyword">class </span><a href="-no-id-specified-error/index.html">NoIdSpecifiedError</a> : <a href="-sql-object-mapper-exception/index.html">SqlObjectMapperException</a></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1673654499%2FClasslikes%2F656580144" anchor-label="NpCallableStatement" id="-1673654499%2FClasslikes%2F656580144" data-filterable-set="sqlObjectMapper/JVM"></a>
+        <div class="table-row" data-filterable-current="sqlObjectMapper/JVM" data-filterable-set="sqlObjectMapper/JVM">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-np-callable-statement/index.html"><span>Np</span><wbr></wbr><span>Callable</span><wbr></wbr><span><span>Statement</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1673654499%2FClasslikes%2F656580144"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="sqlObjectMapper/JVM"><div class="symbol monospace"><span class="token keyword">class </span><a href="-np-callable-statement/index.html">NpCallableStatement</a> : <a href="-np-statement/index.html">NpStatement</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/CallableStatement.html">CallableStatement</a></div><div class="brief "><p class="paragraph">An extension class for <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/CallableStatement.html">CallableStatement</a> that support named parameters.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1155477150%2FClasslikes%2F656580144" anchor-label="NpPreparedStatement" id="-1155477150%2FClasslikes%2F656580144" data-filterable-set="sqlObjectMapper/JVM"></a>
+        <div class="table-row" data-filterable-current="sqlObjectMapper/JVM" data-filterable-set="sqlObjectMapper/JVM">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-np-prepared-statement/index.html"><span>Np</span><wbr></wbr><span>Prepared</span><wbr></wbr><span><span>Statement</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1155477150%2FClasslikes%2F656580144"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="sqlObjectMapper/JVM"><div class="symbol monospace"><span class="token keyword">class </span><a href="-np-prepared-statement/index.html">NpPreparedStatement</a> : <a href="-np-statement/index.html">NpStatement</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/PreparedStatement.html">PreparedStatement</a></div><div class="brief "><p class="paragraph">An extension class for <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/PreparedStatement.html">PreparedStatement</a> that support named parameters.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-934976699%2FClasslikes%2F656580144" anchor-label="NpStatement" id="-934976699%2FClasslikes%2F656580144" data-filterable-set="sqlObjectMapper/JVM"></a>
+        <div class="table-row" data-filterable-current="sqlObjectMapper/JVM" data-filterable-set="sqlObjectMapper/JVM">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-np-statement/index.html"><span>Np</span><wbr></wbr><span><span>Statement</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-934976699%2FClasslikes%2F656580144"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="sqlObjectMapper/JVM"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">class </span><a href="-np-statement/index.html">NpStatement</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">statement<span class="token operator">: </span><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/PreparedStatement.html">PreparedStatement</a><span class="token punctuation">, </span></span><span class="parameter ">npQuery<span class="token operator">: </span><a href="-named-parameter-query/index.html">NamedParameterQuery</a></span></span><span class="token punctuation">)</span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1680238295%2FClasslikes%2F656580144" anchor-label="QueryExecutor" id="1680238295%2FClasslikes%2F656580144" data-filterable-set="sqlObjectMapper/JVM"></a>
+        <div class="table-row" data-filterable-current="sqlObjectMapper/JVM" data-filterable-set="sqlObjectMapper/JVM">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-query-executor/index.html"><span>Query</span><wbr></wbr><span><span>Executor</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1680238295%2FClasslikes%2F656580144"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="sqlObjectMapper/JVM"><div class="symbol monospace"><span class="token keyword">class </span><a href="-query-executor/index.html">QueryExecutor</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>mappingProvider<span class="token operator">: </span><a href="-class-mapping-provider/index.html">ClassMappingProvider</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">A convenient wrapper to simply the interactions among <a href="-np-prepared-statement/index.html">ClassMappingProvider</a>, <a href="-np-callable-statement/index.html">NpCallableStatement</a> and <a href="-mapped-result-set/index.html">MappedResultSet</a>.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1145029647%2FClasslikes%2F656580144" anchor-label="SqlObjectMapperException" id="1145029647%2FClasslikes%2F656580144" data-filterable-set="sqlObjectMapper/JVM"></a>
+        <div class="table-row" data-filterable-current="sqlObjectMapper/JVM" data-filterable-set="sqlObjectMapper/JVM">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-sql-object-mapper-exception/index.html"><span>Sql</span><wbr></wbr><span>Object</span><wbr></wbr><span>Mapper</span><wbr></wbr><span><span>Exception</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1145029647%2FClasslikes%2F656580144"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="sqlObjectMapper/JVM"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-sql-object-mapper-exception/index.html">SqlObjectMapperException</a> : <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/RuntimeException.html">RuntimeException</a></div><div class="brief "><p class="paragraph">All exception thrown by this library have this base class.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1833559233%2FClasslikes%2F656580144" anchor-label="TransactionManager" id="1833559233%2FClasslikes%2F656580144" data-filterable-set="sqlObjectMapper/JVM"></a>
+        <div class="table-row" data-filterable-current="sqlObjectMapper/JVM" data-filterable-set="sqlObjectMapper/JVM">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-transaction-manager/index.html"><span>Transaction</span><wbr></wbr><span><span>Manager</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1833559233%2FClasslikes%2F656580144"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="sqlObjectMapper/JVM"><div class="symbol monospace"><span class="token keyword">class </span><a href="-transaction-manager/index.html">TransactionManager</a></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2022 Copyright</span><span
+                class="pull-right"><span>Generated by </span><a
+                href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+    </div>
+</div>
+</body>
+</html>
