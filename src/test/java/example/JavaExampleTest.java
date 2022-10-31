@@ -51,7 +51,6 @@ public class JavaExampleTest {
     public static void initConn() throws SQLException {
         sqlObjectMapper = new QueryExecutor(new BeanMappingProvider());
         connection = TestUtils.createConn();
-
         try (var statement = connection.createStatement()) {
             statement.execute("""
                 CREATE TABLE entity_1 (

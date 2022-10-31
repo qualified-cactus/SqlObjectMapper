@@ -42,6 +42,7 @@ abstract class ClassMappingProvider {
 
     abstract fun <T:Any> getClassMappingNonCached(clazz: Class<T>): ClassMapping<T>
 
+    @JvmOverloads
     fun <T:Any> getClassMapping(clazz: Class<T>, useCache: Boolean = true): ClassMapping<T> {
         if (useCache) {
             val cache = classMappingCache[clazz]
@@ -52,6 +53,11 @@ abstract class ClassMappingProvider {
             classMappingCache[clazz] = classMapping
         }
         return classMapping
+    }
+
+    companion object {
+        @JvmStatic
+        lateinit var defaultClassMappingProvider: ClassMappingProvider
     }
 }
 

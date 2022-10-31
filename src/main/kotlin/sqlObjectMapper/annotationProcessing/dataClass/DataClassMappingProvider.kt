@@ -33,7 +33,9 @@ import sqlObjectMapper.SqlObjectMapperUtils
 /**
  * Class Mapping provider for Kotlin classes that declare all their properties in their primary constructors
  */
-class DataClassMappingProvider(
+class DataClassMappingProvider
+@JvmOverloads
+constructor(
     val nameConverter: NameConverter = SqlObjectMapperUtils.Companion::camelCaseToSnakeCase
 ): ClassMappingProvider() {
 
