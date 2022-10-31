@@ -40,16 +40,12 @@ npPreparedStatement.setParamsFromMap(map)
 ### By a data object
 
 ```kotlin
-// a singleton instance of data class mapping provider
-val cmProvider = DataClassMappingProvider()
-
-
 data class Input(
     val param1: String,
     val param2: String
 )
 
-npPreparedStatement.setParameters(Input("abc", "def"), cmProvider)
+npPreparedStatement.setParameters(Input("abc", "def"))
 ```
 
 #### Specify column name

@@ -6,9 +6,7 @@
 ## Creating an MappedResultSet object
 
 ```kotlin
-// singleton data class mapping provider instance
-val cmProvider = DataClassMappingProvider()
-val mappedRs = MappedResultSet(statement.resultSet, cmProvider)
+val mappedRs = MappedResultSet(statement.resultSet)
 ```
 
 ## Get next row data as data object
