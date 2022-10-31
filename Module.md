@@ -1,4 +1,4 @@
-# Module SqlObjectMapper
+# Module sqlObjectMapper
 
 SqlObjectMapper is a library that:
 * Map properties of data object to JDBC's PreparedStatement's parameters

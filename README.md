@@ -17,6 +17,8 @@ Two kinds of data object is currently supported:
 
 ## Quick start
 
+#### 1. Download the package
+
 Download the package from maven central:
 
 ```xml
@@ -27,9 +29,7 @@ Download the package from maven central:
 </dependency>
 ```
 
-#### 1. Pick a class mapping provider
-
-If you use Kotlin, pick `sqlObjectMapper.annotationProcessing.dataClass.DataClassMappingProvider`.
+#### 2. Set default class mapping provider
 
 
 
@@ -37,13 +37,13 @@ If you use Java, pick `sqlObjectMapper.annotationProcessing.bean.BeanMappingProv
 ```
 ClassMappingProvider.setDefaultClassMappingProvider(new BeanMappingProvider())
 ```
-There should be only 1 instance of each class provider because the result of `getClassMapping` is cached.
 
+If you use Kotlin, pick `sqlObjectMapper.annotationProcessing.dataClass.DataClassMappingProvider`.
 ```kotlin
-ClassMappingProvider.defaultClassMappingProvider(DataClassMappingProvider())
+ClassMappingProvider.defaultClassMappingProvider = DataClassMappingProvider()
 ```
 
-#### 2. Define your data object
+#### 3. Define your data object
 
 Kotlin Data Class:
 
@@ -77,7 +77,7 @@ public class Entity1 {
 }
 ```
 
-#### 2. Execute Query with NpPreparedStatement or NpCallableStatement
+#### 4. Execute Query with NpPreparedStatement or NpCallableStatement
 
 Use convenient class `QueryExecutor` to set query parameters using a DTO 
 and put the result of a query into a list of DTOs.
@@ -117,7 +117,10 @@ public class Main {
 }
 ```
 
+For more examples, see these unit tests:
 
+* [Java example](src/test/java/example/JavaExampleTest.java)
+* [Kotlin example](src/test/kotlin/example/KotlinExampleTest.kt)
 
 
 ## Motivation

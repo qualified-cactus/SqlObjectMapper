@@ -45,11 +45,11 @@ import static org.junit.jupiter.api.Assertions.*;
 public class JavaExampleTest {
 
     private static Connection connection;
-    private static QueryExecutor sqlObjectMapper;
+    private static QueryExecutor queryExecutor;
 
     @BeforeAll
     public static void initConn() throws SQLException {
-        sqlObjectMapper = new QueryExecutor(new BeanMappingProvider());
+        queryExecutor = new QueryExecutor(new BeanMappingProvider());
         connection = TestUtils.createConn();
         try (var statement = connection.createStatement()) {
             statement.execute("""
@@ -199,7 +199,7 @@ public class JavaExampleTest {
             WHERE e1.column_1 <> :param_1 AND (e2.column_1 > :param_2 OR e2.column_1 IS NULL)
             ORDER BY e1.column_1 ASC, e2.column_1 ASC
             """.stripIndent();
-        List<Entity1> entity1List = sqlObjectMapper.queryForList(connection, sql, new ParamDto(2, 1), Entity1.class);
+        List<Entity1> entity1List = queryExecutor.queryForList(connection, sql, new ParamDto(2, 1), Entity1.class);
 
         assertEquals(2, entity1List.size());
 
@@ -216,7 +216,7 @@ public class JavaExampleTest {
             SELECT column_1 c1, column_2 c2 FROM entity_2 WHERE column_1 = :param_1 AND column_2 = :param_2
             """.stripIndent();
 
-        final var entity2 = sqlObjectMapper.queryForObject(connection, sql, new ParamDto(2,3), Entity2.class);
+        final var entity2 = queryExecutor.queryForObject(connection, sql, new ParamDto(2,3), Entity2.class);
         assertEquals(2, entity2.column1);
     }
 
@@ -225,7 +225,7 @@ public class JavaExampleTest {
         final String sql = """
             SELECT COUNT(*) FROM entity_2
             """.stripIndent();
-        final Long count = sqlObjectMapper.queryForScalar(connection, sql, null);
+        final Long count = queryExecutor.queryForScalar(connection, sql, null);
         assertEquals(3, count);
 
 
