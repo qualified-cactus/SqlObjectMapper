@@ -36,6 +36,8 @@ import sqlObjectMapper.annotations.MappedProperty;
 import utils.TestUtils;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
@@ -227,8 +229,7 @@ public class JavaExampleTest {
             """.stripIndent();
         final Long count = queryExecutor.queryForScalar(connection, sql, null);
         assertEquals(3, count);
-
-
+        ResultSet
     }
 
 }

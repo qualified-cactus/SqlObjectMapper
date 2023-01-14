@@ -32,6 +32,7 @@ import java.sql.ResultSet
 import java.sql.PreparedStatement
 /**
  * Indicate that a property is a column value or a parameter value.
+ *
  * @property name specify the name of the column
  * @property isId specify if this column is an identifying column,
  * used only when [JoinMany] annotation is present.
@@ -49,10 +50,11 @@ annotation class MappedProperty(
 
 
 /**
- * Indicate that a property is a collection of one-to-many child objects in a "LEFT JOIN" query
+ * Indicate that a property is a collection of one-to-many child objects in a "LEFT JOIN" query.
+ *
  * Child object must have at least one property annotated as an identifying column.
  *
- * @property elemConverter use [ValueConverter.fromDb] to convert an object before adding it into the collection
+ * @property elemConverter use [ValueConverter.fromDb] to convert an object before adding it into the collection.
  * @property childEntityType specify the entity to be used to parse [ResultSet]'s row
  *
  * @see MappedProperty
