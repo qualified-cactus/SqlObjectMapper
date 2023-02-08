@@ -1,0 +1,4 @@
+@ParametersAreNonnullByDefault
+package com.qualifiedcactus.sqlObjectMapperBenchmark;
+
+import javax.annotation.ParametersAreNonnullByDefault;

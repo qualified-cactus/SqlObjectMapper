@@ -13,6 +13,6 @@
 
     <modules>
         <module>SqlObjectMapper</module>
-        <module>SqlObjectMapperExample</module>
+        <module>SqlObjectMapperBenchmark</module>
     </modules>
 </project>

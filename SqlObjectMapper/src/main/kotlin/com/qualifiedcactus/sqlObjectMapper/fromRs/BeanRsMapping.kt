@@ -6,6 +6,7 @@ import com.qualifiedcactus.sqlObjectMapper.fromRs.RsClassMapping.*
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
 import kotlin.reflect.KMutableProperty1
+import kotlin.reflect.KVisibility
 import kotlin.reflect.full.createInstance
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.javaField
@@ -25,7 +26,7 @@ internal class BeanRsMapping(
 
         clazz.memberProperties.forEach {property ->
             val field = property.javaField
-            if (property is KMutableProperty1 && field != null) {
+            if (property is KMutableProperty1 && field != null && property.visibility == KVisibility.PUBLIC) {
                 val rsIgnore = field.getAnnotation(RsIgnore::class.java)
                 if (rsIgnore != null) {
                     return@forEach
@@ -91,6 +92,7 @@ internal class BeanRsMapping(
     override fun createInstance(properties: Array<Any?>): Any {
         val instance = constructor.call()
         propertiesToSet.forEachIndexed { i, property ->
+            println("method: ${property.name} ${property.setter.name} ${property.getter.name}")
             property.setter.call(instance, properties[i])
         }
         return instance

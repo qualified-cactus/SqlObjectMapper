@@ -3,6 +3,7 @@ package com.qualifiedcactus.sqlObjectMapper.toParam
 import com.qualifiedcactus.sqlObjectMapper.MappingProvider
 import com.qualifiedcactus.sqlObjectMapper.fromRs.CamelCaseToUpperSnakeCaseConverter
 import kotlin.reflect.KClass
+import kotlin.reflect.KVisibility
 import kotlin.reflect.full.createInstance
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.javaField
@@ -12,6 +13,9 @@ internal class DefaultParamClassMapping(val clazz: KClass<*>) : ParamClassMappin
     override val valueExtractors = HashMap<String, ParamClassMapping.Parameter>()
     init {
         clazz.memberProperties.forEach { property ->
+            if (property.visibility != KVisibility.PUBLIC) {
+                return@forEach
+            }
             val field = property.javaField
             if (field != null) {
                 val ignoreParam = field.getAnnotation(IgnoreParam::class.java)

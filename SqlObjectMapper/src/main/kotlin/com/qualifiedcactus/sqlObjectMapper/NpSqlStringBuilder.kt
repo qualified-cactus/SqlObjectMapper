@@ -6,11 +6,16 @@ import java.sql.Connection
 /**
  * A convenient class that helps with building dynamic raw sql query
  */
-class NpSqlStringBuilder(val connection: Connection) {
+class NpSqlStringBuilder
+@JvmOverloads
+constructor(
+    val connection: Connection,
+    private val startingString: String = ""
+) {
 
 
     private val jdbcObjectCreator = JdbcObjectCreator(connection)
-    private val stringBuilder = StringBuilder()
+    private val stringBuilder = StringBuilder(startingString)
 
     /**
      * A Map of uppercase parameter name and parameter value
@@ -23,6 +28,10 @@ class NpSqlStringBuilder(val connection: Connection) {
     fun append(s: String): NpSqlStringBuilder {
         stringBuilder.append(s)
         return this
+    }
+
+    fun toQueryString(): String {
+        return stringBuilder.toString()
     }
 
     fun addParameter(paramName: String, paramValue: Any?): NpSqlStringBuilder {

@@ -47,6 +47,12 @@ object ResultSetParser {
         }
     }
 
+    /**
+     * Get columns' values of the first row as a DTO of type [clazz], then close [ResultSet]
+     * @return null if there is no rows
+     * @throws SqlObjectMapperException on invalid mapping
+     * @throws SQLException from JDBC
+     */
     internal fun <T : Any> parseToObject(resultSet: ResultSet, clazz: KClass<T>): T? {
         return resultSet.use {
             if (!resultSet.next()) {
@@ -64,6 +70,11 @@ object ResultSetParser {
         }
     }
 
+    /**
+     * Get columns' values of all rows as a list of DTOs of type [clazz], then close [ResultSet]
+     * @throws SqlObjectMapperException on invalid mapping
+     * @throws SQLException from JDBC
+     */
     internal fun <T : Any> parseToList(resultSet: ResultSet, clazz: KClass<T>): List<T> {
         return resultSet.use {
             val clazzMapping = MappingProvider.mapRsClass(clazz)

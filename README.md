@@ -1,141 +1,96 @@
 # SqlObjectMapper
 
-This is a library that extends the existing JDBC API 
-so that data objects can be used as input (to set parameters) and output (from ResultSet's rows).
+This is a library for using data objects (DTO) as parameters 
+and parsing ResultSet's rows into DTO. 
+Support bean-style and all-args-style creation for DTO.
 
-Two kinds of data object is currently supported:
-* Java's Bean
-* Kotlin's data class (all parameters of primary constructors must also be properties)
+##  Install package from Maven Central
 
-## Documentations
-
-* [Extension to PreparedStatement and CallableStatement](documentations/NpStatement.md)
-* [Extension to ResultSet](documentations/MappedResultSet.md)
-* [Convenient wrappers](documentations/Wrappers.md)
-* [API doc](https://qualified-cactus.github.io/SqlObjectMapper/)
-
-
-## Quick start
-
-#### 1. Download the package
-
-Download the package from maven central:
+Add maven dependency:
 
 ```xml
 <dependency>
-  <groupId>com.qualifiedcactus</groupId>
-  <artifactId>sqlObjectMapper</artifactId>
-  <version>1.1.0</version>
+    <groupId>com.qualifiedcactus</groupId>
+    <artifactId>sqlObjectMapper</artifactId>
+    <version>2.0.0</version>
 </dependency>
 ```
 
-#### 2. Set default class mapping provider
+## Quick start
 
-If you use Java, pick `sqlObjectMapper.annotationProcessing.bean.BeanMappingProvider`.
-```
-ClassMappingProvider.setDefaultClassMappingProvider(new BeanMappingProvider())
-```
-
-If you use Kotlin, pick `sqlObjectMapper.annotationProcessing.dataClass.DataClassMappingProvider`.
-```kotlin
-ClassMappingProvider.defaultClassMappingProvider = DataClassMappingProvider()
-```
-
-_Note: There should be only 1 instance of each type of `ClassMappingProvider`
-(2 mentioned above) because the cache is stored in each instance._
-
-#### 3. Define your data object
-
-Kotlin Data Class:
+In Kotlin:
 
 ```kotlin
-data class QueryInput(
-    val param1: String,
-    val param2: String
+class InDto(
+    val column1: String
 )
 
-data class Entity1(
-    val column1: Int,
-    val column2: String,
-    val column3: String,
+class OutDto(
+    val column1: String,
+    val column2: String
 )
-```
 
-Or Java Bean (with lombok):
-
-```java
-@Data
-public class QueryInput {
-    private String param1;
-    private String param2;
+fun example(connection: Connection) {
+    val results: List<OutDto> = connection
+        .prepareNpStatement(
+            "SELECT * FROM table_a WHERE column_1 = :column_1"
+        )
+        .setParametersByDto(InDto("bar"))
+        .useExecuteQuery { it.toList(OutDto::class) }
 }
-
-@Data
-public class Entity1 {
-    private Integer column1;
-    private String column2;
-    private String column3;
-}
-```
-
-#### 4. Execute Query with NpPreparedStatement or NpCallableStatement
-
-Use convenient class `QueryExecutor` to set query parameters using a DTO 
-and put the result of a query into a list of DTOs.
-
-In kotlin:
-
-```kotlin
-
-val entityList: List<Entity1> = QueryExecutor().queryForList(
-    connection, 
-    """
-    SELECT column_1, column_2, column_3 
-    FROM entity_1 
-    WHERE column_2 LIKE :param_1 AND column_3 LIKE :param_2
-    """,
-    QueryInput("abc%", "%def"),
-    Entity1::class.java
-)
 ```
 
 In Java:
 
 ```java
-public class Main {
-    public static void main(String[] args) {
-        List<Entity1> entityList = new QueryExecutor().queryForList(
-            connection,
-            """
-            SELECT column_1, column_2, column_3
-            FROM entity_1
-            WHERE column_2 LIKE :param_1 AND column_3 LIKE :param_2
-            """,
-            new QueryInput("abc%", "%def"),
-            Entity1.class
-        );
+public class InDto {
+    private String column1;
+    //... getters and setters omitted
+}
+
+public class OutDto {
+    private String column1;
+    private String column2;
+    //... getters and setters omitted
+}
+
+public class Example {
+    public void example(Connection connection) {
+        List<OutDto> results = ConnectionNpUtils
+            .prepareNpStatement(connection, "SELECT * FROM table_a WHERE column_1 = :column_1")
+            .setParametersByDto(new InDto("bar"))
+            .useExecuteQuery(rs-> ResultSetParser.parseToList(rs, OutDto.class));
     }
 }
 ```
 
-For more examples, see these unit tests:
+## IMPORTANT: Assumption about column names
 
-* [Java example](src/test/java/example/JavaExampleTest.java)
-* [Kotlin example](src/test/kotlin/example/KotlinExampleTest.kt)
+This library assumes that the column names is case-insensitive and 
+the column names taken from `java.sql.ResultSetMetaData.getColumnLabel()` 
+is always in UPPERCASE (which is the behaviour HSQL and Oracle JDBC's drivers).
+
+Since this assumption might be wrong for other JDBC drivers which you might use, 
+please use uppercase column names or use avoid using case-sensitive columns names when that happens.
+
+## Documentations
+
+* [DTO to PreparedStatement's parameters](documentations/DTO_to_parameters.md)
+* [ResultSet's rows to DTO](documentations/ResultSet_to_DTO.md)
+* [Other helper classes and functions](documentations/Helpers_classes_and_functions.md)
+* [API doc](https://qualified-cactus.github.io/SqlObjectMapper/)
 
 
-## Motivation
+## Performance benchmark
 
-In web development, your interactions with data object tends to be in the following order:
+Performance of parsing 100 rows into simple DTOs (no nested or to-many). Measured by Java Benchmark Harness (JMH). 
+See [the benchmark project](SqlObjectMapperBenchmark) for the implementation of the benchmark.
 
-1. Receive data object from your json parser
-2. Validate it
-3. Parse the data object into your sql parameters and execute a query
-4. Parse the result of a query in to a data object
-5. Send that data object as a response body
+```
+plainSqlBenchmark         avgt    5   5241.022 ±  83.903  ns/op
+sqlObjectMapperBenchmark  avgt    5   5643.287 ±  62.899  ns/op
+sql2oBenchmark            avgt    5   7642.332 ± 121.217  ns/op
+springJpaBenchmark        avgt    5  32067.611 ± 588.319  ns/op
+```
 
-In step 3 and 4, you have the options of either do it by hand or automate it using Hibernate,
-or many other ORM libraries. However, Hibernate sometimes feel too restrictive
-because too much is abstracted away. That is why I created this library that
-simply add a data-object-parsing feature to Java's JDBC API.
 

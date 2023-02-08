@@ -1,4 +1,4 @@
-@file:JvmName("ConnectionNpUtils")
+@file:JvmName("NpStatements")
 package com.qualifiedcactus.sqlObjectMapper
 
 import com.qualifiedcactus.sqlObjectMapper.toParam.JdbcObjectCreator
@@ -49,14 +49,15 @@ internal constructor(
      * @param name a case-insensitive parameter name
      * @param value value of a parameter
      */
-    fun setParameter(name: String, value: Any?) {
+    fun setParameter(name: String, value: Any?): NpStatement {
         setParameterUpperCased(name.uppercase(), value)
+        return this
     }
 
     /**
      * Set parameter(s) using a data object (DTO)
      */
-    fun setParametersByDto(dto: Any) {
+    fun setParametersByDto(dto: Any): NpStatement {
         val paramMap = MappingProvider.mapParamClass(dto::class)
         val jdbcObjectCreator = JdbcObjectCreator(statement.connection)
         paramMap.valueExtractors.forEach { (paramName, parameterInfo) ->
@@ -66,15 +67,17 @@ internal constructor(
             )
             setParameterUpperCased(paramName, parameterValue)
         }
+        return this
     }
 
     /**
      * Set parameter(s) using a map of case-insensitive names and values
      */
-    fun setParametersByMap(valueMap: Map<String, Any?>) {
+    fun setParametersByMap(valueMap: Map<String, Any?>): NpStatement {
         valueMap.forEach { (paramName, paramValue) ->
             setParameter(paramName, paramValue)
         }
+        return this
     }
 
     /**
@@ -84,6 +87,24 @@ internal constructor(
     fun <T> useExecuteQuery(resultSetToValue: (rs: ResultSet)-> T): T {
         return statement.use {
             statement.executeQuery().use(resultSetToValue)
+        }
+    }
+
+    /**
+     * Execute the statement and close it.
+     */
+    fun useExecuteUpdate(): Int {
+        return statement.use {
+            statement.executeUpdate()
+        }
+    }
+
+    /**
+     * Execute the statement and close it.
+     */
+    fun useExecuteLargeUpdate(): Long {
+        return statement.use {
+            statement.executeLargeUpdate()
         }
     }
 }
