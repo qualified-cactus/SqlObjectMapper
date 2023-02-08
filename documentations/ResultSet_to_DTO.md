@@ -54,7 +54,7 @@ the `com.qualifiedcactus.sqlObjectMapper.fromRs.RsValueConverter` interface
 
 ### ResultSet -> DTO with nested/to-one object(s)
 
-Sometimes we want to nest a DTO instead another DTO 
+Sometimes we want to nest a DTO inside another DTO 
 (to make the JSON string of this object more readable, for instance).
 We do that by using the `RsToOne` / `RsNested` annotations.
 
