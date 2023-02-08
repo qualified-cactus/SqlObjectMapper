@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>RsToMany</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/jetbrains-mono.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
+</head>
+<body>
+<div class="navigation-wrapper" id="navigation-wrapper">
+    <div id="leftToggler"><span class="icon-toggler"></span></div>
+    <div class="library-name">
+            <a href="../../../index.html">
+                    <span>sqlObjectMapper</span>
+            </a>
+    </div>
+    <div>
+    </div>
+    <div class="pull-right d-flex">
+        <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+    </div>
+</div>
+<div id="container">
+    <div id="leftColumn">
+        <div id="sideMenu"></div>
+    </div>
+    <div id="main">
+<div class="main-content" id="content" pageIds="sqlObjectMapper::com.qualifiedcactus.sqlObjectMapper.fromRs/RsToMany///PointingToDeclaration//656580144">
+  <div class="breadcrumbs"><a href="../../../index.html">sqlObjectMapper</a><span class="delimiter">/</span><a href="../index.html">com.qualifiedcactus.sqlObjectMapper.fromRs</a><span class="delimiter">/</span><span class="current">RsToMany</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Rs</span><wbr></wbr><span>To</span><wbr></wbr><span><span>Many</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="sqlObjectMapper/JVM"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.annotation/-target/index.html"><span class="token annotation builtin">Target</span></a><span class="token punctuation">(</span><span>allowedTargets<span class="token operator"> = </span><span class="token punctuation">[</span><span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.annotation/-annotation-target/-v-a-l-u-e_-p-a-r-a-m-e-t-e-r/index.html">AnnotationTarget.VALUE_PARAMETER</a><span class="token punctuation">, </span></span><wbr></wbr><span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.annotation/-annotation-target/-f-i-e-l-d/index.html">AnnotationTarget.FIELD</a></span><wbr></wbr><span class="token punctuation">]</span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">annotation class </span><a href="index.html">RsToMany</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>elementConverter<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-class/index.html">KClass</a><span class="token operator">&lt;</span><span class="token keyword">out </span><a href="../-rs-value-converter/index.html">RsValueConverter</a><span class="token operator">&gt;</span><span class="token operator"> = </span>RsNoOpConverter::class<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>classToMap<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-class/index.html">KClass</a><span class="token operator">&lt;</span><span class="token keyword">out </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span><span class="token operator"> = </span>Any::class</span></span><span class="token punctuation">)</span></div><p class="paragraph">Mark a property as a to-many collection. Use this when mapping values from the result of a JOIN statement. Must be of type <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a> or <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-set/index.html">Set</a> with only one generic type parameter.</p></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Properties">Properties</button></div>
+    <div class="tabs-section-body">
+      <h2 class="">Properties</h2>
+      <div class="table" data-togglable="Properties"><a data-name="1906054290%2FProperties%2F656580144" anchor-label="classToMap" id="1906054290%2FProperties%2F656580144" data-filterable-set="sqlObjectMapper/JVM"></a>
+        <div class="table-row" data-filterable-current="sqlObjectMapper/JVM" data-filterable-set="sqlObjectMapper/JVM">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="class-to-map.html"><span>class</span><wbr></wbr><span>To</span><wbr></wbr><span><span>Map</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1906054290%2FProperties%2F656580144"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-dependent-content" data-active="" data-togglable="sqlObjectMapper/JVM"><a data-name="1906054290%2FProperties%2F656580144" anchor-label="classToMap" id="1906054290%2FProperties%2F656580144" data-filterable-set="sqlObjectMapper/JVM"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="class-to-map.html">classToMap</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-class/index.html">KClass</a><span class="token operator">&lt;</span><span class="token keyword">out </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span></div><div class="brief "><a data-name="1906054290%2FProperties%2F656580144" anchor-label="classToMap" id="1906054290%2FProperties%2F656580144" data-filterable-set="sqlObjectMapper/JVM"></a><p class="paragraph">Specify a child entity class to map.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1217243831%2FProperties%2F656580144" anchor-label="elementConverter" id="1217243831%2FProperties%2F656580144" data-filterable-set="sqlObjectMapper/JVM"></a>
+        <div class="table-row" data-filterable-current="sqlObjectMapper/JVM" data-filterable-set="sqlObjectMapper/JVM">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="element-converter.html"><span>element</span><wbr></wbr><span><span>Converter</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1217243831%2FProperties%2F656580144"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-dependent-content" data-active="" data-togglable="sqlObjectMapper/JVM"><a data-name="1217243831%2FProperties%2F656580144" anchor-label="elementConverter" id="1217243831%2FProperties%2F656580144" data-filterable-set="sqlObjectMapper/JVM"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="element-converter.html">elementConverter</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-class/index.html">KClass</a><span class="token operator">&lt;</span><span class="token keyword">out </span><a href="../-rs-value-converter/index.html">RsValueConverter</a><span class="token operator">&gt;</span></div><div class="brief "><a data-name="1217243831%2FProperties%2F656580144" anchor-label="elementConverter" id="1217243831%2FProperties%2F656580144" data-filterable-set="sqlObjectMapper/JVM"></a><p class="paragraph">A converter class to convert a value of type <a href="class-to-map.html">classToMap</a> (if set) or before adding it into the collection. Conversion result must not be null</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2023 Copyright</span><span
+                class="pull-right"><span>Generated by </span><a
+                href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+    </div>
+</div>
+</body>
+</html>
