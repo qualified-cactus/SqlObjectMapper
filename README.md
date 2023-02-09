@@ -56,7 +56,7 @@ public class OutDto {
 
 public class Example {
     public void example(Connection connection) {
-        List<OutDto> results = ConnectionNpUtils
+        List<OutDto> results = NpStatements
             .prepareNpStatement(connection, "SELECT * FROM table_a WHERE column_1 = :column_1")
             .setParametersByDto(new InDto("bar"))
             .useExecuteQuery(rs-> ResultSetParser.parseToList(rs, OutDto.class));
