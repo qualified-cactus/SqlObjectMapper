@@ -226,11 +226,9 @@ object ResultSetParser {
             val (idSet, parsedCollection) = parent.collectionsDict[objectInfo.clazz]!!
             if (!idSet.contains(objectInfo.idValue)) {
                 idSet.add(objectInfo.idValue)
+                val childObject = dict[objectInfo.clazz]!![objectInfo.idValue]!!.value
                 parsedCollection.collection.add(
-                    parsedCollection.info.valueConverter.convert(
-                        dict[objectInfo.clazz]!![objectInfo.idValue]!!.value
-                    )
-                        ?: throw SqlObjectMapperException("Element converter is not allowed to convert to null")
+                    parsedCollection.info.valueConverter.convert(childObject)
                 )
             }
         }
