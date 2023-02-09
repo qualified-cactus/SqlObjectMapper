@@ -107,7 +107,7 @@ internal class RowParser(
         toManyProperty: ToManyProperty,
         parsedCollection: MutableList<ParsedCollection>
     ): Any {
-        val collection: MutableCollection<Any> =
+        val collection: MutableCollection<Any?> =
             if (toManyProperty.collectionType.isSuperclassOf(List::class)) {
                 ArrayList()
             } else if (toManyProperty.collectionType.isSuperclassOf(Set::class)) {
@@ -121,7 +121,7 @@ internal class RowParser(
 
     class ParsedCollection(
         val info: ToManyProperty,
-        val collection: MutableCollection<Any>
+        val collection: MutableCollection<Any?>
     )
 
     class ParseWithNestedResult(

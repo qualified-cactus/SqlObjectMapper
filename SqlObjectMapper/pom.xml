@@ -8,7 +8,7 @@
     <!-- #####################################################################   -->
     <groupId>com.qualifiedcactus</groupId>
     <artifactId>sqlObjectMapper</artifactId>
-    <version>2.0.0</version>
+    <version>2.0.1</version>
 
     <name>${project.groupId}:${project.artifactId}</name>
     <description>A JDBC extensions library that makes working with data object less tedious.</description>
