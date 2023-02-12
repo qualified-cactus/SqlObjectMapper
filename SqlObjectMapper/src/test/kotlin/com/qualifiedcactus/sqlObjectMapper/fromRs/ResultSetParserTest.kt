@@ -33,6 +33,8 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.TestInstance
 import java.sql.Connection
+import kotlin.reflect.KClass
+import kotlin.reflect.KType
 
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -100,7 +102,7 @@ internal class ResultSetParserTest : AutoCloseable {
     )
 
     class EntityCToInt : RsValueConverter {
-        override fun convert(value: Any?): Int {
+        override fun convert(value: Any?, propertyType: KClass<*>): Any? {
             return (value as EntityC).column6
         }
     }

@@ -29,6 +29,8 @@ import com.qualifiedcactus.sqlObjectMapper.createDatabaseConnection
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.Assertions.*
+import kotlin.reflect.KClass
+import kotlin.reflect.KType
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class RsParserToManyWithConverterTest {
@@ -47,7 +49,7 @@ class RsParserToManyWithConverterTest {
     )
 
     class ChildToStringConverter : RsValueConverter {
-        override fun convert(value: Any?): Any? {
+        override fun convert(value: Any?, propertyType: KClass<*>): Any? {
             if (value is MyChildDto) {
                 return value.childName
             } else throw RuntimeException("invalid type")

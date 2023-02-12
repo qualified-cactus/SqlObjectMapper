@@ -228,7 +228,9 @@ object ResultSetParser {
                 idSet.add(objectInfo.idValue)
                 val childObject = dict[objectInfo.clazz]!![objectInfo.idValue]!!.value
                 parsedCollection.collection.add(
-                    parsedCollection.info.valueConverter.convert(childObject)
+                    parsedCollection.info.valueConverter.convert(
+                        childObject, parsedCollection.info.elementMapping.rootMapping.clazz
+                    )
                 )
             }
         }

@@ -25,9 +25,13 @@
 
 package com.qualifiedcactus.sqlObjectMapper.fromRs
 
+import kotlin.reflect.KClass
+import kotlin.reflect.KType
+
 /**
  * Does nothing
  */
+@Suppress("UNCHECKED_CAST")
 class RsNoOpConverter : RsValueConverter {
-    override fun convert(value: Any?): Any? = value
+    override fun convert(value: Any?, propertyType: KClass<*>): Any? = value
 }

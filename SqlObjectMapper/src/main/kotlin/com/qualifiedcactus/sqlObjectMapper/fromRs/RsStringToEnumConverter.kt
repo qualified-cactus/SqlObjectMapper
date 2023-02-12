@@ -25,15 +25,21 @@
 
 package com.qualifiedcactus.sqlObjectMapper.fromRs
 
+import com.qualifiedcactus.sqlObjectMapper.SqlObjectMapperException
 import kotlin.reflect.KClass
-import java.sql.ResultSet
-interface RsValueConverter {
-    /**
-     * Convert value from [ResultSet.getObject]
-     *
-     * @param value value from [ResultSet.getObject]
-     * @param propertyType type of the actual property.
-     * When used as an element converter, type is the type of element in the collection.
-     */
-    fun convert(value: Any?, propertyType: KClass<*>): Any?
+import kotlin.reflect.full.isSubclassOf
+
+@Suppress("UNCHECKED_CAST")
+class RsStringToEnumConverter : RsValueConverter {
+    override fun convert(value: Any?, propertyType: KClass<*>): Any? {
+        if (value == null) return null
+
+        val stringValue = value as? String
+            ?: throw SqlObjectMapperException("Tried to convert a non-string type ${value::class} to enum")
+
+        if (propertyType.isSubclassOf(Enum::class)) {
+            return java.lang.Enum.valueOf(propertyType.java as Class<out Enum<*>>, stringValue)
+        }
+        else throw SqlObjectMapperException("Tried to use enum on non enum type")
+    }
 }

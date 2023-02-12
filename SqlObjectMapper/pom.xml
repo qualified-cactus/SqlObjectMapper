@@ -8,7 +8,7 @@
     <!-- #####################################################################   -->
     <groupId>com.qualifiedcactus</groupId>
     <artifactId>sqlObjectMapper</artifactId>
-    <version>2.0.1</version>
+    <version>3.0.0</version>
 
     <name>${project.groupId}:${project.artifactId}</name>
     <description>A JDBC extensions library that makes working with data object less tedious.</description>
@@ -78,7 +78,12 @@
             <version>2.7.1</version>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>io.mockk</groupId>
+            <artifactId>mockk-jvm</artifactId>
+            <version>1.13.4</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>

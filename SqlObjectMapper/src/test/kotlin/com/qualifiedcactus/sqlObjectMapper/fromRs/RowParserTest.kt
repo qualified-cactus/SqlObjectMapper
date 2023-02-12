@@ -34,6 +34,8 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.TestInstance
 import java.sql.Connection
+import kotlin.reflect.KClass
+import kotlin.reflect.KType
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class RowParserTest : AutoCloseable {
@@ -83,7 +85,7 @@ internal class RowParserTest : AutoCloseable {
     )
 
     class IncrementConverter : RsValueConverter {
-        override fun convert(value: Any?): Any? {
+        override fun convert(value: Any?, propertyType: KClass<*>): Any? {
             return requireNotNull(value) as Int + 10
         }
 

@@ -29,6 +29,8 @@ import com.qualifiedcactus.sqlObjectMapper.MappingProvider
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import kotlin.reflect.KClass
+import kotlin.reflect.KType
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class BeanRsMappingTest {
@@ -54,7 +56,7 @@ internal class BeanRsMappingTest {
     }
 
     class ValueConverter : RsValueConverter {
-        override fun convert(value: Any?): Any? {
+        override fun convert(value: Any?, propertyType: KClass<*>): Any? {
             return value
         }
     }
