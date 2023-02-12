@@ -26,6 +26,7 @@
 package com.qualifiedcactus.sqlObjectMapper.fromRs
 
 import kotlin.reflect.KClass
+import kotlin.reflect.KType
 
 internal interface RsClassMapping {
     val clazz: KClass<*>
@@ -42,6 +43,7 @@ internal interface RsClassMapping {
     class SimpleProperty(
         val name: String,
         val isId: Boolean,
+        val type: KClass<*>,
         val valueConverter: RsValueConverter
     ) : ClassProperty
 

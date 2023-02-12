@@ -23,17 +23,23 @@
  *
  */
 
-package com.qualifiedcactus.sqlObjectMapper.fromRs
+package com.qualifiedcactus.sqlObjectMapper.toParam
 
-import kotlin.reflect.KClass
-import java.sql.ResultSet
-interface RsValueConverter {
-    /**
-     * Convert value from [ResultSet.getObject]
-     *
-     * @param value value from [ResultSet.getObject]
-     * @param propertyType type of the actual property.
-     * When used as an element converter, type is the type of element in the collection.
-     */
-    fun convert(value: Any?, propertyType: KClass<*>): Any?
+import io.mockk.mockkClass
+import org.junit.jupiter.api.Test
+
+import org.junit.jupiter.api.Assertions.*
+
+internal class ParamEnumToStringConverterTest {
+
+    enum class Foo {
+        Bar, Baz
+    }
+
+    @Test
+    fun test1() {
+
+        val converter = ParamEnumToStringConverter()
+        assertEquals("Baz", converter.convert(Foo.Baz, mockkClass(JdbcObjectCreator::class)))
+    }
 }

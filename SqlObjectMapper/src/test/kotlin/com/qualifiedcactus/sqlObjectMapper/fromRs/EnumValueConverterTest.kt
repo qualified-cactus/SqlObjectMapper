@@ -25,15 +25,22 @@
 
 package com.qualifiedcactus.sqlObjectMapper.fromRs
 
-import kotlin.reflect.KClass
-import java.sql.ResultSet
-interface RsValueConverter {
-    /**
-     * Convert value from [ResultSet.getObject]
-     *
-     * @param value value from [ResultSet.getObject]
-     * @param propertyType type of the actual property.
-     * When used as an element converter, type is the type of element in the collection.
-     */
-    fun convert(value: Any?, propertyType: KClass<*>): Any?
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.Assertions.*
+
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+class EnumValueConverterTest {
+
+    enum class MyEnum {
+        Foo, Bar
+    }
+
+    @Test
+    fun test1() {
+        val valConverter = RsStringToEnumConverter()
+        val result = valConverter.convert("Foo", MyEnum::class)
+        assertInstanceOf(MyEnum::class.java, result)
+        assertEquals(MyEnum.Foo, result)
+    }
 }

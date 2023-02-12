@@ -12,7 +12,7 @@ Add maven dependency:
 <dependency>
     <groupId>com.qualifiedcactus</groupId>
     <artifactId>sqlObjectMapper</artifactId>
-    <version>2.0.1</version>
+    <version>3.0.0</version>
 </dependency>
 ```
 
@@ -79,7 +79,7 @@ please use uppercase column names or use avoid using case-sensitive columns name
 * [ResultSet's rows to DTO](documentations/ResultSet_to_DTO.md)
 * [Other helper classes and functions](documentations/Helpers_classes_and_functions.md)
 * [API doc](https://qualified-cactus.github.io/SqlObjectMapper/)
-
+* [Change logs](CHANGELOGS.md)
 
 ## Performance benchmark
 
@@ -87,10 +87,10 @@ Performance of parsing 100 rows into simple DTOs (no nested or to-many). Measure
 See [the benchmark project](SqlObjectMapperBenchmark) for the implementation of the benchmark.
 
 ```
-plainSqlBenchmark         avgt    5   5241.022 ±  83.903  ns/op
-sqlObjectMapperBenchmark  avgt    5   5643.287 ±  62.899  ns/op
-sql2oBenchmark            avgt    5   7642.332 ± 121.217  ns/op
-springJpaBenchmark        avgt    5  32067.611 ± 588.319  ns/op
+sqlObjectMapperBenchmark.SqlBenchmark.plainSqlBenchmark         avgt    5   13685.732 ±  258.408  ns/op
+sqlObjectMapperBenchmark.SqlBenchmark.springJpaBenchmark        avgt    5  104900.294 ± 1227.338  ns/op
+sqlObjectMapperBenchmark.SqlBenchmark.sql2oBenchmark            avgt    5   23706.708 ±  708.718  ns/op
+sqlObjectMapperBenchmark.SqlBenchmark.sqlObjectMapperBenchmark  avgt    5   16069.350 ±  348.919  ns/op
 ```
 
 

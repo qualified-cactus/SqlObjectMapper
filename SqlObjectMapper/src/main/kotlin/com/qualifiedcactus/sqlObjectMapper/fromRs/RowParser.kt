@@ -30,6 +30,7 @@ import com.qualifiedcactus.sqlObjectMapper.fromRs.RsClassMapping.*
 import java.sql.ResultSet
 import java.sql.ResultSetMetaData
 import java.util.*
+import kotlin.reflect.full.isSubclassOf
 import kotlin.reflect.full.isSuperclassOf
 
 internal class RowParser(
@@ -43,7 +44,7 @@ internal class RowParser(
             val (simpleProperty, propertyIndex) = topClazzMapping
                 .propertyNameDict[rsMetaData.getColumnLabel(i)] ?: continue
             propertyValues[propertyIndex] = simpleProperty
-                .valueConverter.convert(rs.getObject(i))
+                .valueConverter.convert(rs.getObject(i), simpleProperty.type)
         }
         return topClazzMapping.rootMapping.createInstance(propertyValues)
     }
@@ -71,7 +72,7 @@ internal class RowParser(
     }
 
     private fun handleSimpleProperty(property: SimpleProperty): Any? {
-        return property.valueConverter.convert(rs.getObject(property.name))
+        return property.valueConverter.convert(rs.getObject(property.name), property.type)
     }
 
     private fun handleNestedProperty(
