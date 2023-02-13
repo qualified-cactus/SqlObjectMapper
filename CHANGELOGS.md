@@ -1,5 +1,16 @@
 # Change logs
 
+## 3.1.0
+
+* Added several overloaded methods for `Connection.prepareNpCall` 
+and `Connection.prepareNpStatement` to match its `Connection.prepareStatement` and `Connection.prepareCall` equivalent.
+
+* Added and `DeclaredGeneratedKeys` and `NpStatement.executeInsert` 
+to support getting generated key(s) from insert statement (See api docs from more details).
+
+* Added `ResultSet.toScalarList` (or `ResultSetParser.parseToScalarList` for java users) 
+to support getting a list of values from a single columns.
+
 ## 3.0.0
 
 ### Breaking Change

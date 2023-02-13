@@ -77,6 +77,7 @@ please use uppercase column names or use avoid using case-sensitive columns name
 
 * [DTO to PreparedStatement's parameters](documentations/DTO_to_parameters.md)
 * [ResultSet's rows to DTO](documentations/ResultSet_to_DTO.md)
+* [Getting generated key(s) from insert statement](documentations/AutoGenKey.md)
 * [Other helper classes and functions](documentations/Helpers_classes_and_functions.md)
 * [API doc](https://qualified-cactus.github.io/SqlObjectMapper/)
 * [Change logs](CHANGELOGS.md)

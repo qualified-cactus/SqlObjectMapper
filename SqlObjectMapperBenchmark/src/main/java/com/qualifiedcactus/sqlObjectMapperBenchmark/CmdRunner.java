@@ -55,7 +55,9 @@ public class CmdRunner implements CommandLineRunner {
 
     @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     public void seedData() {
-
+        if (aRepo.count() != 0) {
+            return;
+        }
         for (int i = 0; i < 100; i++) {
             var a = new EntityA(
                 (long) i, "foo", "bar"
