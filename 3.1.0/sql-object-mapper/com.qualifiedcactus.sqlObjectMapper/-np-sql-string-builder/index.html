@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>NpSqlStringBuilder</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/jetbrains-mono.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
+</head>
+<body>
+<div class="navigation-wrapper" id="navigation-wrapper">
+    <div id="leftToggler"><span class="icon-toggler"></span></div>
+    <div class="library-name">
+            <a href="../../../index.html">
+                    <span>sqlObjectMapper</span>
+            </a>
+    </div>
+    <div>
+    </div>
+    <div class="pull-right d-flex">
+        <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+    </div>
+</div>
+<div id="container">
+    <div id="leftColumn">
+        <div id="sideMenu"></div>
+    </div>
+    <div id="main">
+<div class="main-content" id="content" pageIds="sqlObjectMapper::com.qualifiedcactus.sqlObjectMapper/NpSqlStringBuilder///PointingToDeclaration//656580144">
+  <div class="breadcrumbs"><a href="../../../index.html">sqlObjectMapper</a><span class="delimiter">/</span><a href="../index.html">com.qualifiedcactus.sqlObjectMapper</a><span class="delimiter">/</span><span class="current">NpSqlStringBuilder</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Np</span><wbr></wbr><span>Sql</span><wbr></wbr><span>String</span><wbr></wbr><span><span>Builder</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="sqlObjectMapper/JVM"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">NpSqlStringBuilder</a> <span><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-overloads/index.html"><span class="token annotation builtin">JvmOverloads</span></a> </span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>connection<span class="token operator">: </span><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/Connection.html">Connection</a><span class="token punctuation">, </span></span><span class="parameter ">startingString<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">&quot;&quot;</span></span></span><span class="token punctuation">)</span></div><p class="paragraph">A convenient class that helps with building dynamic raw sql query</p></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Constructors">Constructors</button><button class="section-tab" data-togglable="Functions">Functions</button><button class="section-tab" data-togglable="Properties">Properties</button></div>
+    <div class="tabs-section-body">
+      <h2 class="tabbedcontent">Constructors</h2>
+      <div class="table" data-togglable="Constructors"><a data-name="-471580548%2FConstructors%2F656580144" anchor-label="NpSqlStringBuilder" id="-471580548%2FConstructors%2F656580144" data-filterable-set="sqlObjectMapper/JVM"></a>
+        <div class="table-row" data-filterable-current="sqlObjectMapper/JVM" data-filterable-set="sqlObjectMapper/JVM">
+          <div class="main-subrow keyValue TabbedContent">
+            <div class=""><span class="inline-flex">
+                <div><a href="-np-sql-string-builder.html"><span>Np</span><wbr></wbr><span>Sql</span><wbr></wbr><span>String</span><wbr></wbr><span><span>Builder</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-471580548%2FConstructors%2F656580144"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="sqlObjectMapper/JVM"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-overloads/index.html"><span class="token annotation builtin">JvmOverloads</span></a></div></div><span class="token keyword"></span><span class="token keyword">fun </span><a href="-np-sql-string-builder.html"><span class="token function">NpSqlStringBuilder</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">connection<span class="token operator">: </span><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/Connection.html">Connection</a><span class="token punctuation">, </span></span><span class="parameter ">startingString<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">&quot;&quot;</span></span></span><span class="token punctuation">)</span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Functions</h2>
+      <div class="table" data-togglable="Functions"><a data-name="612886160%2FFunctions%2F656580144" anchor-label="addParameter" id="612886160%2FFunctions%2F656580144" data-filterable-set="sqlObjectMapper/JVM"></a>
+        <div class="table-row" data-filterable-current="sqlObjectMapper/JVM" data-filterable-set="sqlObjectMapper/JVM">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="add-parameter.html"><span>add</span><wbr></wbr><span><span>Parameter</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="612886160%2FFunctions%2F656580144"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="sqlObjectMapper/JVM"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="add-parameter.html"><span class="token function">addParameter</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">paramName<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">paramValue<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">NpSqlStringBuilder</a></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="140272067%2FFunctions%2F656580144" anchor-label="addParametersByDto" id="140272067%2FFunctions%2F656580144" data-filterable-set="sqlObjectMapper/JVM"></a>
+        <div class="table-row" data-filterable-current="sqlObjectMapper/JVM" data-filterable-set="sqlObjectMapper/JVM">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="add-parameters-by-dto.html"><span>add</span><wbr></wbr><span>Parameters</span><wbr></wbr><span>By</span><wbr></wbr><span><span>Dto</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="140272067%2FFunctions%2F656580144"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="sqlObjectMapper/JVM"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="add-parameters-by-dto.html"><span class="token function">addParametersByDto</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">dto<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">NpSqlStringBuilder</a></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="871148031%2FFunctions%2F656580144" anchor-label="append" id="871148031%2FFunctions%2F656580144" data-filterable-set="sqlObjectMapper/JVM"></a>
+        <div class="table-row" data-filterable-current="sqlObjectMapper/JVM" data-filterable-set="sqlObjectMapper/JVM">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="append.html"><span><span>append</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="871148031%2FFunctions%2F656580144"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="sqlObjectMapper/JVM"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="append.html"><span class="token function">append</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">s<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">NpSqlStringBuilder</a></div><div class="brief "><p class="paragraph">Append a string to sql query</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-605003775%2FFunctions%2F656580144" anchor-label="toNpCallableStatement" id="-605003775%2FFunctions%2F656580144" data-filterable-set="sqlObjectMapper/JVM"></a>
+        <div class="table-row" data-filterable-current="sqlObjectMapper/JVM" data-filterable-set="sqlObjectMapper/JVM">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="to-np-callable-statement.html"><span>to</span><wbr></wbr><span>Np</span><wbr></wbr><span>Callable</span><wbr></wbr><span><span>Statement</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-605003775%2FFunctions%2F656580144"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="sqlObjectMapper/JVM"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="to-np-callable-statement.html"><span class="token function">toNpCallableStatement</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-np-callable-statement/index.html">NpCallableStatement</a></div><div class="brief "><p class="paragraph">Create a <a href="../-np-callable-statement/index.html">NpCallableStatement</a> with the previously added parameters</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-86826426%2FFunctions%2F656580144" anchor-label="toNpPreparedStatement" id="-86826426%2FFunctions%2F656580144" data-filterable-set="sqlObjectMapper/JVM"></a>
+        <div class="table-row" data-filterable-current="sqlObjectMapper/JVM" data-filterable-set="sqlObjectMapper/JVM">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="to-np-prepared-statement.html"><span>to</span><wbr></wbr><span>Np</span><wbr></wbr><span>Prepared</span><wbr></wbr><span><span>Statement</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-86826426%2FFunctions%2F656580144"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="sqlObjectMapper/JVM"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="to-np-prepared-statement.html"><span class="token function">toNpPreparedStatement</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-np-prepared-statement/index.html">NpPreparedStatement</a></div><div class="brief "><p class="paragraph">Create a <a href="../-np-prepared-statement/index.html">NpPreparedStatement</a> with the previously added parameters</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="611245181%2FFunctions%2F656580144" anchor-label="toQueryString" id="611245181%2FFunctions%2F656580144" data-filterable-set="sqlObjectMapper/JVM"></a>
+        <div class="table-row" data-filterable-current="sqlObjectMapper/JVM" data-filterable-set="sqlObjectMapper/JVM">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="to-query-string.html"><span>to</span><wbr></wbr><span>Query</span><wbr></wbr><span><span>String</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="611245181%2FFunctions%2F656580144"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="sqlObjectMapper/JVM"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="to-query-string.html"><span class="token function">toQueryString</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Properties</h2>
+      <div class="table" data-togglable="Properties"><a data-name="-1240346911%2FProperties%2F656580144" anchor-label="connection" id="-1240346911%2FProperties%2F656580144" data-filterable-set="sqlObjectMapper/JVM"></a>
+        <div class="table-row" data-filterable-current="sqlObjectMapper/JVM" data-filterable-set="sqlObjectMapper/JVM">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="connection.html"><span><span>connection</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1240346911%2FProperties%2F656580144"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-dependent-content" data-active="" data-togglable="sqlObjectMapper/JVM"><a data-name="-1240346911%2FProperties%2F656580144" anchor-label="connection" id="-1240346911%2FProperties%2F656580144" data-filterable-set="sqlObjectMapper/JVM"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="connection.html">connection</a><span class="token operator">: </span><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/Connection.html">Connection</a></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2023 Copyright</span><span
+                class="pull-right"><span>Generated by </span><a
+                href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+    </div>
+</div>
+</body>
+</html>
