@@ -12,7 +12,7 @@ Add maven dependency:
 <dependency>
     <groupId>com.qualifiedcactus</groupId>
     <artifactId>sqlObjectMapper</artifactId>
-    <version>3.0.0</version>
+    <version>3.1.0</version>
 </dependency>
 ```
 
@@ -77,6 +77,7 @@ please use uppercase column names or use avoid using case-sensitive columns name
 
 * [DTO to PreparedStatement's parameters](documentations/DTO_to_parameters.md)
 * [ResultSet's rows to DTO](documentations/ResultSet_to_DTO.md)
+* [Getting generated key(s) from insert statement](documentations/AutoGenKey.md)
 * [Other helper classes and functions](documentations/Helpers_classes_and_functions.md)
 * [API doc](https://qualified-cactus.github.io/SqlObjectMapper/)
 * [Change logs](CHANGELOGS.md)

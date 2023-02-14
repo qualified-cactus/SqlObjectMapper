@@ -26,13 +26,14 @@
 package com.qualifiedcactus.sqlObjectMapper
 
 import com.qualifiedcactus.sqlObjectMapper.fromRs.toList
+import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import java.sql.Connection
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-internal class NpStatementTest {
+internal class NpStatementTest : AutoCloseable {
 
     val createTable = """
         CREATE TABLE table_a (
@@ -75,6 +76,11 @@ internal class NpStatementTest {
         assertEquals(1, results.size)
         assertEquals("bazz", results.first().column2)
 
+    }
+
+    @AfterAll
+    override fun close() {
+       connection.close()
     }
 
 
