@@ -80,9 +80,9 @@ class AutoGenKeyTest : AutoCloseable{
             declaredKey1
         )
 
-        assertEquals(1, stmt.executeInsert(declaredKey1).first())
-        assertEquals(2, stmt.executeInsert(declaredKey1).first())
-        assertEquals(3, stmt.executeInsert(declaredKey1).first())
+        assertEquals(1, stmt.executeUpdateWithGeneratedKeys(declaredKey1).first())
+        assertEquals(2, stmt.executeUpdateWithGeneratedKeys(declaredKey1).first())
+        assertEquals(3, stmt.executeUpdateWithGeneratedKeys(declaredKey1).first())
     }
 
     @Test
@@ -92,15 +92,15 @@ class AutoGenKeyTest : AutoCloseable{
             "INSERT INTO table_2 VALUES (NEXT VALUE FOR seq_2, NEXT VALUE FOR seq_3)",
             declaredKey2
         )
-        stmt.executeInsert(declaredKey2).also {
+        stmt.executeUpdateWithGeneratedKeys(declaredKey2).also {
             assertEquals(10, it.first().column1)
             assertEquals(20, it.first().nested.column2)
         }
-        stmt.executeInsert(declaredKey2).also {
+        stmt.executeUpdateWithGeneratedKeys(declaredKey2).also {
             assertEquals(11, it.first().column1)
             assertEquals(21, it.first().nested.column2)
         }
-        stmt.executeInsert(declaredKey2).also {
+        stmt.executeUpdateWithGeneratedKeys(declaredKey2).also {
             assertEquals(12, it.first().column1)
             assertEquals(22, it.first().nested.column2)
         }

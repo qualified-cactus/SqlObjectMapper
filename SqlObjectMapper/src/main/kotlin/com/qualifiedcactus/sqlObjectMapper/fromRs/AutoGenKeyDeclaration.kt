@@ -37,7 +37,10 @@ interface DeclaredGeneratedKeys<KeyType:Any> {
     val columnNames: Array<String>
 }
 
-
+/**
+ * Declare a single-column, auto-generated key of type [KeyType].
+ * It is recommended to create object of this class only once.
+ */
 class SingleAutoGenKey<KeyType:Any>(
     val columnName: String,
     val keyType: KClass<KeyType>
@@ -48,7 +51,7 @@ class SingleAutoGenKey<KeyType:Any>(
 }
 
 /**
- * Declare that an auto generated keys of type [KeyType].
+ * Declare that a composite, auto-generated key of type [KeyType].
  * It is recommended to create object of this class only once.
  */
 class CompositeAutoGenKey<KeyType:Any>(val dtoKClass: KClass<KeyType>) : DeclaredGeneratedKeys<KeyType> {
