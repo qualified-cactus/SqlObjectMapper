@@ -24,7 +24,12 @@
  */
 
 package com.qualifiedcactus.sqlObjectMapper.toParam
+import java.sql.PreparedStatement
 
+/**
+ * Converter param value before setting it to a [PreparedStatement]. All implementations must be thread safe.
+ */
 interface ParamValueConverter {
     fun convert(value: Any?, objectCreator: JdbcObjectCreator): Any?
 }
+

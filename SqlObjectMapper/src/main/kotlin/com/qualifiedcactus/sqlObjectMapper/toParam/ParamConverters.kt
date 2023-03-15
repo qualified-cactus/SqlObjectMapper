@@ -23,11 +23,24 @@
  *
  */
 
+@file:Suppress("UNCHECKED_CAST")
 package com.qualifiedcactus.sqlObjectMapper.toParam
 
 import com.qualifiedcactus.sqlObjectMapper.SqlObjectMapperException
+import java.nio.ByteBuffer
+import java.util.*
 import kotlin.reflect.full.isSubclassOf
 
+/**
+ * Does nothing
+ */
+class ParamNoOpConverter : ParamValueConverter {
+    override fun convert(value: Any?, objectCreator: JdbcObjectCreator): Any? = value
+}
+
+/**
+ * Convert enum to string
+ */
 class ParamEnumToStringConverter : ParamValueConverter{
     override fun convert(value: Any?, objectCreator: JdbcObjectCreator): Any? {
         if (value == null) return null
@@ -37,4 +50,29 @@ class ParamEnumToStringConverter : ParamValueConverter{
         }
         else throw SqlObjectMapperException("${value::class} is not an enum class")
     }
+}
+
+/**
+ * Convert UUID to byte array
+ */
+class ParamUuidToByteArrayConverter : ParamValueConverter {
+
+    /**
+     * Convert UUID to byte array
+     */
+    override fun convert(value: Any?, objectCreator: JdbcObjectCreator): ByteArray? {
+        if (value == null) return null
+        if (value is UUID) {
+            val byteBuffer = ByteBuffer.wrap(ByteArray(16))
+            byteBuffer.putLong(value.mostSignificantBits)
+            byteBuffer.putLong(value.leastSignificantBits)
+            return byteBuffer.array()
+        }
+        else {
+            throw SqlObjectMapperException(
+                "Invalid converter usage: value (${value::class}) to be converted is not a UUID"
+            )
+        }
+    }
+
 }

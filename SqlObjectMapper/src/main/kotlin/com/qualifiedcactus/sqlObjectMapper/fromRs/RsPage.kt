@@ -25,22 +25,43 @@
 
 package com.qualifiedcactus.sqlObjectMapper.fromRs
 
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
-import org.junit.jupiter.api.Assertions.*
+import java.util.*
+import kotlin.math.ceil
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class EnumValueConverterTest {
+/**
+ * Use to contain paged content. Almost similar to Spring Data's `Page<T>`
+ */
+class RsPage<T:Any>(
+    val content: List<T>,
+    /**
+     * A page number, starting from 0
+     */
+    val page: Int,
+    /**
+     * Size of a page
+     */
+    val size: Int,
+    val totalElements: Long
+) {
 
-    enum class MyEnum {
-        Foo, Bar
+    /**
+     * Create an empty page
+     */
+    constructor() : this(Collections.emptyList(), 0, 0, 0)
+
+
+    val first: Boolean = page == 0
+    val last: Boolean = (page + 1) * size >= totalElements
+    val totalPages: Long = ceil(totalElements.toDouble() / size).toLong()
+
+    fun <TargetType:Any> map(mapFunction: (element: T)->TargetType): RsPage<TargetType> {
+        return RsPage(
+            content.map(mapFunction),
+            page,
+            size,
+            totalElements
+        )
     }
 
-    @Test
-    fun test1() {
-        val valConverter = RsStringToEnumConverter()
-        val result = valConverter.convert("Foo", MyEnum::class)
-        assertInstanceOf(MyEnum::class.java, result)
-        assertEquals(MyEnum.Foo, result)
-    }
+
 }

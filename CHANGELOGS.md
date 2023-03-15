@@ -1,5 +1,12 @@
 # Change logs
 
+## 3.2.0
+
+* Added `ParamUuidToByteArrayConverter` and `RsByteArrayToUuidConverter`
+* Added `RsPage<T>`, which is almost the same as Spring Data's 
+[`Page<T>`](https://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/domain/Page.html), 
+in case when Spring Data dependency is not available.
+
 ## 3.1.0
 
 * Added several overloaded methods for `Connection.prepareNpCall` 
