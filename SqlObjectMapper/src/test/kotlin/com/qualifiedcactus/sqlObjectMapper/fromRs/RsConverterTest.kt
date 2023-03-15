@@ -25,21 +25,38 @@
 
 package com.qualifiedcactus.sqlObjectMapper.fromRs
 
-import com.qualifiedcactus.sqlObjectMapper.SqlObjectMapperException
-import kotlin.reflect.KClass
-import kotlin.reflect.full.isSubclassOf
+import com.qualifiedcactus.sqlObjectMapper.toParam.JdbcObjectCreator
+import com.qualifiedcactus.sqlObjectMapper.toParam.ParamUuidToByteArrayConverter
+import io.mockk.mockkClass
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.Assertions.*
+import java.util.UUID
 
-@Suppress("UNCHECKED_CAST")
-class RsStringToEnumConverter : RsValueConverter {
-    override fun convert(value: Any?, propertyType: KClass<*>): Any? {
-        if (value == null) return null
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+class RsConverterTest {
 
-        val stringValue = value as? String
-            ?: throw SqlObjectMapperException("Tried to convert a non-string type ${value::class} to enum")
+    enum class MyEnum {
+        Foo, Bar
+    }
 
-        if (propertyType.isSubclassOf(Enum::class)) {
-            return java.lang.Enum.valueOf(propertyType.java as Class<out Enum<*>>, stringValue)
-        }
-        else throw SqlObjectMapperException("Tried to use enum on non enum type")
+    @Test
+    fun testEnumConverter() {
+        val valConverter = RsStringToEnumConverter()
+        val result = valConverter.convert("Foo", MyEnum::class)
+        assertInstanceOf(MyEnum::class.java, result)
+        assertEquals(MyEnum.Foo, result)
+    }
+
+    @Test
+    fun testUuidConverter() {
+        val id = UUID.randomUUID()
+        val rsConverter = RsByteArrayToUuidConverter()
+        val paramConverter = ParamUuidToByteArrayConverter()
+
+
+        val byteArray = paramConverter.convert(id, mockkClass(JdbcObjectCreator::class))
+        val convertedId = rsConverter.convert(byteArray, UUID::class)
+        assertEquals(id, convertedId)
     }
 }

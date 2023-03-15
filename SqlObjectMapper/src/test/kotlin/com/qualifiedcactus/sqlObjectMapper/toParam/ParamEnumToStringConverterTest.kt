@@ -38,7 +38,6 @@ internal class ParamEnumToStringConverterTest {
 
     @Test
     fun test1() {
-
         val converter = ParamEnumToStringConverter()
         assertEquals("Baz", converter.convert(Foo.Baz, mockkClass(JdbcObjectCreator::class)))
     }
