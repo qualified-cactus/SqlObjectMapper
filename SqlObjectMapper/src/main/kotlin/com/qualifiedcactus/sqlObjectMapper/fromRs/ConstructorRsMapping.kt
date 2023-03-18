@@ -60,8 +60,8 @@ internal class ConstructorRsMapping(
                         CamelCaseToUpperSnakeCaseConverter.convert(name)
                     ,
                     rsColumn.isId,
-                    parameter.type.classifier as KClass<*>,
-                    rsColumn.converter.createInstance()
+                    parameter.type,
+                    rsColumn.extractor.createInstance()
                 ).also(simpleProperties::add)
             }
             else if (rsToOne != null) {
@@ -95,8 +95,8 @@ internal class ConstructorRsMapping(
                 SimpleProperty(
                     CamelCaseToUpperSnakeCaseConverter.convert(name),
                     false,
-                    parameter.type.classifier as KClass<*>,
-                    RsNoOpConverter()
+                    parameter.type,
+                    DefaultRsValueExtractor()
                 ).also(simpleProperties::add)
             }
             properties.add(propertyInfo)

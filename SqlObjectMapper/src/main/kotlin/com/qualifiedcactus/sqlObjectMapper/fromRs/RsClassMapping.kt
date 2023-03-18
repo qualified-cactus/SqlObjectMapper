@@ -43,8 +43,8 @@ internal interface RsClassMapping {
     class SimpleProperty(
         val name: String,
         val isId: Boolean,
-        val type: KClass<*>,
-        val valueConverter: RsValueConverter
+        val type: KType,
+        val extractor: RsValueExtractor
     ) : ClassProperty
 
     class NestedProperty(
@@ -55,7 +55,7 @@ internal interface RsClassMapping {
     class ToManyProperty(
         val collectionType: KClass<*>,
         val elementMapping: RsTopClassMapping,
-        val valueConverter: RsValueConverter
+        val elementConverter: RsElementConverter
     ) : ClassProperty
 
 }

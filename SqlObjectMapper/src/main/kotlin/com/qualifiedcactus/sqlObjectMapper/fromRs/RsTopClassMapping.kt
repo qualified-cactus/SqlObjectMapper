@@ -74,17 +74,6 @@ internal class RsTopClassMapping(
         }
     }
 
-//    val straightToMany: Boolean = run {
-//        var result = toManyList.size == 1
-//        if (!result) return@run false
-//        var cur: Collection<ToManyProperty>? = toManyList.first().elementMapping.toManyList
-//        while (cur != null) {
-//            result = result && cur!!.size <= 1
-//            cur = if (cur!!.size == 1) cur!!.first().elementMapping.toManyList else null
-//        }
-//        result
-//    }
-
     override fun equals(other: Any?): Boolean {
         return rootMapping.clazz == other
     }

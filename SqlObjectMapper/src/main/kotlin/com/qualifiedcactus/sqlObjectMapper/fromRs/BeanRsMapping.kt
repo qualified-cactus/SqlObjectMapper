@@ -70,8 +70,8 @@ internal class BeanRsMapping(
                             CamelCaseToUpperSnakeCaseConverter.convert(property.name)
                         ,
                         rsColumn.isId,
-                        property.returnType.classifier as KClass<*>,
-                        rsColumn.converter.createInstance()
+                        property.returnType,
+                        rsColumn.extractor.createInstance()
                     ).also(simpleProperties::add)
                 }
                 else if (rsToOne != null) {
@@ -105,8 +105,8 @@ internal class BeanRsMapping(
                     SimpleProperty(
                         CamelCaseToUpperSnakeCaseConverter.convert(property.name),
                         false,
-                        property.returnType.classifier as KClass<*>,
-                        RsNoOpConverter()
+                        property.returnType,
+                        DefaultRsValueExtractor()
                     ).also(simpleProperties::add)
                 }
 

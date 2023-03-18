@@ -30,7 +30,6 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import kotlin.reflect.KClass
-import kotlin.reflect.KType
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class BeanRsMappingTest {
@@ -55,7 +54,7 @@ internal class BeanRsMappingTest {
         lateinit var column7: String
     }
 
-    class ValueConverter : RsValueConverter {
+    class ValueConverter : RsElementConverter {
         override fun convert(value: Any?, propertyType: KClass<*>): Any? {
             return value
         }
@@ -80,7 +79,7 @@ internal class BeanRsMappingTest {
         }
         Assertions.assertNotNull(property1)
         Assertions.assertTrue(property1!!.isId)
-        Assertions.assertEquals(ValueConverter::class, property1.valueConverter::class)
+        Assertions.assertEquals(ValueConverter::class, property1.extractor::class)
 
         //----------------------------
 
@@ -89,7 +88,7 @@ internal class BeanRsMappingTest {
         }
         Assertions.assertNotNull(property3)
         Assertions.assertFalse(property3!!.isId)
-        Assertions.assertEquals(RsNoOpConverter::class, property3.valueConverter::class)
+        Assertions.assertEquals(RsNoOpConverter::class, property3.extractor::class)
 
         //----------------------------
 
@@ -109,6 +108,6 @@ internal class BeanRsMappingTest {
         val property4 = clazzMapping.toManyProperties.first()
         Assertions.assertEquals(ToManyDto::class, property4.elementMapping.rootMapping.clazz)
         Assertions.assertEquals(Collection::class, property4.collectionType)
-        Assertions.assertEquals(RsNoOpConverter::class, property4.valueConverter::class)
+        Assertions.assertEquals(RsNoOpConverter::class, property4.elementConverter::class)
     }
 }

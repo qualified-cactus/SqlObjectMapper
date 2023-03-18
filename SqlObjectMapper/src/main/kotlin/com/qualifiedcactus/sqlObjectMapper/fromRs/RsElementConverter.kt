@@ -27,7 +27,10 @@ package com.qualifiedcactus.sqlObjectMapper.fromRs
 
 import kotlin.reflect.KClass
 import java.sql.ResultSet
-interface RsValueConverter {
+
+
+
+open class RsElementConverter {
     /**
      * Convert value from [ResultSet.getObject]
      *
@@ -35,5 +38,6 @@ interface RsValueConverter {
      * @param propertyType type of the actual property.
      * When used as an element converter, type is the type of element in the collection.
      */
-    fun convert(value: Any?, propertyType: KClass<*>): Any?
+    open fun convert(value: Any?, propertyType: KClass<*>): Any? = value
 }
+
