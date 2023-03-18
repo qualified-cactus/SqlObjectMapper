@@ -26,7 +26,6 @@
 package com.qualifiedcactus.sqlObjectMapper.fromRs
 
 import kotlin.reflect.KClass
-import java.sql.ResultSet
 
 /**
  * Specify which constructor to use.
@@ -60,10 +59,14 @@ annotation class RsColumn(
      */
     val isId:Boolean = false,
 
+//    /**
+//     * A converter class to convert value from [ResultSet.getObject] before assigning it into the property.
+//     */
+//    val converter: KClass<out RsValueConverter> = RsNoOpConverter::class,
     /**
-     * A converter class to convert value from [ResultSet.getObject] before assigning it into the property.
+     * Extractor to be used to extract value from ResultSet into object
      */
-    val converter: KClass<out RsValueConverter> = RsNoOpConverter::class,
+    val extractor: KClass<out RsValueExtractor> = DefaultRsValueExtractor::class
 )
 
 /**
@@ -98,7 +101,7 @@ annotation class RsToMany(
      * A converter class to convert a value of type [classToMap] (if set) or before adding it into the collection.
      * Conversion result must not be null
      */
-    val elementConverter: KClass<out RsValueConverter> = RsNoOpConverter::class,
+    val elementConverter: KClass<out RsElementConverter> = RsElementConverter::class,
 
     /**
      * Specify a child entity class to map.

@@ -31,57 +31,52 @@ import java.util.UUID
 import kotlin.reflect.KClass
 import kotlin.reflect.full.isSubclassOf
 
-/**
- * Does nothing
- */
-class RsNoOpConverter : RsValueConverter {
-    override fun convert(value: Any?, propertyType: KClass<*>): Any? = value
-}
 
-/**
- * Convert string to enum
- */
-class RsStringToEnumConverter : RsValueConverter {
-    override fun convert(value: Any?, propertyType: KClass<*>): Any? {
-        if (value == null) return null
-
-        val stringValue = value as? String
-            ?: throw SqlObjectMapperException("Tried to convert a non-string type ${value::class} to enum")
-
-        if (propertyType.isSubclassOf(Enum::class)) {
-            return java.lang.Enum.valueOf(propertyType.java as Class<out Enum<*>>, stringValue)
-        }
-        else throw SqlObjectMapperException("Tried to use enum on non enum type")
-    }
-}
-
-
-/**
- * Convert database RAW data type (bytes array) to [UUID]
- */
-class RsByteArrayToUuidConverter : RsValueConverter {
-
-    /**
-     * Convert byte array to uuid
-     */
-    override fun convert(value: Any?, propertyType: KClass<*>): UUID? {
-        //reference: https://www.baeldung.com/java-byte-array-to-uuid
-
-        if (value == null) return null
-        if (value is ByteArray) {
-            if (value.size != 16) {
-                throw SqlObjectMapperException("Invalid converter usage: byte array size (${value.size}) is not 16")
-            }
-            val byteBuffer = ByteBuffer.wrap(value)
-            return UUID(
-                byteBuffer.long,
-                byteBuffer.long
-            )
-        }
-        else {
-            throw SqlObjectMapperException(
-                "Invalid converter usage: value (${value::class}) to be converted is not a byte array"
-            )
-        }
-    }
-}
+//
+///**
+// * Convert string to enum
+// */
+//class RsStringToEnumConverter : RsValueConverter {
+//    override fun convert(value: Any?, propertyType: KClass<*>): Any? {
+//        if (value == null) return null
+//
+//        val stringValue = value as? String
+//            ?: throw SqlObjectMapperException("Tried to convert a non-string type ${value::class} to enum")
+//
+//        if (propertyType.isSubclassOf(Enum::class)) {
+//            return java.lang.Enum.valueOf(propertyType.java as Class<out Enum<*>>, stringValue)
+//        }
+//        else throw SqlObjectMapperException("Tried to use enum on non enum type")
+//    }
+//}
+//
+//
+///**
+// * Convert database RAW data type (bytes array) to [UUID]
+// */
+//class RsByteArrayToUuidConverter : RsValueConverter {
+//
+//    /**
+//     * Convert byte array to uuid
+//     */
+//    override fun convert(value: Any?, propertyType: KClass<*>): UUID? {
+//        //reference: https://www.baeldung.com/java-byte-array-to-uuid
+//
+//        if (value == null) return null
+//        if (value is ByteArray) {
+//            if (value.size != 16) {
+//                throw SqlObjectMapperException("Invalid converter usage: byte array size (${value.size}) is not 16")
+//            }
+//            val byteBuffer = ByteBuffer.wrap(value)
+//            return UUID(
+//                byteBuffer.long,
+//                byteBuffer.long
+//            )
+//        }
+//        else {
+//            throw SqlObjectMapperException(
+//                "Invalid converter usage: value (${value::class}) to be converted is not a byte array"
+//            )
+//        }
+//    }
+//}

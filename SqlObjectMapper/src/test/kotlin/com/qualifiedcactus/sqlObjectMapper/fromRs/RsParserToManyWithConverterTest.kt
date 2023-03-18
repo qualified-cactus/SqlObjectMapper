@@ -30,7 +30,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.Assertions.*
 import kotlin.reflect.KClass
-import kotlin.reflect.KType
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class RsParserToManyWithConverterTest {
@@ -48,7 +47,7 @@ class RsParserToManyWithConverterTest {
         val childName: String?
     )
 
-    class ChildToStringConverter : RsValueConverter {
+    class ChildToStringConverter : RsElementConverter {
         override fun convert(value: Any?, propertyType: KClass<*>): Any? {
             if (value is MyChildDto) {
                 return value.childName

@@ -240,20 +240,10 @@ private class RelationalTracker(
             idSet.add(objectInfo.idValue)
             val childObject = dict[objectInfo.clazz]!![objectInfo.idValue]!!.value
             parsedCollection.collection.add(
-                parsedCollection.info.valueConverter.convert(
+                parsedCollection.info.elementConverter.convert(
                     childObject, parsedCollection.info.elementMapping.rootMapping.clazz
                 )
             )
         }
     }
 }
-
-///**
-// * An object used to convert [ResultSet] to desired objects
-// */
-//@Suppress("UNCHECKED_CAST")
-//object ResultSetParser {
-//
-//
-//}
-
