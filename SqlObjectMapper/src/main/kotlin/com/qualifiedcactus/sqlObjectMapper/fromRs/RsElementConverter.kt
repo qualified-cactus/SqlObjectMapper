@@ -35,9 +35,9 @@ open class RsElementConverter {
      * Convert value from [ResultSet.getObject]
      *
      * @param value value from [ResultSet.getObject]
-     * @param propertyType type of the actual property.
+     * @param elementType element's type
      * When used as an element converter, type is the type of element in the collection.
      */
-    open fun convert(value: Any?, propertyType: KClass<*>): Any? = value
+    open fun convert(value: Any?, elementType: KClass<*>): Any? = value
 }
 

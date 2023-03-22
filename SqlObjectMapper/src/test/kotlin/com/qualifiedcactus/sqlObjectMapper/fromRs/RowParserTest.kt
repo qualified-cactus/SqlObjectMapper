@@ -34,29 +34,31 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.TestInstance
 import java.sql.Connection
-import kotlin.reflect.KClass
+import java.sql.ResultSet
+import kotlin.reflect.KAnnotatedElement
+import kotlin.reflect.KType
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class RowParserTest : AutoCloseable {
 
     val tableSql = """
-        
+
         CREATE TABLE table_a (
             column_1 INTEGER PRIMARY KEY,
             column_2 INTEGER NOT NULL
         );
-        
+
         CREATE TABLE table_b (
             column_3 INTEGER PRIMARY KEY,
             column_4 INTEGER NOT NULL REFERENCES table_a(column_1)
         );
-        
+
     """
 
     val dataSql = """
         INSERT INTO table_a VALUES (1,2);
         INSERT INTO table_a VALUES (3,4);
-        
+
         INSERT INTO table_b VALUES (1,1);
         INSERT INTO table_b VALUES (2,1);
     """.trimIndent()
@@ -78,16 +80,23 @@ internal class RowParserTest : AutoCloseable {
 
 
     class SimpleDto1(
-        @RsColumn(converter = IncrementConverter::class)
+        @RsColumn(extractor = IncrementConverter::class)
         val column1: Int,
         val column2: Int
     )
 
-    class IncrementConverter : RsElementConverter {
-        override fun convert(value: Any?, propertyType: KClass<*>): Any? {
-            return requireNotNull(value) as Int + 10
+    class IncrementConverter(kType: KType, annotatedElement: KAnnotatedElement) : RsValueExtractor(kType, annotatedElement) {
+
+        override fun provideValueFromIndex(rs: ResultSet, columnIndex: Int): Any? {
+            return rs.getInt(columnIndex)
         }
 
+        override fun provideValueFromName(rs: ResultSet, columnName: String): Any? {
+            return rs.getInt(columnName)
+        }
+        override fun processValue(rs: ResultSet, value: Any?): Any? {
+            return (value as Int) + 10
+        }
     }
 
     @Test
@@ -122,7 +131,7 @@ internal class RowParserTest : AutoCloseable {
     @Test
     fun parseWithNestedTest() {
         val query = """
-            SELECT a.column_1, b.column_3 
+            SELECT a.column_1, b.column_3
             FROM table_a a
             LEFT JOIN table_b b ON a.column_1 = b.column_4
             WHERE a.column_1 = 1

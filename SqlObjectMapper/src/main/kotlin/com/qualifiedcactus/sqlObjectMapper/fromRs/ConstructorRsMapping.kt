@@ -55,13 +55,13 @@ internal class ConstructorRsMapping(
             val propertyInfo: ClassProperty = if (rsColumn != null) {
                 SimpleProperty(
                     if (rsColumn.name != "")
-                        rsColumn.name
+                        rsColumn.name.uppercase()
                     else
                         CamelCaseToUpperSnakeCaseConverter.convert(name)
                     ,
                     rsColumn.isId,
                     parameter.type,
-                    rsColumn.extractor.createInstance()
+                    RsValueExtractor.createInstance(rsColumn.extractor, parameter.type, parameter)
                 ).also(simpleProperties::add)
             }
             else if (rsToOne != null) {
@@ -96,7 +96,7 @@ internal class ConstructorRsMapping(
                     CamelCaseToUpperSnakeCaseConverter.convert(name),
                     false,
                     parameter.type,
-                    DefaultRsValueExtractor()
+                    DefaultRsValueExtractor(parameter.type, parameter)
                 ).also(simpleProperties::add)
             }
             properties.add(propertyInfo)

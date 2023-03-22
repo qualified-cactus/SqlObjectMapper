@@ -29,6 +29,7 @@ import com.qualifiedcactus.sqlObjectMapper.SqlObjectMapperException
 import com.qualifiedcactus.sqlObjectMapper.fromRs.RsClassMapping.*
 import java.sql.ResultSet
 import java.sql.ResultSetMetaData
+import java.sql.SQLException
 import java.util.*
 import kotlin.reflect.full.isSuperclassOf
 
@@ -39,12 +40,31 @@ internal class RowParser(
 
     fun simpleParse(topClazzMapping: RsTopClassMapping): Any {
         val propertyValues = arrayOfNulls<Any?>(topClazzMapping.rootMapping.properties.size)
+        var paramCheck = 0
         for (i in 1..rsMetaData.columnCount) {
             val (simpleProperty, propertyIndex) = topClazzMapping
                 .propertyNameDict[rsMetaData.getColumnLabel(i)] ?: continue
-//            propertyValues[propertyIndex] = simpleProperty
-//                .extractor.convert(rs.getObject(i), simpleProperty.type)
-            propertyValues[propertyIndex] = simpleProperty.extractor.extractValueByIndex(rs, simpleProperty.type, i)
+            propertyValues[propertyIndex] = simpleProperty.extractor
+                .extractValueByIndex(rs, i)
+            paramCheck++
+        }
+
+        // missing fields detected
+        if (paramCheck != propertyValues.size) {
+            topClazzMapping.rootMapping.properties.forEach {
+                if (it is SimpleProperty) {
+                    var notFound = true
+                    for (i in 1..rsMetaData.columnCount) {
+                        if (rsMetaData.getColumnLabel(i) == it.name) {
+                            notFound = false
+                            break
+                        }
+                    }
+                    if (notFound) {
+                        throw SQLException("Can't find column label ${it.name}")
+                    }
+                }
+            }
         }
         return topClazzMapping.rootMapping.createInstance(propertyValues)
     }
@@ -73,7 +93,7 @@ internal class RowParser(
 
     private fun handleSimpleProperty(property: SimpleProperty): Any? {
 //        return property.extractor.convert(rs.getObject(property.name), property.type)
-        return property.extractor.extractValueByName(rs, property.type, property.name)
+        return property.extractor.extractValueByName(rs, property.name)
     }
 
     private fun handleNestedProperty(

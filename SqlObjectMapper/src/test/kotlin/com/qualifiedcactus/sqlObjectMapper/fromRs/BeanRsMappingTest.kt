@@ -29,13 +29,14 @@ import com.qualifiedcactus.sqlObjectMapper.MappingProvider
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import kotlin.reflect.KClass
+import kotlin.reflect.KAnnotatedElement
+import kotlin.reflect.KType
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class BeanRsMappingTest {
 
     class Dto1 {
-        @RsColumn(name = "MY_COLUMN_1", isId = true, converter = ValueConverter::class)
+        @RsColumn(name = "MY_COLUMN_1", isId = true, extractor = ValueConverter::class)
         lateinit var column1: String
         @RsNested
         lateinit var nestedObject: NestedDto
@@ -54,10 +55,10 @@ internal class BeanRsMappingTest {
         lateinit var column7: String
     }
 
-    class ValueConverter : RsElementConverter {
-        override fun convert(value: Any?, propertyType: KClass<*>): Any? {
-            return value
-        }
+    class ValueConverter(
+        type: KType, annotation: KAnnotatedElement
+    ) : RsValueExtractor(type, annotation) {
+
     }
 
     @Test
@@ -88,7 +89,7 @@ internal class BeanRsMappingTest {
         }
         Assertions.assertNotNull(property3)
         Assertions.assertFalse(property3!!.isId)
-        Assertions.assertEquals(RsNoOpConverter::class, property3.extractor::class)
+        Assertions.assertEquals(DefaultRsValueExtractor::class, property3.extractor::class)
 
         //----------------------------
 
@@ -108,6 +109,6 @@ internal class BeanRsMappingTest {
         val property4 = clazzMapping.toManyProperties.first()
         Assertions.assertEquals(ToManyDto::class, property4.elementMapping.rootMapping.clazz)
         Assertions.assertEquals(Collection::class, property4.collectionType)
-        Assertions.assertEquals(RsNoOpConverter::class, property4.elementConverter::class)
+        Assertions.assertEquals(RsElementConverter::class, property4.elementConverter::class)
     }
 }

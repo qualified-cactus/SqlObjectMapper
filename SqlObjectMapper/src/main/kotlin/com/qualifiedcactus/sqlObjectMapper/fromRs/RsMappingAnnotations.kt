@@ -59,10 +59,6 @@ annotation class RsColumn(
      */
     val isId:Boolean = false,
 
-//    /**
-//     * A converter class to convert value from [ResultSet.getObject] before assigning it into the property.
-//     */
-//    val converter: KClass<out RsValueConverter> = RsNoOpConverter::class,
     /**
      * Extractor to be used to extract value from ResultSet into object
      */

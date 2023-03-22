@@ -40,33 +40,33 @@ import kotlin.reflect.KClass
 internal class ResultSetParserTest : AutoCloseable {
 
     val tableSql = """
-        
+
         CREATE TABLE table_a (
             column_1 INTEGER UNIQUE NOT NULL,
             column_2 INTEGER UNIQUE NOT NULL,
             column_3 INTEGER NOT NULL,
             PRIMARY KEY (column_1, column_2)
         );
-        
+
         CREATE TABLE table_b (
             column_4 INTEGER PRIMARY KEY,
             column_5 INTEGER NOT NULL REFERENCES table_a(column_1)
         );
-        
+
         CREATE TABLE table_c (
             column_6 INTEGER PRIMARY KEY,
             column_7 INTEGER NOT NULL REFERENCES table_b(column_4)
         );
-        
+
     """
 
     val dataSql = """
         INSERT INTO table_a VALUES (1,2,3);
         INSERT INTO table_a VALUES (4,5,6);
-        
+
         INSERT INTO table_b VALUES (1,1);
         INSERT INTO table_b VALUES (2,1);
-        
+
         INSERT INTO table_c VALUES (1,1);
         INSERT INTO table_c VALUES (2,1);
     """.trimIndent()
@@ -100,8 +100,8 @@ internal class ResultSetParserTest : AutoCloseable {
         val intList: List<Int>
     )
 
-    class EntityCToInt : RsElementConverter {
-        override fun convert(value: Any?, propertyType: KClass<*>): Any? {
+    class EntityCToInt : RsElementConverter() {
+        override fun convert(value: Any?, elementType: KClass<*>): Any? {
             return (value as EntityC).column6
         }
     }

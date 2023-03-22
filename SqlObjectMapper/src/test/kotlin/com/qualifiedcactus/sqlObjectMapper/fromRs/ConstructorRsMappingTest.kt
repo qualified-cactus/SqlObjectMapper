@@ -30,14 +30,16 @@ import com.qualifiedcactus.sqlObjectMapper.fromRs.*
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import kotlin.reflect.KAnnotatedElement
 import kotlin.reflect.KClass
+import kotlin.reflect.KType
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class ConstructorRsMappingTest {
 
 
     class Dto1(
-        @RsColumn(name = "MY_COLUMN_1", isId = true, converter = ValueConverter::class)
+        @RsColumn(name = "MY_COLUMN_1", isId = true, extractor = ValueConverter::class)
         val column1: String,
         @RsNested
         val nestedObject: NestedDto,
@@ -55,10 +57,7 @@ internal class ConstructorRsMappingTest {
         val column6: String,
         val column7: String
     )
-    class ValueConverter : RsElementConverter {
-        override fun convert(value: Any?, propertyType: KClass<*>): Any? {
-            return value
-        }
+    class ValueConverter(type: KType, annotation: KAnnotatedElement) : RsValueExtractor(type, annotation) {
     }
 
     @Test
@@ -72,7 +71,7 @@ internal class ConstructorRsMappingTest {
                 + clazzMapping.nestedProperties.size
                 + clazzMapping.toManyProperties.size
         )
-        
+
         //----------------------------
 
         val property1 = clazzMapping.simpleProperties.find {
@@ -89,7 +88,7 @@ internal class ConstructorRsMappingTest {
         }
         assertNotNull(property3)
         assertFalse(property3!!.isId)
-        assertEquals(RsNoOpConverter::class, property3.extractor::class)
+        assertEquals(DefaultRsValueExtractor::class, property3.extractor::class)
 
         //----------------------------
 
@@ -106,7 +105,7 @@ internal class ConstructorRsMappingTest {
         val property4 = clazzMapping.toManyProperties.first()
         assertEquals(ToManyDto::class, property4.elementMapping.rootMapping.clazz)
         assertEquals(Collection::class, property4.collectionType)
-        assertEquals(RsNoOpConverter::class, property4.elementConverter::class)
+        assertEquals(RsElementConverter::class, property4.elementConverter::class)
     }
 
 }
