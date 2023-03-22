@@ -25,7 +25,6 @@
 
 package com.qualifiedcactus.sqlObjectMapper
 
-import com.qualifiedcactus.sqlObjectMapper.toParam.JdbcObjectCreator
 import java.sql.Connection
 
 /**
@@ -35,17 +34,12 @@ class NpSqlStringBuilder
 @JvmOverloads
 constructor(
     val connection: Connection,
-    private val startingString: String = ""
+    startingString: String = ""
 ) {
 
 
-    private val jdbcObjectCreator = JdbcObjectCreator(connection)
     private val stringBuilder = StringBuilder(startingString)
-
-    /**
-     * A Map of uppercase parameter name and parameter value
-     */
-    private val parameterValues = HashMap<String, Any?>()
+    private val paramList = ArrayList<ParameterWrapper>()
 
     /**
      * Append a string to sql query
@@ -55,21 +49,49 @@ constructor(
         return this
     }
 
+    /**
+     * Return built sql string. Useful for debugging purpose
+     */
     fun toQueryString(): String {
         return stringBuilder.toString()
     }
 
-    fun addParameter(paramName: String, paramValue: Any?): NpSqlStringBuilder {
-        parameterValues[paramName.uppercase()] = paramValue
+    /**
+     * Add a parameter value of [paramName]
+     */
+    fun withValue(paramName: String, paramValue: Any?): NpSqlStringBuilder {
+        paramList.add(ParameterWrapper.NonDtoWrapper(paramName, paramValue))
         return this
     }
 
-    fun addParametersByDto(dto: Any): NpSqlStringBuilder {
-        val mapping = MappingProvider.mapParamClass(dto::class)
-        mapping.valueExtractors.forEach { (paramName, paramInfo)->
-            parameterValues[paramName] = paramInfo.converter.convert(paramInfo.getter(dto), jdbcObjectCreator)
-        }
+    /**
+     * Add a DTO containing parameters to this builder
+     */
+    fun withDto(dto: Any): NpSqlStringBuilder {
+        paramList.add(ParameterWrapper.DtoWrapper(dto))
         return this
+    }
+
+    /**
+     * Append parameters for SQL IN clause.
+     * For example, if a parameter name is my_param and [paramValues]'s size is 3,
+     * a string " (:my_param__0,:my_param__1,:my_param__2) " will be appended
+     * and parameters values will be added to this builder.
+     *
+     * Note that IN clause have variable limit. The exact limit depends on the database you use
+     * (1000 for Oracle, for example).
+     */
+    fun <T:Any> withInVariables(paramName: String, paramValues: List<T>) {
+        stringBuilder.append(" (")
+        paramValues.forEachIndexed { index, paramValue ->
+            val indexedName = paramName + "__" + index
+            paramList.add(ParameterWrapper.NonDtoWrapper(indexedName, paramValue))
+            stringBuilder.append(indexedName)
+            if (index < paramValues.size - 1) {
+                stringBuilder.append(',')
+            }
+        }
+        stringBuilder.append(") ")
     }
 
     /**
@@ -77,9 +99,13 @@ constructor(
      */
     fun toNpPreparedStatement(): NpPreparedStatement {
         val npStatement = connection.prepareNpStatement(stringBuilder.toString())
-        parameterValues.forEach { (paramName, paramValue) ->
-            npStatement.setParameterUpperCased(paramName, paramValue)
+        paramList.forEach { param ->
+            when (param) {
+                is ParameterWrapper.DtoWrapper -> npStatement.setParametersByDto(param.value)
+                is ParameterWrapper.NonDtoWrapper -> npStatement.setParameter(param.paramName, param.value)
+            }
         }
+
         return npStatement
     }
 
@@ -88,9 +114,18 @@ constructor(
      */
     fun toNpCallableStatement(): NpCallableStatement {
         val npStatement = connection.prepareNpCall(stringBuilder.toString())
-        parameterValues.forEach { (paramName, paramValue) ->
-            npStatement.setParameterUpperCased(paramName, paramValue)
+        paramList.forEach { param ->
+            when (param) {
+                is ParameterWrapper.DtoWrapper -> npStatement.setParametersByDto(param.value)
+                is ParameterWrapper.NonDtoWrapper -> npStatement.setParameter(param.paramName, param.value)
+            }
         }
         return npStatement
+    }
+
+
+    private interface ParameterWrapper {
+        class DtoWrapper(val value:Any) : ParameterWrapper
+        class NonDtoWrapper(val paramName: String, val value:Any?) : ParameterWrapper
     }
 }

@@ -45,7 +45,7 @@ annotation class Param(
      * Specify a converter to use to convert the property's value
      * before passing it to [PreparedStatement.setObject(index)][PreparedStatement.setObject]
      */
-    val converter: KClass<out ParamValueConverter> = ParamNoOpConverter::class
+    val paramSetter: KClass<out ParamValueSetter> = DefaultParamValueSetter::class
 )
 
 /**

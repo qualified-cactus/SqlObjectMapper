@@ -23,20 +23,76 @@
  *
  */
 
+@file:Suppress("UNCHECKED_CAST")
+
 package com.qualifiedcactus.sqlObjectMapper.toParam
 
+import com.qualifiedcactus.sqlObjectMapper.SqlObjectMapperException
 import java.math.BigDecimal
+import java.nio.ByteBuffer
 import java.sql.PreparedStatement
-import java.sql.ResultSet
 import java.time.*
+import java.util.UUID
+import kotlin.reflect.KAnnotatedElement
+import kotlin.reflect.KClass
+import kotlin.reflect.KProperty
+import kotlin.reflect.KType
+
 
 /**
- * All implementations must be thread safe.
+ * Pass from property to [PreparedStatement].
+ * Each property has an instance of this class.
+ * All implementation must satisfy the following conditions:
+ *
+ * - is thread safe
+ * - have a constructor([KType], [KAnnotatedElement]) to be used by this library
+ *
+ * @see DefaultParamValueSetter
  *
  */
-interface ParamValueSetter {
-    fun setParam(stmt: PreparedStatement, paramIndex: Int, value: Any?, objectCreator: JdbcObjectCreator)
+abstract class ParamValueSetter(
+    protected val propertyType: KType,
+    protected val propertyAnnotations: KAnnotatedElement,
+) {
+    companion object {
+        internal fun createInstance(
+            kClass: KClass<out ParamValueSetter>,
+            kType: KType,
+            kAnnotatedElement: KAnnotatedElement,
+        ): ParamValueSetter {
+            return kClass.constructors.find {
+                it.parameters.size == 2 &&
+                    it.parameters[0].type.classifier == KType::class &&
+                    it.parameters[1].type.classifier == KAnnotatedElement::class
+            }?.call(kType, kAnnotatedElement)
+                ?: throw SqlObjectMapperException(
+                    "${kClass} doesn't have constructor of type (KType, KAnnotatedElement)"
+                )
+        }
+    }
+
+
+    protected open fun processValue(
+        propertyValue: Any?,
+        objectCreator: JdbcObjectCreator
+    ): Any? {
+        return propertyValue
+    }
+
+    protected open fun setValueIntoStatement(
+        stmt: PreparedStatement, paramIndex: Int, value: Any?
+    ) {
+        stmt.setObject(paramIndex, value)
+    }
+
+    fun setParam(
+        stmt: PreparedStatement, paramIndex: Int,
+        propertyValue: Any?, objectCreator: JdbcObjectCreator
+    ) {
+        setValueIntoStatement(stmt, paramIndex, processValue(propertyValue, objectCreator))
+    }
 }
+
 
 /**
  * Use explicit [PreparedStatement]'s parameter setter methods for the following types:
@@ -50,11 +106,11 @@ interface ParamValueSetter {
  * - [String]
  * - [Byte]
  * - [ByteArray]
- * - [LocalTime] -> [java.sql.Time] (precision beyond millisecond is lost)
+ * - [LocalTime] -> [java.sql.Time]
  * - [LocalDate] -> [java.sql.Date]
  * - [LocalDateTime] -> [java.sql.Timestamp]
- * - [OffsetDateTime] -> [java.sql.Timestamp] (offset is converted to UTC)
- * - [OffsetTime] -> [java.sql.Time] (converted to UTC before setting) (precision beyond millisecond is lost)
+ * - [OffsetDateTime] -> [java.sql.Timestamp] (converted to UTC)
+ * - [OffsetTime] -> [java.sql.Time] (converted to UTC)
  * - [Instant] -> [java.sql.Timestamp]
  * - [ZonedDateTime] -> [java.sql.Timestamp] (Zone converted to UTC)
  * - [Enum] -> [String]
@@ -65,47 +121,69 @@ interface ParamValueSetter {
  * so don't think that your offset information is saved into the database.
  *
  */
-class DefaultParamValueSetter : ParamValueSetter {
-    override fun setParam(stmt: PreparedStatement, paramIndex: Int, value: Any?, objectCreator: JdbcObjectCreator) {
-        when (value) {
-            null -> stmt.setObject(paramIndex, null)
-            is Long -> stmt.setLong(paramIndex, value)
-            is Int -> stmt.setInt(paramIndex, value)
-            is BigDecimal -> stmt.setBigDecimal(paramIndex, value)
-            is Double -> stmt.setDouble(paramIndex, value)
-            is Short -> stmt.setShort(paramIndex, value)
-            is Boolean -> stmt.setBoolean(paramIndex, value)
-            is String -> stmt.setString(paramIndex, value)
-            is Byte -> stmt.setByte(paramIndex, value)
-            is ByteArray -> stmt.setBytes(paramIndex, value)
+class DefaultParamValueSetter(
+    propertyType: KType,
+    propertyAnnotations: KAnnotatedElement,
+) : ParamValueSetter(propertyType, propertyAnnotations) {
 
-            is LocalTime -> stmt.setTime(paramIndex, java.sql.Time(value.toNanoOfDay() / 1_000_000L))
-            is LocalDate -> stmt.setDate(
-                paramIndex,
-                java.sql.Date(value.toEpochSecond(LocalTime.MIN, ZoneOffset.UTC) * 1_000)
-            )
-            is LocalDateTime -> stmt.setTimestamp(
-                paramIndex,
-                value.toInstant(ZoneOffset.UTC)
-                    .run { java.sql.Timestamp(toEpochMilli()).apply { nanos = this@run.nano } }
-            )
-            is OffsetDateTime -> stmt.setTimestamp(paramIndex,
-                java.sql.Timestamp(value.toInstant().toEpochMilli())
-                    .apply { nanos = value.nano }
-            )
-            is OffsetTime -> stmt.setTime(
-                paramIndex, java.sql.Time(
-                    value.withOffsetSameInstant(ZoneOffset.UTC).toEpochSecond(LocalDate.EPOCH) * 1_000
+    companion object {
+        internal fun setIntoStatement(stmt: PreparedStatement, paramIndex: Int, value: Any?) {
+            when (value) {
+                null -> stmt.setObject(paramIndex, null)
+                is Long -> stmt.setLong(paramIndex, value)
+                is Int -> stmt.setInt(paramIndex, value)
+                is BigDecimal -> stmt.setBigDecimal(paramIndex, value)
+                is Double -> stmt.setDouble(paramIndex, value)
+                is Short -> stmt.setShort(paramIndex, value)
+                is Boolean -> stmt.setBoolean(paramIndex, value)
+                is String -> stmt.setString(paramIndex, value)
+                is Byte -> stmt.setByte(paramIndex, value)
+                is ByteArray -> stmt.setBytes(paramIndex, value)
+
+                is LocalTime -> stmt.setTime(paramIndex, java.sql.Time.valueOf(value))
+                is LocalDate -> stmt.setDate(paramIndex, java.sql.Date.valueOf(value))
+                is LocalDateTime -> stmt.setTimestamp(paramIndex, java.sql.Timestamp.valueOf(value))
+                is OffsetDateTime -> stmt.setTimestamp(paramIndex,
+                    java.sql.Timestamp.valueOf(value.withOffsetSameInstant(ZoneOffset.UTC).toLocalDateTime())
                 )
-            )
-            is Instant -> stmt.setTimestamp(paramIndex, java.sql.Timestamp(value.toEpochMilli()))
-            is ZonedDateTime -> stmt.setTimestamp(paramIndex,
-                java.sql.Timestamp(value.toInstant().toEpochMilli()).apply { nanos = value.nano }
-            )
+                is OffsetTime -> stmt.setTime(paramIndex,
+                    java.sql.Time.valueOf(value.withOffsetSameInstant(ZoneOffset.UTC).toLocalTime())
+                )
+                is Instant -> stmt.setTimestamp(paramIndex, java.sql.Timestamp(value.toEpochMilli()))
+                is ZonedDateTime -> stmt.setTimestamp(paramIndex,
+                    java.sql.Timestamp.valueOf(value.withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime())
+                )
 
-            is Enum<*> -> stmt.setString(paramIndex, value.name)
-            else -> stmt.setObject(paramIndex, value)
-
+                is Enum<*> -> stmt.setString(paramIndex, value.name)
+                else -> stmt.setObject(paramIndex, value)
+            }
         }
+    }
+    override fun setValueIntoStatement(stmt: PreparedStatement, paramIndex: Int, value: Any?) {
+        setIntoStatement(stmt, paramIndex, value)
+    }
+}
+
+
+/**
+ * Convert UUID to byte array
+ */
+class ParamUuidToByteArraySetter(
+    propertyType: KType,
+    propertyAnnotations: KAnnotatedElement,
+) : ParamValueSetter(propertyType, propertyAnnotations) {
+
+    override fun processValue(propertyValue: Any?, objectCreator: JdbcObjectCreator): ByteArray? {
+        if (propertyValue == null) return null
+        if (propertyValue !is UUID) throw SqlObjectMapperException("Property is an UUID")
+
+        val byteBuffer = ByteBuffer.wrap(ByteArray(16))
+        byteBuffer.putLong(propertyValue.mostSignificantBits)
+        byteBuffer.putLong(propertyValue.leastSignificantBits)
+        return byteBuffer.array()
+    }
+
+    override fun setValueIntoStatement(stmt: PreparedStatement, paramIndex: Int, value: Any?) {
+        stmt.setBytes(paramIndex, value as ByteArray?)
     }
 }

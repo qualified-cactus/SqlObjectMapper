@@ -25,11 +25,25 @@
 
 package com.qualifiedcactus.sqlObjectMapper.toParam
 
+import com.qualifiedcactus.sqlObjectMapper.NamedParameterQuery
+import com.qualifiedcactus.sqlObjectMapper.SqlObjectMapperException
+import java.sql.PreparedStatement
+
 internal interface ParamClassMapping {
-    val valueExtractors: Map<String, Parameter>
+    val parametersNameMap: Map<String, Parameter>
 
     class Parameter(
         val getter: (o: Any) -> Any?,
-        val converter: ParamValueConverter
+        val extractor: ParamValueSetter,
     )
+
+    fun setIntoStatement(stmt: PreparedStatement, query: NamedParameterQuery, dto: Any) {
+        val jdbcObjectCreator = JdbcObjectCreator(stmt.connection)
+
+        for ((name, paramInfo) in parametersNameMap) {
+            query.parameterIndexes[name]?.forEach { paramIndex ->
+                paramInfo.extractor.setParam(stmt, paramIndex, paramInfo.getter(dto), jdbcObjectCreator)
+            } ?: throw SqlObjectMapperException("Can't find parameter ${name}")
+        }
+    }
 }

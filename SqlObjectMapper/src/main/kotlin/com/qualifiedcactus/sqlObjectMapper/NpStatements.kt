@@ -28,6 +28,7 @@
 package com.qualifiedcactus.sqlObjectMapper
 
 import com.qualifiedcactus.sqlObjectMapper.fromRs.*
+import com.qualifiedcactus.sqlObjectMapper.toParam.DefaultParamValueSetter
 import com.qualifiedcactus.sqlObjectMapper.toParam.JdbcObjectCreator
 import java.sql.*
 import java.util.*
@@ -177,6 +178,7 @@ internal constructor(
     val statement: PreparedStatement,
     val query: NamedParameterQuery
 ) {
+
     /**
      * Use this when the parameter name is already uppercase
      */
@@ -193,7 +195,10 @@ internal constructor(
      * @param value value of a parameter
      */
     fun setParameter(name: String, value: Any?): NpStatement {
-        setParameterUpperCased(name.uppercase(), value)
+        query.parameterIndexes[name.uppercase()]?.forEach {paramIndex ->
+            DefaultParamValueSetter.setIntoStatement(statement, paramIndex, value)
+        }
+
         return this
     }
 
@@ -202,14 +207,7 @@ internal constructor(
      */
     fun setParametersByDto(dto: Any): NpStatement {
         val paramMap = MappingProvider.mapParamClass(dto::class)
-        val jdbcObjectCreator = JdbcObjectCreator(statement.connection)
-        paramMap.valueExtractors.forEach { (paramName, parameterInfo) ->
-            val parameterValue = parameterInfo.converter.convert(
-                parameterInfo.getter(dto),
-                jdbcObjectCreator
-            )
-            setParameterUpperCased(paramName, parameterValue)
-        }
+        paramMap.setIntoStatement(statement, query, dto)
         return this
     }
 

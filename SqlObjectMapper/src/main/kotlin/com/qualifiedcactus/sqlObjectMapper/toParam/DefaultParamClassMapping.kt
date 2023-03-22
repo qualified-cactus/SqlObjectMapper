@@ -29,13 +29,12 @@ import com.qualifiedcactus.sqlObjectMapper.MappingProvider
 import com.qualifiedcactus.sqlObjectMapper.fromRs.CamelCaseToUpperSnakeCaseConverter
 import kotlin.reflect.KClass
 import kotlin.reflect.KVisibility
-import kotlin.reflect.full.createInstance
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.javaField
 
 internal class DefaultParamClassMapping(val clazz: KClass<*>) : ParamClassMapping {
 
-    override val valueExtractors = HashMap<String, ParamClassMapping.Parameter>()
+    override val parametersNameMap = HashMap<String, ParamClassMapping.Parameter>()
     init {
         clazz.memberProperties.forEach { property ->
             if (property.visibility != KVisibility.PUBLIC) {
@@ -57,26 +56,26 @@ internal class DefaultParamClassMapping(val clazz: KClass<*>) : ParamClassMappin
                         param.name.uppercase()
                     }
 
-                    valueExtractors[name] = ParamClassMapping.Parameter(
+                    parametersNameMap[name] = ParamClassMapping.Parameter(
                         {o -> property.getter.call(o)},
-                        param.converter.createInstance()
+                        ParamValueSetter.createInstance(param.paramSetter, property.returnType, property)
                     )
                 }
                 else if (nestedParams != null) {
                     val nested = MappingProvider.mapParamClass(property.returnType.classifier as KClass<*>)
-                    nested.valueExtractors.forEach {(paramName, parameterInfo)->
-                        valueExtractors[paramName] = ParamClassMapping.Parameter(
+                    nested.parametersNameMap.forEach { (paramName, parameterInfo)->
+                        parametersNameMap[paramName] = ParamClassMapping.Parameter(
                             {o -> parameterInfo.getter(property.getter.call(o)!!) },
-                            parameterInfo.converter
+                            parameterInfo.extractor
                         )
                     }
                 }
                 else {
-                    valueExtractors[
+                    parametersNameMap[
                         CamelCaseToUpperSnakeCaseConverter.convert(property.name)
                     ] = ParamClassMapping.Parameter(
                         {o -> property.getter.call(o)},
-                        ParamNoOpConverter()
+                        DefaultParamValueSetter(property.returnType, property)
                     )
                 }
             }

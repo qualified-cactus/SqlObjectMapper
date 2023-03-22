@@ -65,13 +65,13 @@ internal class BeanRsMapping(
                 val propertyInfo: ClassProperty = if (rsColumn != null) {
                     SimpleProperty(
                         if (rsColumn.name != "")
-                            rsColumn.name
+                            rsColumn.name.uppercase()
                         else
                             CamelCaseToUpperSnakeCaseConverter.convert(property.name)
                         ,
                         rsColumn.isId,
                         property.returnType,
-                        rsColumn.extractor.createInstance()
+                        RsValueExtractor.createInstance(rsColumn.extractor, property.returnType, property)
                     ).also(simpleProperties::add)
                 }
                 else if (rsToOne != null) {
@@ -106,7 +106,7 @@ internal class BeanRsMapping(
                         CamelCaseToUpperSnakeCaseConverter.convert(property.name),
                         false,
                         property.returnType,
-                        DefaultRsValueExtractor()
+                        DefaultRsValueExtractor(property.returnType, property)
                     ).also(simpleProperties::add)
                 }
 

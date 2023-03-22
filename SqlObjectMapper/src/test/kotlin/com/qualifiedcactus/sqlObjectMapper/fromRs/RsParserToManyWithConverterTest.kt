@@ -47,8 +47,8 @@ class RsParserToManyWithConverterTest {
         val childName: String?
     )
 
-    class ChildToStringConverter : RsElementConverter {
-        override fun convert(value: Any?, propertyType: KClass<*>): Any? {
+    class ChildToStringConverter : RsElementConverter() {
+        override fun convert(value: Any?, elementType: KClass<*>): Any? {
             if (value is MyChildDto) {
                 return value.childName
             } else throw RuntimeException("invalid type")
@@ -61,22 +61,22 @@ class RsParserToManyWithConverterTest {
         CREATE TABLE table_a (
             id BIGINT PRIMARY KEY
         );
-        
+
         CREATE TABLE table_b (
             child_id BIGINT PRIMARY KEY,
             child_name VARCHAR(50),
-            parent_id BIGINT NOT NULL REFERENCES table_a (id) 
+            parent_id BIGINT NOT NULL REFERENCES table_a (id)
         );
     """.trimIndent()
     val data = """
         INSERT INTO table_a VALUES (1);
         INSERT INTO table_a VALUES (2);
         INSERT INTO table_a VALUES (3);
-        
+
         INSERT INTO table_b VALUES (1, 'foo', 2);
         INSERT INTO table_b VALUES (2, null, 2);
         INSERT INTO table_b VALUES (3, 'bazz', 2);
-        
+
         INSERT INTO table_b VALUES (4, 'bar', 1);
         INSERT INTO table_b VALUES (5, 'ben', 3);
     """.trimIndent()
@@ -92,7 +92,7 @@ class RsParserToManyWithConverterTest {
     @Test
     fun test1() {
         val sqlQuery = """
-            SELECT * 
+            SELECT *
             FROM table_a a
             LEFT JOIN table_b b ON a.id = b.parent_id
             ORDER BY a.id ASC, b.child_id ASC
