@@ -29,7 +29,7 @@
         <dependency>
             <groupId>com.qualifiedcactus</groupId>
             <artifactId>sqlObjectMapper</artifactId>
-            <version>3.3.0</version>
+            <version>4.1.1</version>
         </dependency>
 
         <dependency>

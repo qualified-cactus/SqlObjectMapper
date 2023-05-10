@@ -1,5 +1,13 @@
 # Change logs
 
+## 4.1.1
+
+### Breaking changes:
+
+- API overhaul: most of the api is changed, see documentations for details.
+- Change license from MIT to AGPL
+
+
 ## 3.2.0
 
 * Added `ParamUuidToByteArrayConverter` and `RsByteArrayToUuidConverter`
