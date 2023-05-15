@@ -691,19 +691,19 @@ import kotlin.reflect.KType
  */
 open class ParamValueSetter(
     protected val propertyType: KType,
-    protected val propertyAnnotations: KAnnotatedElement,
+    protected val annotations: Array<out Annotation>,
 ) {
     companion object {
         internal fun createInstance(
             kClass: KClass<out ParamValueSetter>,
             kType: KType,
-            kAnnotatedElement: KAnnotatedElement,
+            annotations: Array<out Annotation>,
         ): ParamValueSetter {
             return kClass.constructors.find {
                 it.parameters.size == 2 &&
                     it.parameters[0].type.classifier == KType::class &&
-                    it.parameters[1].type.classifier == KAnnotatedElement::class
-            }?.call(kType, kAnnotatedElement)
+                    it.parameters[1].type.classifier == Array<out Annotation>::class
+            }?.call(kType, annotations)
                 ?: throw SqlObjectMapperException(
                     "${kClass} doesn't have constructor of type (KType, KAnnotatedElement)"
                 )
@@ -796,8 +796,8 @@ open class ParamValueSetter(
  */
 class ParamUuidToByteArraySetter(
     propertyType: KType,
-    propertyAnnotations: KAnnotatedElement,
-) : ParamValueSetter(propertyType, propertyAnnotations) {
+    annotations: Array<out Annotation>,
+) : ParamValueSetter(propertyType, annotations) {
 
     init {
         if (propertyClass != UUID::class) {

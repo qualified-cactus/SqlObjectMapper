@@ -688,7 +688,10 @@ internal class DefaultParamClassMappingTest {
         val param2: Int
     )
 
-    class CustomParamConverter(kType: KType, annotation: KAnnotatedElement) : ParamValueSetter(kType, annotation) {
+    class CustomParamConverter(
+        kType: KType,
+        annotations: Array<out Annotation>,
+    ) : ParamValueSetter(kType, annotations) {
 
 
         override fun setIntoStmt(stmt: PreparedStatement, paramPosition: Int, convertedValue: Any?) {

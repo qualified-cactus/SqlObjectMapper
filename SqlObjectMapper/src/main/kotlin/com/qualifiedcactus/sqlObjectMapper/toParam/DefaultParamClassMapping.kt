@@ -698,7 +698,7 @@ internal class DefaultParamClassMapping(val clazz: KClass<*>) : ParamClassMappin
 
                     parametersNameMap[name] = ParamClassMapping.Parameter(
                         {o -> property.getter.call(o)},
-                        ParamValueSetter.createInstance(sqlParam.paramSetter, property.returnType, property)
+                        ParamValueSetter.createInstance(sqlParam.paramSetter, property.returnType, field.annotations)
                     )
                 }
                 else if (nestedParams != null) {
@@ -715,7 +715,7 @@ internal class DefaultParamClassMapping(val clazz: KClass<*>) : ParamClassMappin
                         CamelCaseToUpperSnakeCaseConverter.convert(property.name)
                     ] = ParamClassMapping.Parameter(
                         {o -> property.getter.call(o)},
-                        ParamValueSetter(property.returnType, property)
+                        ParamValueSetter(property.returnType, field.annotations)
                     )
                 }
             }

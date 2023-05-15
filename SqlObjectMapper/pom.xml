@@ -8,7 +8,7 @@
     <!-- #####################################################################   -->
     <groupId>com.qualifiedcactus</groupId>
     <artifactId>sqlObjectMapper</artifactId>
-    <version>4.1.1</version>
+    <version>4.1.2</version>
     <packaging>jar</packaging>
     <name>${project.groupId}:${project.artifactId}</name>
     <description>A JDBC extensions library that makes working with data object less tedious.</description>
@@ -48,8 +48,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <kotlin.version>1.7.20</kotlin.version>
         <dokka.version>1.7.20</dokka.version>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.release>17</maven.compiler.release>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
     </properties>
 
