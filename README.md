@@ -12,7 +12,7 @@ Add the latest maven dependency:
 <dependency>
     <groupId>com.qualifiedcactus</groupId>
     <artifactId>sqlObjectMapper</artifactId>
-    <version>4.1.1</version>
+    <version>4.1.3</version>
 </dependency>
 ```
 

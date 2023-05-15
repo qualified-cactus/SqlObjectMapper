@@ -673,7 +673,6 @@ import java.nio.ByteBuffer
 import java.sql.PreparedStatement
 import java.time.*
 import java.util.UUID
-import kotlin.reflect.KAnnotatedElement
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
 
@@ -684,7 +683,7 @@ import kotlin.reflect.KType
  * All implementation must satisfy the following conditions:
  *
  * - is thread safe
- * - have a constructor([KType], [KAnnotatedElement]) to be used by this library
+ * - have a primary constructor that has the same parameters that [ParamValueSetter]'s constructor have
  *
  * Extends this class to create your own converter
  *
